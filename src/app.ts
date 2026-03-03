@@ -7,6 +7,8 @@ import fixtureRouter from './routes/fixtureRoutes';
 import predectionRouter from './routes/predictionRoutes';
 import cookieParser from 'cookie-parser';
 import "./jobs/currencyDaily";
+import "./jobs/resolvingBet";
+import "./jobs/clearBets";
 require('dotenv').config();
 const app = express();
 //database connection
