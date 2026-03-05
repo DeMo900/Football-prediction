@@ -23,19 +23,18 @@ interface GameData {
   };
   startsAt: number;
 }
-let cachedData: any = null;
 //live
 async function getLiveGames(){
   try{
-if (cachedData) return cachedData.response;
+//if (cachedData) return cachedData.response;
 let res = await fetch("https://v3.football.api-sports.io/fixtures?live=all",{
   method: 'GET',
   headers: {"x-apisports-key": process.env.API_KEY!},
 })
 let data = await res.json();
-cachedData = data;
+//cachedData = data;
 console.log('created new cache');
-return cachedData.response;
+return data.response;
   }catch(err){
     console.log('Error fetching live games:', err);
     return null;
@@ -44,7 +43,7 @@ return cachedData.response;
 //upcoming
 async function getUpcomingGames(){
   try{
-if (cachedData) return cachedData.response;
+
 //date
 const date = new Date(); // current date
 
@@ -59,15 +58,13 @@ let res = await fetch(`https://v3.football.api-sports.io/fixtures?date=${formatt
   headers: {"x-apisports-key": process.env.API_KEY!},
 })
 let data = await res.json();
-console.log(data)
-cachedData = data;
-console.log('created new cache');
-return cachedData.response;
+return data.response;
   }catch(err){
     console.log('Error fetching live games:', err);
     return null;
   }
 }
+ 
 //upcoming
 async function extractUpcomingGameData(){
   let games = await getUpcomingGames();
@@ -75,7 +72,6 @@ async function extractUpcomingGameData(){
   let extractedData: GameData[] = games.map((game: any) => {
     return {
       gameId: game.fixture.id,
-      minutesElapsed: game.fixture.status.elapsed,
       teams: {
         home: game.teams.home.name,
         away: game.teams.away.name
@@ -101,7 +97,9 @@ async function extractUpcomingGameData(){
   return game.startsAt > nowSeconds && game.startsAt <= nowSeconds + 3600;
 });
   return filteredData;
+  
 }
+  
 //live
 async function extractGameData(){
   let games = await getLiveGames();
@@ -146,7 +144,7 @@ async function liveController(req:Request,res: Response){
 async function upcomingController(req:Request,res: Response){
   let games = await extractUpcomingGameData();
   if (!games) return null;
-  if(req.query.league){
+if(req.query.league){
   games = games.filter(game => game.league.id === parseInt(req.query.league as string));
 }
   res.send(games);
