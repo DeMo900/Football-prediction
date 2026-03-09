@@ -109,12 +109,15 @@ res.status(200).json({message:"email sent sucsessfully"})
 //POST UPDATE PASSWORD
 const passwordValidation = [
   body("password")
-    .notEmpty().withMessage("email can't be empty")
+    .notEmpty().withMessage("password can't be empty")
     .bail() // stop if empty
-    .matches(/^(?=.*\d)[a-zA-Z0-9]{8,}$/).withMessage("Invalid email format")
+    .matches(/^[a-zA-Z0-9!@#$%^&*]{8,}$/).withMessage("Invalid password format")
 ];
 const updatePasswordPost = async(req:Request,res:Response)=>{
     try{
+        //validation
+        const errors = validationResult(req)
+        if(!errors.isEmpty()) return res.status(400).json({error:errors.array()[0]!.msg})
 //checking if token exists in db 
 const token = req.query.token as string
 if(!token) throw new Error("error");
@@ -128,6 +131,7 @@ const hashedPassword =await bcrypt.hash(req.body.password,11)
 //storing
 user.password = hashedPassword
 await user.save()
+return res.json({msg:"password reset sucessfully"})
     }catch(err){
         res.status(500).send("internal server error")
     }

@@ -1,5 +1,4 @@
 import {z} from "zod";
-import { $ZodUnknown } from "zod/v4/core";
 
 //schema
 const signUpSchema = z.object({
@@ -8,8 +7,8 @@ const signUpSchema = z.object({
 
     email: z.email({ message: "Invalid email format" }),
 
-    password: z.string().nonempty("password is required").min(6,{ message: "Password must be at least 6 characters long" }).max(100)
-    .regex(/^(?=.*\d)[a-zA-Z0-9]{8,}$/,{message:"password must contain letters and numbers"}),
+    password: z.string().nonempty("password is required").min(8,{ message: "Password must be at least 8 characters long" }).max(100)
+    .regex(/^[a-zA-Z0-9!@#$%^&*]{8,}$/,{message:"password must contain letters and numbers"}),
 
     confirmPassword : z.string().nonempty("confirm pasword is required")
 
