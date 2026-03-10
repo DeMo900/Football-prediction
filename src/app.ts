@@ -2,6 +2,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import * as redis from "redis"
+import path from "path"
 import currencyRouter from './routes/currencyRoutes';
 import OauthRouter from './routes/Oauth2.0Routes';
 import fixtureRouter from './routes/fixtureRoutes';
@@ -28,6 +29,7 @@ app.set("trust proxy", true)
 //rMiddleware
 app.use(express.json());
 app.use(cookieParser());
+app.use(express.static(path.join(process.cwd(), 'public')))
 //using routes
 app.use(authRouter)
 app.use(OauthRouter);

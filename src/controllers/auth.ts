@@ -1,4 +1,5 @@
 import User from "../models/user";
+import path from "path"
 import express,{ Request,Response } from "express";
 import bcrypt from "bcrypt";
 import validateSignUp from "../validation/signUp";
@@ -7,7 +8,10 @@ import jwt from "jsonwebtoken"
 import {db} from "../app"
 import {eventEmitter} from "../events/emailSubmit"
 import { body,validationResult } from "express-validator";
-
+//GET SIGNUP
+const signUpGet = async (req:Request,res:Response)=>{
+res.sendFile(path.join(process.cwd(), 'views', 'signup.html'))
+}
 //POST SIGN UP 
 const signUpPost = async(req: Request,res: Response)=>{
 
@@ -136,4 +140,4 @@ return res.json({msg:"password reset sucessfully"})
         res.status(500).send("internal server error")
     }
 }
-export {signUpPost,logInPost,submitEmailPost,updatePasswordPost,emailValidation,passwordValidation}
+export {signUpPost,logInPost,submitEmailPost,updatePasswordPost,emailValidation,passwordValidation,signUpGet}
