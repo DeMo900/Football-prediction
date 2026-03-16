@@ -29,27 +29,47 @@
     
  <div class="mt-6">
   <form action="/signup" class="w-fit">
-    <label for="usernaem" class="text-white text-xs font-bold block">Username</label>
-    <input type="text" name="username" class="mt-2 pl-4 placeholder-border bg-input w-[480px] h-14 rounded-xl border border-border border-1 mb-6" placeholder="Enter your username">
+    <label for="username" class="text-white text-xs font-bold block">Username</label>
+<div class="relative mb-6 mt-2  h-14">
+    <input type="text" name="username" class=" pl-10 placeholder-border bg-input w-[480px] h-14 rounded-xl border border-border border-1 " placeholder="Enter your username">
+    <img src="/public/icons/user.png" class="w-5 top-1/2 left-2 -translate-y-1/2 absolute" alt="">
+</div>
     <label for="email" class="text-white text-xs font-bold block">Email</label>
-    <input type="email" name="email" class="mt-2 pl-4 placeholder-border bg-input w-[480px] h-14 rounded-xl border border-border border-1" placeholder="email@example.com">
+    <div class="relative mb-6 mt-2  h-14">
+    <input type="email" name="email" class=" pl-10 placeholder-border bg-input w-[480px] h-14 rounded-xl border border-border border-1" placeholder="email@example.com">
+    <img src="/public/icons/mail.png" class="w-5 top-1/2 left-2 -translate-y-1/2 absolute" alt="">
+</div>
     <div class="flex gap-4 mt-4">
       <div>
         <label for="password" class="text-white text-xs font-bold block mt-2">Password</label>
-        <input type="text" name="password" class="mt-2 pl-4 placeholder-border bg-input w-[240px] h-14 rounded-xl border border-border border-1" placeholder="••••••••">
+         <div class="relative mt-2">
+        <input type="text" name="password" class=" pl-8 placeholder-border bg-input w-[240px] h-14 rounded-xl border border-border border-1" placeholder="••••••••">
+        <img src="/public/icons/unlock.png" class="w-5 top-1/2 left-2 -translate-y-1/2 absolute" alt="">
+
+      </div>
       </div>
       <div>
         <label for="confirmpassword" class="text-white text-xs font-bold mt-2 block">Confirm Password</label>
-        <input type="text" name="confirmpassword" class="mt-2 pl-4 placeholder-border bg-input w-[240px] h-14 rounded-xl border border-border border-1" placeholder="••••••••">
+          <div class="relative mt-2">
+        <input type="text" name="confirmpassword" class=" pl-8 placeholder-border bg-input w-[240px] h-14 rounded-xl border border-border border-1" placeholder="••••••••">
+        <img src="/public/icons/armor.png" class="w-5 top-1/2 left-2 -translate-y-1/2 absolute" alt="">
+      </div>
       </div>
     </div>
-    <button type="submit" class="w-[480px] h-14 bg-button text-lg font-bold mt-8 rounded-xl">CREATE ACCOUNT</button>
+    <button type="submit" class="w-[480px] h-14 bg-button text-lg font-bold mt-8 rounded-xl cursor-pointer hover:bg-button/90 hover:shadow-lg hover:shadow-button/30 transition duration-200">CREATE ACCOUNT</button>
   </form>
  
   <p class="flex items-center justify-center gap-2 text-border mt-8 before:content-[''] before:block before:h-0.5 before:w-[50%] before:bg-border after:content-[''] after:block after:h-0.5 after:w-[50%] after:bg-border">
     OR
   </p>
-      <button type="button" class="w-[480px] h-14 bg-white/0% text-lg text-white border border-[0.5px] border-border font-bold mt-8 rounded-xl">Sign Up With Google</button>
+  <button type="button" class="flex justify-center gap-2 items-center w-[480px] block mb-4 h-14 bg-white/0% text-lg text-white border border-[0.5px] border-border cursor-pointer hover:bg-bg transition duration-200 font-bold mt-8 rounded-xl">
+    <img class="w-5" src="/public/icons/google.png" alt="">
+    <p> Sign Up With Google</p>
+  </button>
+  <div class="flex justify-center gap-2">
+    <span class="items-center text-[#94A3B8]">Already have an account?</span> 
+<span class="text-font">Login here</span>
+  </div>
 
    </div>
 </div>
