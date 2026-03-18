@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="/public/css/output.css">
+</head>
+<body class="bg-primary">
+    <nav class="w-full flex items-center justify-between border border-b-border/50 border-0.5 mb-4 ">
+
+   <div class="flex w-fit items-center  sm:ml-32 ">
+<img src="/public/icons/logo.png" alt="volt bet" class="w-32 -mr-8">
+    <p class="text-white text-xl font-bold ">BetVolt</p>
+   </div>
+    
+   <div class="w-full max-w-[84px] h-[40px] bg-bg sm:w-84 sm:mr-18 cursor-pointer flex items-center justify-center text-white  rounded-lg border border-border border-1.5 hover:bg-bg/30 transition duration-250">
+    <h3 class="text-font font-bold text-sm ">Help</h3>
+   </div>
+</nav>
+<div class="flex  w-full justify-center">
+<div class="w-full sm:w-fit">
+    <div class="w-full mx-auto sm:m-0 sm:max-w-[480px] relative">
+<img src="/public/icons/earth.jpg" alt="earth" class="relative opacity-50 w-[90%] mx-auto sm:w-[480px] sm:max-w-[480px] h-[192px] rounded-2xl">
+<div class="absolute bottom-0 left-0 w-full h-full bg-gradient-to-t from-primary to-transparent">
+     <p class=" text-white font-black text-[25px] sm:text-[35px] absolute bottom-14 left-8 sm:left-4">Welcome Back</p>
+    <p class=" text-font font-bold text-sm absolute bottom-10 left-8 sm:left-4">Access your betting dashboard</p>
+</div>
+    </div>
+<button type="button" class="flex justify-center gap-2 items-center w-[90%] mx-auto sm:w-[480px] block mb-2 sm:mb-4 h-14 bg-white/0% text-lg text-white border border-[0.5px] border-border cursor-pointer hover:bg-bg transition duration-200 font-bold mt-4 rounded-xl">
+    <img class="w-5" src="/public/icons/google.png" alt="">
+    <p> Continue With Google</p>
+  </button>
+  <p class="flex items-center w-[90%] sm:w-full mb-4 mx-auto sm:mx-0 justify-center gap-2 text-border mt-4 sm:mt-8 before:content-[''] before:block before:h-0.5 before:w-[50%] before:bg-border after:content-[''] after:block after:h-0.5 after:w-[50%] after:bg-border">
+    OR
+     </p>
+     <div class="w-[90%] sm:w-full mx-auto sm:mx-0">
+          <form class="w-full" action="/login">
+          <label for="email" class="text-white text-xs font-bold block">Email</label>
+    <div class="relative mb-6 mt-2 mx-auto  h-14">
+    <input type="email" name="email" class=" pl-10 placeholder-border bg-input  w-full sm:w-[480px] h-14 rounded-xl border border-border border-1" placeholder="email@example.com">
+    <img src="/public/icons/mail.png" class="w-5 top-1/2 left-2 -translate-y-1/2 absolute" alt="">
+    <div class="flex justify-between items-center mt-6">
+         <label for="password" class="text-white text-xs font-bold block ">Password</label>
+         <p class="text-font text-xs cursor-pointer">Forgot password?</p>
+         </div>
+         <div class="relative mt-2">
+        <input type="text" name="password" class=" pl-8 placeholder-border bg-input w-full  h-14 rounded-xl border border-border border-1" placeholder="••••••••">
+        <img src="/public/icons/unlock.png" class="w-5 top-1/2 left-2 -translate-y-1/2 absolute" alt="">
+</div>
+<div class="flex gap-2 mt-3 ml-1">
+    <input type="checkbox" class="" name="rememberme" id="">
+    <p class="text-font text-xs">Remember me for 30 days</p>
+</div>
+    </form>
+     </div>
+  
+ 
+</div>
+</div>
+
+
+
+</body>
+</html>
