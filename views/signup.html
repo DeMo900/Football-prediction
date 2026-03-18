@@ -43,16 +43,18 @@
       <div>
         <label for="password" class="text-white text-xs font-bold block mt-2">Password</label>
          <div class="relative mt-2">
-        <input type="text" name="password" class=" pl-8 placeholder-border bg-input w-[180px] sm:w-[240px] h-14 rounded-xl border border-border border-1" placeholder="••••••••">
+        <input type="password" name="password" id="password" class=" pl-8 placeholder-border bg-input w-[180px] sm:w-[240px] h-14 rounded-xl border border-border border-1" placeholder="••••••••">
         <img src="/public/icons/unlock.png" class="w-5 top-1/2 left-2 -translate-y-1/2 absolute" alt="">
-
+        <img src="/public/icons/hide.svg" id="eyeimg" class="w-5 top-1/2 right-4 -translate-y-1/2 absolute" alt="">
       </div>
       </div>
       <div>
         <label for="confirmpassword" class="text-white text-xs font-bold mt-2 block">Confirm Password</label>
           <div class="relative mt-2">
-        <input type="text" name="confirmpassword" class=" pl-8 placeholder-border bg-input  w-[180px] sm:w-[240px] h-14 rounded-xl border border-border border-1" placeholder="••••••••">
+        <input type="text" name="confirmpassword" id="cpassword" class=" pl-8 placeholder-border bg-input  w-[180px] sm:w-[240px] h-14 rounded-xl border border-border border-1" placeholder="••••••••">
         <img src="/public/icons/armor.png" class="w-5 top-1/2 left-2 -translate-y-1/2 absolute" alt="">
+        <img src="/public/icons/hide.svg" id="ceyeimg" class="w-5 top-1/2 right-4 -translate-y-1/2 absolute" alt="">
+
       </div>
       </div>
     </div>
@@ -62,16 +64,19 @@
   <p class="flex items-center justify-center gap-2 text-border mt-4 sm:mt-8 before:content-[''] before:block before:h-0.5 before:w-[50%] before:bg-border after:content-[''] after:block after:h-0.5 after:w-[50%] after:bg-border">
     OR
   </p>
-  <button type="button" class="flex justify-center gap-2 items-center w-full sm:w-[480px] block mb-2 sm:mb-4 h-14 bg-white/0% text-lg text-white border border-[0.5px] border-border cursor-pointer hover:bg-bg transition duration-200 font-bold mt-8 rounded-xl">
+  <button type="button" class="flex justify-center gap-2 items-center w-full sm:w-[480px] block sm:mb-2 h-14 bg-white/0% text-lg text-white border border-[0.5px] border-border cursor-pointer hover:bg-bg transition duration-200 font-bold mt-2 rounded-xl">
     <img class="w-5" src="/public/icons/google.png" alt="">
     <p> Sign Up With Google</p>
   </button>
   <div class="flex justify-center gap-2">
     <span class="items-center text-[#94A3B8]">Already have an account?</span> 
-<span class="text-font">Login here</span>
+    <a href="/login">
+<span class="text-font cursor-pointer">Login here</span>
+</a>
   </div>
 
    </div>
 </div>
+<script src="/public/js/eyetoggle.js"></script>
 </body>
 </html>

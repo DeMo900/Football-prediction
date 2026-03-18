@@ -5,7 +5,6 @@ node_modules
 /build
 /dist
 /tmp
-*.js
 *.d.ts.map
 *.d.ts
 
