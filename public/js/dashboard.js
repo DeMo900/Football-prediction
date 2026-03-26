@@ -180,4 +180,27 @@ const leagues = [
     "country": "Saudi-Arabia"
   }
 ];
-//
+const leaguesUl = document.getElementById("leagues")
+
+leagues.forEach((el)=>{
+   const li = document.createElement('li');
+    li.className = 'text-dashboardfont font-sans text-sm h-12 w-full flex items-center gap-2 pl-4 cursor-pointer hover:bg-white/5 transition duration-200 hover:border-l-4 hover:border-font';
+
+    const img = document.createElement('img');
+    img.src = el.logo;
+    img.alt = 'ball';
+img.className = "w-5 h-5"
+    const p = document.createElement('p');
+    p.textContent = el.name;
+
+    li.appendChild(img);
+    li.appendChild(p);
+    leaguesUl.appendChild(li);           
+})
+
+/* 
+<li class="text-dashboardfont font-sans text-sm h-12 w-full flex items-center gap-2 pl-4 cursor-pointer hover:bg-white/5 transition duration-200 hover:border-l-4 hover:border-font">
+                        <img src="/icons/ball.svg" alt="ball">
+                        <p>Serie A </p>
+                    </li>
+                    */
