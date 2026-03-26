@@ -8,11 +8,11 @@ let turn = "password"
 let cturn = "password"
 eyeBtn.addEventListener("click",(el)=>{
   if(turn === "password"){
-    eyeBtn.src = "/public/icons/show.svg"
+    eyeBtn.src = "/icons/show.svg"
     passwordInput.type = "text"
     turn = "text"
   }else{
-    eyeBtn.src = "/public/icons/hide.svg"
+    eyeBtn.src = "/icons/hide.svg"
     passwordInput.type = "password"
     turn = "password"
   }
@@ -20,11 +20,11 @@ eyeBtn.addEventListener("click",(el)=>{
 ////confirm password
 ceyeBtn.addEventListener("click",(el)=>{
   if(cturn === "password"){
-    ceyeBtn.src = "/public/icons/show.svg"
+    ceyeBtn.src = "/icons/show.svg"
     cpasswordInput.type = "text"
     cturn = "text"
   }else{
-    ceyeBtn.src = "/public/icons/hide.svg"
+    ceyeBtn.src = "/icons/hide.svg"
     cpasswordInput.type = "password"
     cturn = "password"
   }

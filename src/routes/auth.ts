@@ -1,10 +1,10 @@
 import express,{ Request,Response } from "express";
-import {signUpPost,logInPost,submitEmailPost,emailValidation,passwordValidation,updatePasswordPost, signUpGet} from "../controllers/auth";
+import {signUpPost,logInPost,submitEmailPost,emailValidation,passwordValidation,updatePasswordPost, signUpGet, logInGet} from "../controllers/auth";
 import isAllowed from "../middlewares/jwt";
  const authRouter = express.Router()
 
 //GET LOGIN
-authRouter.get("/login", logInPost)
+authRouter.get("/login", logInGet)
  //POST LOGIN
 authRouter.post("/login", logInPost)
 //GET SIGNUP

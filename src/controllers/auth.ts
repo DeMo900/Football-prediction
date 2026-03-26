@@ -25,10 +25,10 @@ const ip =   req.headers["x-forwarded-for"]?.toString().split(",")[0] ||
 try {
     //validation
     const validationResult = validateSignUp(Body);
-    if (!validationResult.success) return res.status(400).json({ errors: validationResult.error.issues[0]!.message});
+    if (!validationResult.success) return res.status(400).json({ msg: validationResult.error.issues[0]!.message});
     //checking if user with same data exist
     const isFound = await User.findOne({$or:[{username:Body.username},{email:Body.email}]})
-    if(isFound) return res.status(401).json("user with same email/username already exists")
+    if(isFound) return res.status(401).json({msg:"user with same email/username already exists"})   
     //hashing
     const hashedPassword = await bcrypt.hash(Body.password, 11);
     //storing
@@ -45,6 +45,10 @@ try {
     res.status(500).json({ message: "Internal server error" });
 }
 }
+//GET LOGIN
+const logInGet = async (req:Request,res:Response)=>{
+res.sendFile(path.join(process.cwd(), 'views', 'login.html'))
+}   
 //POST LOGIN
 const logInPost = async(req:Request,res:Response)=>{
  //body
@@ -55,11 +59,11 @@ const logInPost = async(req:Request,res:Response)=>{
  if (!validationResult.success) return res.status(400).json({ errors: validationResult.error.issues[0]!.message});
  //checking if user with same data exist
     const isFound = await User.findOne({$or:[{username:identifier},{email : identifier}]})
-    if(!isFound) return res.status(401).json({msg:"invalid username or password"})
+    if(!isFound) return res.status(401).json({msg:"invalid username/email or password"})
   //cheching if password is correct
 const hashedPassword = isFound.password;
 const isEqual = await bcrypt.compare(password,hashedPassword!)
-if(!isEqual) return res.status(401).json({msg:"invalid username or password"})
+if(!isEqual) return res.status(401).json({msg:"invalid username/email or password"})
 //creating jwt
 const token = jwt.sign({
     username:isFound.username,
@@ -73,7 +77,7 @@ const token = jwt.sign({
     maxAge: 3600000, // 1 hour
 }
 )
-return res.json("loggeed in")
+return res.status(200).json({message:"loggeed in"})
  }catch(error){
     console.error("Error during signin:", error);
     res.status(500).json({ message: "Internal server error" });
@@ -140,4 +144,4 @@ return res.json({msg:"password reset sucessfully"})
         res.status(500).send("internal server error")
     }
 }
-export {signUpPost,logInPost,submitEmailPost,updatePasswordPost,emailValidation,passwordValidation,signUpGet}
+export {signUpPost,logInPost,logInGet,submitEmailPost,updatePasswordPost,emailValidation,passwordValidation,signUpGet}
