@@ -933,6 +933,11 @@
       content: var(--tw-content);
     }
   }
+  .empty\:hidden {
+    &:empty {
+      display: none;
+    }
+  }
   .hover\:border-l-4 {
     &:hover {
       @media (hover: hover) {

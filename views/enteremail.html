@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Enter Email</title>
-<link rel="stylesheet" href="/public/css/output.css">
+<link rel="stylesheet" href="/css/output.css">
 </head>
 <body class="bg-primary">
 <nav class="w-full flex items-center justify-between border border-b-border/50 border-0.5 mb-4">
   <div class="flex w-fit items-center sm:ml-32">
-    <img src="/public/icons/logo.png" alt="volt bet" class="w-32 -mr-8">
+    <img src="/icons/logo.png" alt="volt bet" class="w-32 -mr-8">
     <p class="text-white text-xl font-bold">BetVolt</p>
   </div>
   <div class="w-full max-w-[84px] h-[40px] bg-bg sm:w-84 sm:mr-18 cursor-pointer flex items-center justify-center text-white rounded-lg border border-border border-1.5 hover:bg-bg/30 transition duration-250">
@@ -26,21 +26,23 @@
     </div>
 
     <div class="w-[90%] sm:w-[480px] mx-auto mt-8">
-      <form class="w-full" action="/signup/email">
+      <form id="email-form" class="w-full" action="/submitemail">
         <label for="email" class="text-white text-xs font-bold block">Email</label>
         <div class="relative mt-2 h-14">
-          <input type="email" name="email" id="email" class="pl-10 placeholder-border bg-input w-full h-14 rounded-xl border border-border border-1" placeholder="email@example.com">
-          <img src="/public/icons/mail.png" class="w-5 top-1/2 left-2 -translate-y-1/2 absolute" alt="">
+          <input type="email" name="email" id="email" class="pl-10 placeholder-border bg-input w-full h-14 rounded-xl border border-border border-1" placeholder="email@example.com" required>
+          <img src="/icons/mail.png" class="w-5 top-1/2 left-2 -translate-y-1/2 absolute" alt="">
         </div>
+        <p id="error" class="text-xs font-bold mt-2 empty:hidden"></p>
         <button type="submit" class="w-full h-14 bg-button text-lg font-bold mt-8 rounded-xl cursor-pointer hover:bg-button/90 hover:shadow-lg hover:shadow-button/30 transition duration-200">CONTINUE</button>
       </form>
     </div>
 
     <div class="flex justify-center w-full mt-8">
-      <img src="/public/icons/logo.png" class="w-33" alt="">
+      <img src="/icons/logo.png" class="w-33" alt="">
     </div>
 
   </div>
 </div>
+<script src="/js/enteremail.js"></script>
 </body>
 </html>

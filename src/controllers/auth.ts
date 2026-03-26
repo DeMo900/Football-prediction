@@ -56,7 +56,7 @@ const logInPost = async(req:Request,res:Response)=>{
  try{
  //validation
  const validationResult = validateLogIn({identifier,password})
- if (!validationResult.success) return res.status(400).json({ errors: validationResult.error.issues[0]!.message});
+ if (!validationResult.success) return res.status(400).json({ msg: validationResult.error.issues[0]!.message});
  //checking if user with same data exist
     const isFound = await User.findOne({$or:[{username:identifier},{email : identifier}]})
     if(!isFound) return res.status(401).json({msg:"invalid username/email or password"})
@@ -83,6 +83,10 @@ return res.status(200).json({message:"loggeed in"})
     res.status(500).json({ message: "Internal server error" });
  }
 }
+//GET ENTER EMAIL
+const enterEmailGet = async (req:Request,res:Response)=>{
+res.sendFile(path.join(process.cwd(), 'views', 'enteremail.html'))
+}   
 //POST ENTER EMAIL
 //validation
 // validation middleware for email routes
@@ -98,14 +102,14 @@ const submitEmailPost = async (req:Request,res:Response)=>{
         // validation
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({ error: errors.array()[0]!.msg});
+            return res.status(400).json({ msg: errors.array()[0]!.msg});
         }
         //checking if user exists
 const user = await User.findOne({email:req.body.email})
 .select("-password")
 .select("-username")
 .select("-_id")
-if(!user) return res.status(404).json({message:"user not found"})
+if(!user) return res.status(404).json({msg:"user not found"})
 //firing the emitter
 eventEmitter.emit("emailSubmit",user.email)
 //responding
@@ -114,6 +118,10 @@ res.status(200).json({message:"email sent sucsessfully"})
         res.status(500).send("internal server error")
     }
 }
+//GET UPDATE PASSWORD
+const updatePasswordGet = async (req:Request,res:Response)=>{
+res.sendFile(path.join(process.cwd(), 'views', 'resetpassword.html'))
+}   
 //POST UPDATE PASSWORD
 const passwordValidation = [
   body("password")
@@ -125,7 +133,7 @@ const updatePasswordPost = async(req:Request,res:Response)=>{
     try{
         //validation
         const errors = validationResult(req)
-        if(!errors.isEmpty()) return res.status(400).json({error:errors.array()[0]!.msg})
+        if(!errors.isEmpty()) return res.status(400).json({msg:errors.array()[0]!.msg})
 //checking if token exists in db 
 const token = req.query.token as string
 if(!token) throw new Error("error");
@@ -139,9 +147,9 @@ const hashedPassword =await bcrypt.hash(req.body.password,11)
 //storing
 user.password = hashedPassword
 await user.save()
-return res.json({msg:"password reset sucessfully"})
+return res.json({message:"password reset sucessfully"})
     }catch(err){
         res.status(500).send("internal server error")
     }
 }
-export {signUpPost,logInPost,logInGet,submitEmailPost,updatePasswordPost,emailValidation,passwordValidation,signUpGet}
+export {signUpPost,logInPost,logInGet,submitEmailPost,updatePasswordPost,updatePasswordGet,emailValidation,passwordValidation,signUpGet,enterEmailGet}

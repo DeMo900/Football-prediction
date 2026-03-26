@@ -1,5 +1,6 @@
 //
 import{Request,Response} from 'express';
+import path from "path"
 //interfaces
 interface GameData {
   gameId: number;
@@ -149,4 +150,5 @@ if(req.query.league){
 }
   res.send(games);
 }
+  
 export { liveController, upcomingController};

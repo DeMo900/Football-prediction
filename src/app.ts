@@ -7,6 +7,7 @@ import currencyRouter from './routes/currencyRoutes';
 import OauthRouter from './routes/Oauth2.0Routes';
 import fixtureRouter from './routes/fixtureRoutes';
 import predectionRouter from './routes/predictionRoutes';
+import dashboardRouter from './routes/dashboard';
 import authRouter from './routes/auth';
 import cookieParser from 'cookie-parser';
 import "./jobs/currencyDaily";
@@ -36,6 +37,7 @@ app.use(OauthRouter);
 app.use(currencyRouter);
 app.use(fixtureRouter);
 app.use(predectionRouter);
+app.use(dashboardRouter);
 //code
 
 //rRoutes
