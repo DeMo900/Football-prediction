@@ -1,188 +1,290 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DashBoard</title>
-    <link rel="stylesheet" href="/css/output.css">
-</head>
+    <link rel="stylesheet" href="/css/output.css" />
+  </head>
 
-<body class="bg-[#060F06]">
+  <body class="bg-[#060F06]">
     <nav
-        class="w-full flex items-center bg-[#060E06]  h-20 justify-between border border-b-border/50 border-0.5 fixed top-0 z-50 ">
-        <div class="flex w-fit items-center">
-            <img src="/icons/logo.png" alt="volt bet" class="w-26">
-            <ul class="flex gap-8 sm:ml-10">
-                <li
-                    class="text-dashboardfont font-sans text-sm hover:text-font cursor-pointer transition duration-200 ">
-                    Live</li>
-                <li
-                    class="text-dashboardfont font-sans text-sm hover:text-font cursor-pointer transition duration-200 ">
-                    Schedule</li>
-                <li
-                    class="text-dashboardfont font-sans text-sm hover:text-font cursor-pointer transition duration-200 ">
-                    Results</li>
-                <li
-                    class="text-dashboardfont font-sans text-sm hover:text-font cursor-pointer transition duration-200 ">
-                    Leaderboard </li>
-            </ul>
-        </div>
+      class="w-full flex items-center bg-[#060E06] h-20 justify-between border border-b-border/50 border-0.5 fixed top-0 z-50"
+    >
+      <div class="flex w-fit items-center">
+        <img src="/icons/logo.png" alt="volt bet" class="w-26" />
+        <ul class="flex gap-8 sm:ml-10">
+          <li
+            class="text-dashboardfont font-sans text-sm hover:text-font cursor-pointer transition duration-200"
+          >
+            Live
+          </li>
+          <li
+            class="text-dashboardfont font-sans text-sm hover:text-font cursor-pointer transition duration-200"
+          >
+            Schedule
+          </li>
+          <li
+            class="text-dashboardfont font-sans text-sm hover:text-font cursor-pointer transition duration-200"
+          >
+            Results
+          </li>
+          <li
+            class="text-dashboardfont font-sans text-sm hover:text-font cursor-pointer transition duration-200"
+          >
+            Leaderboard
+          </li>
+        </ul>
+      </div>
 
-        <div class="flex items-center gap-4 sm:mr-18">
-            <div class="rounded-3xl bg-[#192219] p-2 px-8 shadow-[0_0_3px_#36f71d]">
-                <h4 class="text-font text-xs font-bold">500 Coins</h4>
-            </div>
-            <img src="/icons/profile.svg" alt="profile" class="w-8">
+      <div class="flex items-center gap-4 sm:mr-18">
+        <div class="rounded-3xl bg-[#192219] p-2 px-8 shadow-[0_0_3px_#36f71d]">
+          <h4 class="text-font text-xs font-bold">500 Coins</h4>
         </div>
-
+        <img src="/icons/profile.svg" alt="profile" class="w-8" />
+      </div>
     </nav>
 
-    <div class=" w-full h-screen grid grid-cols-[1fr_3fr_1fr] mt-20 overflow-hidden ">
-        <div class="bg-dbPrimary  opacity-99 pt-10 overflow-y-auto">
-            <p class="text-dashboardfont font-thin text-sm pl-8">Leagues</p>
-            <div class="w-full">
-                <ul class="w-full" id="leagues">
-                 
-                </ul>
+    <div
+      class="w-full h-screen grid grid-cols-[1fr_3fr_1fr] mt-20 overflow-hidden"
+    >
+      <div class="bg-dbPrimary opacity-99 pt-10 overflow-y-auto">
+        <p class="text-dashboardfont font-thin text-sm pl-8">Leagues</p>
+        <div class="w-full">
+          <ul class="w-full" id="leagues"></ul>
+        </div>
+      </div>
+
+      <div class="bg-[#060F06] pt-16 h-fit overflow-y-auto">
+        <h1
+          class="text-dashboardfont ml-10 -mt-10 mb-4 text-2xl font-bold flex items-center gap-2"
+        >
+          <div
+            class="w-3 h-3 bg-font rounded-full shadow-[0_0_8px_#36f71d] animate-pulse"
+          ></div>
+          LIVE MATCHES
+        </h1>
+
+        <div class="w-full h-full grid grid-cols-1 gap-4">
+          <div
+            class="w-[90%] mx-auto rounded-xl p-6 h-80 bg-dbPrimary hover:opacity-80 cursor-pointer transition-opacity duration-150"
+          >
+            <!-- Top Match Details -->
+            <div
+              class="flex w-full justify-between items-center mt-[-15px] mb-6"
+            >
+              <span
+                class="text-dashboardfont text-xs font-bold tracking-wider uppercase"
+                >CHAMPIONS LEAGUE</span
+              >
             </div>
+
+            <!-- Logos and Result -->
+            <div
+              class="flex w-full justify-between sm:justify-center items-center gap-2 sm:gap-16 px-2 sm:px-8"
+            >
+              <div class="flex flex-col items-center gap-3">
+                <div
+                  class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#060F06] flex justify-center items-center"
+                >
+                  <img
+                    src="/icons/madrid.png"
+                    alt="Real Madrid"
+                    class="w-10 h-10 sm:w-12 sm:h-12 object-contain"
+                  />
+                </div>
+                <span
+                  class="text-white font-bold tracking-wide text-xs sm:text-sm lg:text-base"
+                  >REAL MADRID</span
+                >
+              </div>
+
+              <div class="flex flex-col items-center">
+                <span
+                  class="text-4xl sm:text-5xl font-black text-white tracking-widest whitespace-nowrap"
+                  >5 - 1</span
+                >
+                <span
+                  class="text-font text-[10px] sm:text-xs font-bold mt-2 tracking-widest whitespace-nowrap"
+                  >VIRTUAL HUB</span
+                >
+              </div>
+
+              <div class="flex flex-col items-center gap-3">
+                <div
+                  class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#060F06] flex justify-center items-center"
+                >
+                  <img
+                    src="/icons/city.png"
+                    alt="Man City"
+                    class="w-18 h-18 sm:w-20 sm:h-20 object-contain"
+                  />
+                </div>
+                <span
+                  class="text-white font-bold tracking-wide text-xs sm:text-sm lg:text-base"
+                  >MAN CITY</span
+                >
+              </div>
+            </div>
+
+            <!-- Betting Profits -->
+            <div class="flex w-full justify-between gap-3 sm:gap-4 mt-8">
+              <div
+                class="flex flex-1 flex-col items-center justify-center bg-[#060F06] rounded-xl py-3 hover:opacity-75 cursor-pointer transition-opacity duration-200"
+              >
+                <span class="text-dashboardfont text-[10px] sm:text-xs mb-1"
+                  >HOME</span
+                >
+                <span class="text-font font-bold text-base sm:text-lg"
+                  >1.85</span
+                >
+              </div>
+              <div
+                class="flex flex-1 flex-col items-center justify-center bg-[#060F06] rounded-xl py-3 hover:opacity-75 cursor-pointer transition-opacity duration-200"
+              >
+                <span class="text-dashboardfont text-[10px] sm:text-xs mb-1"
+                  >DRAW</span
+                >
+                <span class="text-font font-bold text-base sm:text-lg"
+                  >3.40</span
+                >
+              </div>
+              <div
+                class="flex flex-1 flex-col items-center justify-center bg-[#060F06] rounded-xl py-3 hover:opacity-75 cursor-pointer transition-opacity duration-200"
+              >
+                <span class="text-dashboardfont text-[10px] sm:text-xs mb-1"
+                  >AWAY</span
+                >
+                <span class="text-font font-bold text-base sm:text-lg"
+                  >4.20</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        <h1
+          class="text-dashboardfont ml-10 mt-10 mb-4 text-2xl font-bold flex items-center gap-2"
+        >
+          <div
+            class="w-3 h-3 bg-grey-500 rounded-full shadow-[0_0_8px_#36f71d] animate-pulse"
+          ></div>
+          UPCOMING MATCHES
+        </h1>
+        <div class="pb-4">
+          <div
+            class="flex items-center p-6 justify-between w-[90%] h-10 rounded-lg border-l-2 border-font bg-dbPrimary mx-auto hover:opacity-80 cursor-pointer transition-opacity duration-200"
+          >
+            <div>
+              <p class="text-sm text-slate-50">23:02</p>
+            </div>
+            <div>
+              <p class="text-lg text-slate-50">Real madrid vs Man city</p>
+            </div>
+            <div class="flex gap-2">
+              <div class="bg-primary w-10 h-8 text-center py-1 rounded-lg">
+                <p class="text-sm text-slate-50">1.85</p>
+              </div>
+              <div class="bg-primary w-10 h-8 text-center py-1 rounded-lg">
+                <p class="text-sm text-slate-50">1.85</p>
+              </div>
+              <div class="bg-primary w-10 h-8 text-center py-1 rounded-lg">
+                <p class="text-sm text-slate-50">1.85</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-dbPrimary pt-10 flex flex-col px-6 pb-6 h-full relative">
+        <!-- flex div for top details -->
+        <div class="flex justify-between items-center mb-8">
+          <h2 class="text-font text-2xl font-black italic tracking-wider">
+            BET SLIP
+          </h2>
+          <div
+            class="bg-font text-[#060E06] text-sm font-black w-7 h-7 flex items-center justify-center rounded-md"
+          >
+            2
+          </div>
         </div>
 
-        <div class="bg-[#060F06] pt-16 h-fit overflow-y-auto">
-            <h1 class="text-dashboardfont ml-10 -mt-10 mb-4 text-2xl font-bold flex items-center gap-2">
-                <div class="w-3 h-3 bg-font rounded-full shadow-[0_0_8px_#36f71d] animate-pulse"></div>
-                LIVE MATCHES
-            </h1>
-
-            <div class="w-full h-full grid grid-cols-1 gap-4 ">
-                <div class="w-[90%] mx-auto rounded-xl p-6 h-80 bg-dbPrimary hover:opacity-80 cursor-pointer transition-opacity duration-150">
-                    <!-- Top Match Details -->
-                    <div class="flex w-full justify-between items-center mt-[-15px] mb-6">
-                        <span class="text-dashboardfont text-xs font-bold tracking-wider uppercase">CHAMPIONS LEAGUE</span>
-                    </div>
-                    
-                    <!-- Logos and Result -->
-                    <div class="flex w-full justify-between sm:justify-center items-center gap-2 sm:gap-16 px-2 sm:px-8">
-                        <div class="flex flex-col items-center gap-3">
-                            <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#060F06] flex justify-center items-center">
-                                <img src="/icons/madrid.png" alt="Real Madrid" class="w-10 h-10 sm:w-12 sm:h-12 object-contain">
-                            </div>
-                            <span class="text-white font-bold tracking-wide text-xs sm:text-sm lg:text-base">REAL MADRID</span>
-                        </div>
-                        
-                        <div class="flex flex-col items-center ">
-                            <span class="text-4xl sm:text-5xl font-black text-white tracking-widest whitespace-nowrap">5 - 1</span>
-                            <span class="text-font text-[10px] sm:text-xs font-bold mt-2 tracking-widest whitespace-nowrap">VIRTUAL HUB</span>
-                        </div>
-                        
-                        <div class="flex flex-col items-center gap-3">
-                            <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#060F06] flex justify-center items-center">
-                                <img src="/icons/city.png" alt="Man City" class="w-18 h-18 sm:w-20 sm:h-20 object-contain">
-                            </div>
-                            <span class="text-white font-bold tracking-wide text-xs sm:text-sm lg:text-base">MAN CITY</span>
-                        </div>
-                    </div>
-                    
-                    <!-- Betting Profits -->
-                    <div class="flex w-full justify-between gap-3 sm:gap-4 mt-8">
-                        <div class="flex flex-1 flex-col items-center justify-center bg-[#060F06] rounded-xl py-3 hover:opacity-75 cursor-pointer transition-opacity duration-200">
-                            <span class="text-dashboardfont text-[10px] sm:text-xs mb-1">HOME</span>
-                            <span class="text-font font-bold text-base sm:text-lg">1.85</span>
-                        </div>
-                        <div class="flex flex-1 flex-col items-center justify-center bg-[#060F06] rounded-xl py-3 hover:opacity-75 cursor-pointer transition-opacity duration-200">
-                            <span class="text-dashboardfont text-[10px] sm:text-xs mb-1">DRAW</span>
-                            <span class="text-font font-bold text-base sm:text-lg">3.40</span>  
-                        </div>
-                        <div class="flex flex-1 flex-col items-center justify-center bg-[#060F06] rounded-xl py-3 hover:opacity-75 cursor-pointer transition-opacity duration-200">
-                            <span class="text-dashboardfont text-[10px] sm:text-xs mb-1">AWAY</span>
-                            <span class="text-font font-bold text-base sm:text-lg">4.20</span>
-                        </div>
-                    </div>
-                </div>
-            </div>  
-               <h1 class="text-dashboardfont ml-10 mt-10  mb-4 text-2xl font-bold flex items-center gap-2">
-                <div class="w-3 h-3 bg-grey-500 rounded-full shadow-[0_0_8px_#36f71d] animate-pulse"></div>
-                UPCOMING MATCHES
-            </h1>
-            <div class="pb-4">
-                <div class="flex items-center p-6 justify-between w-[90%] h-10 rounded-lg border-l-2 border-font bg-dbPrimary mx-auto hover:opacity-80 cursor-pointer transition-opacity duration-200">
-                <div>
-<p class="text-sm text-slate-50">23:02</p>
-                </div>
-                <div>
-<p class="text-lg text-slate-50">Real madrid vs Man city</p>
-                </div>
-                <div class="flex gap-2">
-<div class="bg-primary w-10 h-8 text-center py-1 rounded-lg">
-    <p class="text-sm text-slate-50">1.85</p>
-</div>
-<div class="bg-primary w-10 h-8 text-center py-1 rounded-lg">
-    <p class="text-sm text-slate-50">1.85</p>
-    
-</div>
-<div class="bg-primary w-10 h-8 text-center py-1 rounded-lg">
-    <p class="text-sm text-slate-50">1.85</p>
-    
-</div>
-                </div>
-                </div>
+        <!-- block div for cards -->
+        <div class="block w-full flex-1 overflow-y-auto space-y-4">
+          <!-- one card -->
+          <div class="bg-[#0f190f] rounded-xl p-4 relative overflow-hidden">
+            <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-font"></div>
+            <div class="flex justify-between items-center mb-2 pl-2">
+              <span
+                class="text-font text-[10px] font-bold uppercase tracking-wider"
+                >MAN CITY VS LIVERPOOL</span
+              >
+              <button
+                class="text-dashboardfont hover:text-white transition-colors"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-3.5 w-3.5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
             </div>
-            
+            <h3 class="text-white font-extrabold text-base mb-4 pl-2">
+              Man City To Win
+            </h3>
+            <div class="flex justify-between items-center text-xs pl-2 mt-2">
+              <span class="text-dashboardfont">Odds: 1.85</span>
+              <div class="flex items-center">
+                <input
+                  type="number"
+                  placeholder="Amount"
+                  class="w-20 bg-transparent border-b border-white/20 text-white font-bold text-right outline-none focus:border-font transition-colors pb-1 mr-2 placeholder:text-dashboardfont/50 placeholder:font-normal"
+                />
+                <span class="text-font font-bold uppercase tracking-wider"
+                  >TOKENS</span
+                >
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="bg-dbPrimary pt-10 flex flex-col px-6 pb-6 h-full relative">
-            
-            <!-- flex div for top details -->
-            <div class="flex justify-between items-center mb-8">
-                <h2 class="text-font text-2xl font-black italic tracking-wider">BET SLIP</h2>
-                <div class="bg-font text-[#060E06] text-sm font-black w-7 h-7 flex items-center justify-center rounded-md">2</div>
-            </div>
-
-            <!-- block div for cards -->
-            <div class="block w-full flex-1 overflow-y-auto space-y-4">
-                
-                <!-- one card -->
-                <div class="bg-[#0f190f] rounded-xl p-4 relative overflow-hidden">
-                    <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-font"></div>
-                    <div class="flex justify-between items-center mb-2 pl-2">
-                        <span class="text-font text-[10px] font-bold uppercase tracking-wider">MAN CITY VS LIVERPOOL</span>
-                        <button class="text-dashboardfont hover:text-white transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                        </button>
-                    </div>
-                    <h3 class="text-white font-extrabold text-base mb-4 pl-2">Man City To Win</h3>
-                    <div class="flex justify-between items-center text-xs pl-2 mt-2">
-                        <span class="text-dashboardfont">Odds: 1.85</span>
-                        <div class="flex items-center">
-                            <input type="number" placeholder="Amount" class="w-20 bg-transparent border-b border-white/20 text-white font-bold text-right outline-none focus:border-font transition-colors pb-1 mr-2 placeholder:text-dashboardfont/50 placeholder:font-normal" />
-                            <span class="text-font font-bold uppercase tracking-wider">TOKENS</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- button and text for the bottompart -->
-            <div class="mt-8 pt-6 border-t border-white/10">
-                <div class="flex justify-between items-center mb-4">
-                    <span class="text-dashboardfont text-xs font-bold tracking-widest uppercase">TOTAL STAKE</span>
-                    <span class="text-white font-bold text-lg">70 Tokens</span>
-                </div>
-                <div class="flex justify-between items-center mb-6">
-                    <span class="text-dashboardfont text-xs font-bold tracking-widest uppercase">EST. PAYOUT</span>
-                    <span class="text-font font-black text-xl">194.50 Tokens</span>
-                </div>
-                <button class="w-full bg-font text-[#060E06] font-black text-lg py-4 rounded-xl hover:bg-opacity-90 shadow-[0_0_15px_rgba(54,247,29,0.15)] transition-all duration-200">
-                    CONFIRM WAGER
-                </button>
-                <p class="text-dashboardfont text-[9px] font-bold text-center mt-5 tracking-widest uppercase mb-2">
-                    VIRTUAL TOKENS ONLY • NO REAL VALUE
-                </p>
-            </div>
-            
+        <!-- button and text for the bottompart -->
+        <div class="mt-8 pt-6 border-t border-white/10">
+          <div class="flex justify-between items-center mb-4">
+            <span
+              class="text-dashboardfont text-xs font-bold tracking-widest uppercase"
+              >TOTAL STAKE</span
+            >
+            <span class="text-white font-bold text-lg">70 Tokens</span>
+          </div>
+          <div class="flex justify-between items-center mb-6">
+            <span
+              class="text-dashboardfont text-xs font-bold tracking-widest uppercase"
+              >EST. PAYOUT</span
+            >
+            <span class="text-font font-black text-xl">194.50 Tokens</span>
+          </div>
+          <button
+            class="w-full bg-font text-[#060E06] font-black text-lg py-4 rounded-xl hover:bg-opacity-90 shadow-[0_0_15px_rgba(54,247,29,0.15)] transition-all duration-200"
+          >
+            CONFIRM WAGER
+          </button>
+          <p
+            class="text-dashboardfont text-[9px] font-bold text-center mt-5 tracking-widest uppercase mb-2"
+          >
+            VIRTUAL TOKENS ONLY • NO REAL VALUE
+          </p>
         </div>
-
+      </div>
     </div>
     <script src="/js/dashboard.js"></script>
-</body>
-
+  </body>
 </html>

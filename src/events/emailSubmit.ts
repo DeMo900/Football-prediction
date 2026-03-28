@@ -1,35 +1,35 @@
 import EventEmitter from "events";
-import nodemailer from "nodemailer"
-import crypto from "crypto"
-require("dotenv").config()
-import {db} from "../app"
+import nodemailer from "nodemailer";
+import crypto from "crypto";
+require("dotenv").config();
+import { db } from "../app";
 //EMAIL SUBMIT FOR RESSETING PASSWORD
-export const eventEmitter = new EventEmitter()
-eventEmitter.on("emailSubmit",async (email)=>{
-    try{
-        console.log("running")
-//creating token
-const token : string = crypto.randomBytes(32).toString("hex")
-//storing the token
-await db.set(token,email,{EX:3600})
-//setting transport 
-const transport = nodemailer.createTransport({
-    service:"gmail",
-    auth:{
-    user:process.env.EMAIL,
-    pass:process.env.APPCODE
-    }
-})
-await transport.sendMail({
-to:email,
-subject:"password reset link",
-text:"hey there,click the button below to reset yout password",
-html:`
+export const eventEmitter = new EventEmitter();
+eventEmitter.on("emailSubmit", async (email) => {
+  try {
+    console.log("running");
+    //creating token
+    const token: string = crypto.randomBytes(32).toString("hex");
+    //storing the token
+    await db.set(token, email, { EX: 3600 });
+    //setting transport
+    const transport = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL,
+        pass: process.env.APPCODE,
+      },
+    });
+    await transport.sendMail({
+      to: email,
+      subject: "password reset link",
+      text: "hey there,click the button below to reset yout password",
+      html: `
 <p style="color:red;font-weight:bold;font-size:20px">NEVER SHARE THIS LINK</p>
 <a href="http://localhost:9000/resetpassword?token=${token}">click here
-</a>   `  
-})
-}catch(err){
-    console.log(`error while sending code ${err}`)
-}
-})
+</a>   `,
+    });
+  } catch (err) {
+    console.log(`error while sending code ${err}`);
+  }
+});
