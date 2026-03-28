@@ -19,7 +19,8 @@ async function resolveBet(
   console.log(
     `status : ${fetchedData.fixture.status.short} for game id: ${gameId}`,
   );
-  if (fetchedData.fixture.status.short === "FT") {
+  const status = fetchedData.fixture.status.short;
+  if (status === "FT" || status === "AET" || status === "PEN") {
     for (const bet of filteredBets) {
       //getting winner id
       let winnerId: string | null | number = null;
@@ -33,8 +34,7 @@ async function resolveBet(
       //betting team id
       const predictedResult = bet.predictedResult;
       //prediction result
-      const isWin =
-        predictedResult === winnerId || predictedResult === winnerId;
+      const isWin = String(predictedResult) === String(winnerId);
       //updating the bet status
       if (isWin) {
         console.log(`bet with id ${bet._id} is won adding profits`);
@@ -45,23 +45,15 @@ async function resolveBet(
           continue;
         }
         //updating user balance
-        await user.updateOne({
-          $inc: { coins: bet.amount + bet.amount * 0.8 },
-        });
         await Bet.findByIdAndUpdate(bet._id, { status: "won" });
+        await user.updateOne({
+          $inc: { coins: bet.amount * 1.8 },
+        });
       } else {
         console.log(`bet with id ${bet._id} is lost`);
-        const user = await User.findByIdAndUpdate(bet.userId, {
-          $inc: { coins: -bet.amount },
-        });
-        if (!user) {
-          console.error(`User not found for bet with id ${bet._id}`);
-          continue;
-        }
-        bet.status = "lost";
         await Bet.findByIdAndUpdate(bet._id, { status: "lost" });
       }
-    }
+      }
   } else {
     console.log(`game is not finished yet`);
   }
@@ -87,9 +79,22 @@ async function extractGameIdFromBet(): Promise<void> {
       );
       const fetchedData = await res.json();
       const data = fetchedData.response[0];
+
       const filteredBets: bet[] = PendingBets.filter(
         (bet) => bet.gameId === gameId,
       );
+
+      if (!data) {
+        console.log(`No data for game ${gameId}. Refunding and deleting bets.`);
+        for (const bet of filteredBets) {
+          await User.findByIdAndUpdate(bet.userId, {
+            $inc: { coins: bet.amount },
+          });
+          await Bet.findByIdAndDelete(bet._id);
+        }
+        continue;
+      }
+
       await resolveBet(data, filteredBets, gameId);
     }
   } catch (error) {

@@ -11,6 +11,18 @@ export async function betController(req: Request, res: Response) {
       user,
       process.env.JWT_SECRET as string,
     ) as { id: string; email: string };
+    const userCoins = await User.findById(id);
+    if (!userCoins) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+
+    if (req.body.amount <= 0) {
+      return res.status(400).json({ msg: "Amount must be greater than zero" });
+    }
+    if (userCoins.coins < req.body.amount) {
+      return res.status(400).json({ msg: "Insufficient coins" });
+    }
+    await User.findByIdAndUpdate(id, { $inc: { coins: -req.body.amount } });
     const newBet = new Bet({
       gameId: req.body.gameId,
       userId: id,
@@ -22,7 +34,7 @@ export async function betController(req: Request, res: Response) {
     return res.status(201).json({ message: "Bet placed successfully" });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(500).json({ msg: "Internal Server Error" });
   }
 }
 
