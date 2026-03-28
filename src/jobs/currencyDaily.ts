@@ -1,7 +1,8 @@
+/*
 import nodeCron from "node-cron";
 import usermodel from "../models/user";
 
-export default nodeCron.schedule('*/1 * * * *', async () => {
+export default nodeCron.schedule('1 * * * *', async () => {
     console.log('Running daily coin addition task');
     try {
         const users = await usermodel.find({});
@@ -14,3 +15,4 @@ export default nodeCron.schedule('*/1 * * * *', async () => {
         console.error('Error adding daily coins:', err);
     }
 });
+*/

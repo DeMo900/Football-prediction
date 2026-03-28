@@ -152,3 +152,4 @@ if(req.query.league){
 }
   
 export { liveController, upcomingController};
+//GET https://v3.football.api-sports.io/predictions?fixture=FIXTURE_I

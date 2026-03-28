@@ -27,12 +27,12 @@ try {
     const validationResult = validateSignUp(Body);
     if (!validationResult.success) return res.status(400).json({ msg: validationResult.error.issues[0]!.message});
     //checking if user with same data exist
-    const isFound = await User.findOne({$or:[{username:Body.username},{email:Body.email}]})
-    if(isFound) return res.status(401).json({msg:"user with same email/username already exists"})   
+    const user = await User.findOne({$or:[{username:Body.username},{email:Body.email}]})
+    if(user) return res.status(401).json({msg:"user with same email/username already exists"})   
     //hashing
     const hashedPassword = await bcrypt.hash(Body.password, 11);
     //storing
-    const user = await User.create({
+    const newUser = await User.create({
         username: Body.username,
         email: Body.email,
         password: hashedPassword,
@@ -58,16 +58,16 @@ const logInPost = async(req:Request,res:Response)=>{
  const validationResult = validateLogIn({identifier,password})
  if (!validationResult.success) return res.status(400).json({ msg: validationResult.error.issues[0]!.message});
  //checking if user with same data exist
-    const isFound = await User.findOne({$or:[{username:identifier},{email : identifier}]})
-    if(!isFound) return res.status(401).json({msg:"invalid username/email or password"})
+    const user = await User.findOne({$or:[{username:identifier},{email : identifier}]})
+    if(!user) return res.status(401).json({msg:"invalid username/email or password"})
   //cheching if password is correct
-const hashedPassword = isFound.password;
+const hashedPassword = user.password;
 const isEqual = await bcrypt.compare(password,hashedPassword!)
 if(!isEqual) return res.status(401).json({msg:"invalid username/email or password"})
 //creating jwt
 const token = jwt.sign({
-    username:isFound.username,
-    _id:isFound._id
+    username:user.username,
+    _id:user._id
 },process.env.JWT_SECRET!,
 {expiresIn:"1h"})
  res.cookie("jwt",token,{
@@ -77,6 +77,22 @@ const token = jwt.sign({
     maxAge: 3600000, // 1 hour
 }
 )
+//daily reward
+if(!user.lastLogin){
+User.updateOne({_id:user._id},{$set:{lastLogin:Date.now()}})
+console.log("updated last login")
+}
+if(user && user.lastLogin){
+    const today = Date.now()
+    const lastLogin = user.lastLogin
+    if(today - lastLogin >= 86400000){
+        user.coins += 10
+        user.lastLogin = today
+        await user.save()
+        console.log("daily reward")
+return res.status(200).json({message:"loggeed in",reward:10})
+    }
+}
 return res.status(200).json({message:"loggeed in"})
  }catch(error){
     console.error("Error during signin:", error);

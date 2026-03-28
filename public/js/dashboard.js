@@ -207,9 +207,7 @@ li.forEach((el)=>{
             "Content-Type":"application/json"
         }
     }).then((res)=>res.json()).then((data)=>{
-      if(res.ok){
-        console.log(res)
-      }
+        console.log(data)
     })
     })
 })

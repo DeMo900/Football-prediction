@@ -22,7 +22,7 @@ loginBtn.onclick = async (e) => {
             const data = await response.json();
         console.log(data)
         } else {
-            window.location.href = '/dashboard';
+            window.location.href = '/';
         }
     } catch (error) {
         console.log(error);

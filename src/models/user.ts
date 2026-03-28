@@ -8,7 +8,8 @@ const userSChema = new mongoose.Schema({
     password: {type: String,minlength: 6,},
     ip:{type:Array,required:true},
     coins : {type: Number, default: 1000},
-    wins : {type:Number,default:0}
+    wins : {type:Number,default:0},
+    lastLogin : {type:Number,default:null},
 })
 
 const User = mongoose.model('User', userSChema);
