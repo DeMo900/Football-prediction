@@ -1,7 +1,6 @@
 //rImporting
 import express from "express";
 import mongoose from "mongoose";
-import * as redis from "redis";
 import path from "path";
 import currencyRouter from "./routes/currencyRoutes";
 import OauthRouter from "./routes/Oauth2.0Routes";
@@ -24,8 +23,7 @@ mongoose
   .catch((err) => {
     console.error("Error connecting to MongoDB:", err);
   });
-const db = redis.createClient();
-db.connect();
+
 
 //set
 app.set("trust proxy", true);
@@ -53,7 +51,7 @@ app.listen(port, (err) => {
   }
   console.log(`Server is running on port ${port}`);
 });
-export { db };
+
 /*
 what we need from the api ?
 //game id 

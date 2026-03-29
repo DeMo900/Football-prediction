@@ -1,9 +1,12 @@
 import express, { Request, Response } from "express";
 import path from "path";
-import { dashboard, leagues } from "../controllers/dashboard";
+import * as dashboardController from "../controllers/dashboard";
 //Router
 const dashboardRouter = express.Router();
 //GET
-dashboardRouter.get("/", dashboard);
+dashboardRouter.get("/", dashboardController.dashboard);
+dashboardRouter.get("/checkReward", dashboardController.checkReward);
+//POST
+dashboardRouter.post("/claimReward", dashboardController.claimReward);
 //exporting
 export default dashboardRouter;

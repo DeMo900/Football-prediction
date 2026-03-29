@@ -5,7 +5,7 @@ import bcrypt from "bcrypt";
 import validateSignUp from "../validation/signUp";
 import validateLogIn from "../validation/login";
 import jwt from "jsonwebtoken";
-import { db } from "../app";
+import { db } from "../lib/redis";
 import { eventEmitter } from "../events/emailSubmit";
 import { body, validationResult } from "express-validator";
 //GET SIGNUP
@@ -98,22 +98,7 @@ const logInPost = async (req: Request, res: Response) => {
       sameSite: "strict",
       maxAge: 3600000, // 1 hour
     });
-    //daily reward
-    if (!user.lastLogin) {
-      User.updateOne({ _id: user._id }, { $set: { lastLogin: Date.now() } });
-      console.log("updated last login");
-    }
-    if (user && user.lastLogin) {
-      const today = Date.now();
-      const lastLogin = user.lastLogin;
-      if (today - lastLogin >= 86400000) {
-        user.coins += 10;
-        user.lastLogin = today;
-        await user.save();
-        console.log("daily reward");
-        return res.status(200).json({ message: "loggeed in", reward: 10 });
-      }
-    }
+  
     return res.status(200).json({ message: "loggeed in" });
   } catch (error) {
     console.error("Error during signin:", error);
