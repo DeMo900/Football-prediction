@@ -3,7 +3,8 @@ import { Strategy } from "passport-google-oauth20";
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import userModel from "../models/user";
-require("dotenv").config();
+import dotenv from "dotenv";
+dotenv.config();
 //code
 passport.use(
   new Strategy(
@@ -47,7 +48,7 @@ async function googleCallbackController(req: Request, res: Response) {
     return res.status(401).json({ message: "Authentication failed" });
   }
 
-  const token = jwt.sign(
+  const token: string = jwt.sign(
     { id: (req.user as any).id, email: (req.user as any).email },
     process.env.JWT_SECRET as string,
     { expiresIn: "1h" },

@@ -1,7 +1,8 @@
 import nodeCron from "node-cron";
 import Bet from "../models/bet";
 import User from "../models/user";
-require("dotenv").config();
+import dotenv from "dotenv";
+dotenv.config();
 type bet = {
   _id: string;
   gameId: string;
@@ -70,7 +71,7 @@ async function extractGameIdFromBet(): Promise<void> {
     );
     //looping to get the status
     for (const gameId of uniqueGameIds) {
-      let res = await fetch(
+      const res = await fetch(
         `https://v3.football.api-sports.io/fixtures?id=${gameId}`,
         {
           method: "GET",

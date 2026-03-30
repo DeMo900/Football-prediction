@@ -1,6 +1,6 @@
 import User from "../models/user";
 import path from "path";
-import express, { Request, Response } from "express";
+import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import validateSignUp from "../validation/signUp";
 import validateLogIn from "../validation/login";
@@ -40,7 +40,7 @@ const signUpPost = async (req: Request, res: Response) => {
     //hashing
     const hashedPassword = await bcrypt.hash(Body.password, 11);
     //storing
-    const newUser = await User.create({
+   await User.create({
       username: Body.username,
       email: Body.email,
       password: hashedPassword,
@@ -139,7 +139,7 @@ const submitEmailPost = async (req: Request, res: Response) => {
     //responding
     res.status(200).json({ message: "email sent sucsessfully" });
   } catch (err) {
-    res.status(500).send("internal server error");
+    res.status(500).send(`internal server error ${err}`);
   }
 };
 //GET UPDATE PASSWORD
@@ -176,7 +176,7 @@ const updatePasswordPost = async (req: Request, res: Response) => {
     await user.save();
     return res.json({ message: "password reset sucessfully" });
   } catch (err) {
-    res.status(500).send("internal server error");
+    res.status(500).send(`internal server error ${err}`);
   }
 };
 export {

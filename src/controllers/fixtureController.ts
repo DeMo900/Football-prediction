@@ -1,6 +1,5 @@
 //
 import { Request, Response } from "express";
-import path from "path";
 //interfaces
 interface GameData {
   gameId: number;
@@ -28,14 +27,14 @@ interface GameData {
 async function getLiveGames() {
   try {
     //if (cachedData) return cachedData.response;
-    let res = await fetch(
+    const res = await fetch(
       "https://v3.football.api-sports.io/fixtures?live=all",
       {
         method: "GET",
         headers: { "x-apisports-key": process.env.API_KEY! },
       },
     );
-    let data = await res.json();
+    const data = await res.json();
     //cachedData = data;
     console.log("created new cache");
     return data.response;
@@ -56,14 +55,14 @@ async function getUpcomingGames() {
 
     const formatted = `${yy}-${mm}-${dd}`;
 
-    let res = await fetch(
+    const res = await fetch(
       `https://v3.football.api-sports.io/fixtures?date=${formatted}`,
       {
         method: "GET",
         headers: { "x-apisports-key": process.env.API_KEY! },
       },
     );
-    let data = await res.json();
+    const data = await res.json();
     return data.response;
   } catch (err) {
     console.log("Error fetching live games:", err);
@@ -73,9 +72,9 @@ async function getUpcomingGames() {
 
 //upcoming
 async function extractUpcomingGameData() {
-  let games = await getUpcomingGames();
+  const games = await getUpcomingGames();
   if (!games) return null;
-  let extractedData: GameData[] = games.map((game: any) => {
+  const extractedData: GameData[] = games.map((game: any) => {
     return {
       gameId: game.fixture.id,
       teams: {
@@ -99,7 +98,7 @@ async function extractUpcomingGameData() {
     };
   });
   const nowSeconds = Math.floor(Date.now() / 1000);
-  let filteredData = extractedData.filter((game) => {
+  const filteredData = extractedData.filter((game) => {
     return game.startsAt > nowSeconds && game.startsAt <= nowSeconds + 3600;
   });
   return filteredData;
@@ -107,9 +106,9 @@ async function extractUpcomingGameData() {
 
 //live
 async function extractGameData() {
-  let games = await getLiveGames();
+  const games = await getLiveGames();
   if (!games) return null;
-  let extractedData: GameData[] = games.map((game: any) => {
+  const extractedData: GameData[] = games.map((game: any) => {
     return {
       gameId: game.fixture.id,
       minutesElapsed: game.fixture.status.elapsed,

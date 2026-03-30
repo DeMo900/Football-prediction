@@ -1,7 +1,8 @@
 import EventEmitter from "events";
 import nodemailer from "nodemailer";
 import crypto from "crypto";
-require("dotenv").config();
+import dotenv from "dotenv";
+dotenv.config();
 import { db } from "../lib/redis";
 //EMAIL SUBMIT FOR RESSETING PASSWORD
 export const eventEmitter = new EventEmitter();

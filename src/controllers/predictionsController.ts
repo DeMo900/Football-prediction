@@ -7,7 +7,7 @@ export async function betController(req: Request, res: Response) {
   try {
     //getting the user from the cookies
     const user = req.cookies["jwt"];
-    const { id, email } = jwt.verify(
+    const { id } = jwt.verify(
       user,
       process.env.JWT_SECRET as string,
     ) as { id: string; email: string };

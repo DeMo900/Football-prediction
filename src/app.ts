@@ -12,7 +12,8 @@ import cookieParser from "cookie-parser";
 import "./jobs/currencyDaily";
 import "./jobs/resolvingBet";
 import "./jobs/clearBets";
-require("dotenv").config();
+import dotenv from "dotenv";
+dotenv.config();
 const app = express();
 //database connection
 mongoose

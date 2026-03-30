@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 import {db} from "../lib/redis";
 import path from "path";
 //DASHBOARD
-async function dashboard(req: Request, res: Response) {
+async function dashboard(req:Request,res: Response) {
   res.sendFile(path.join(process.cwd(), "views", "dashboard.html"));
 }
 //CHECK FOR REWARD

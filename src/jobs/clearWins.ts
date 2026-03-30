@@ -6,6 +6,6 @@ nodeCron.schedule("0 0 * * 0", async () => {
     await User.updateMany({}, { $set: { wins: 0 } });
     console.log("all wins cleared");
   } catch (err) {
-    return console.log(`error while clearing wins`);
+    return console.log(`error while clearing wins ${err}`);
   }
 });
