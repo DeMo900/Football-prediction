@@ -24,6 +24,7 @@ const signUpPost = async (req: Request, res: Response) => {
   }
   try {
     //validation
+    console.log(req.body)
     const validationResult = validateSignUp(Body);
     if (!validationResult.success)
       return res

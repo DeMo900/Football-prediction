@@ -168,6 +168,12 @@ const leagues = [
     country: "Japan",
   },
   {
+    name: "FA Cup",
+    id: 45,
+    logo: "https://media.api-sports.io/football/leagues/45.png",
+    country: "England",
+  },
+  {
     name: "K League 1",
     id: 292,
     logo: "https://media.api-sports.io/football/leagues/292.png",
@@ -219,7 +225,8 @@ function createMatchCard(data) {
   const awayTeam = data.teams.away;
   const homeLogo = data.teamLogos.home
   const awayLogo = data.teamLogos.away
-  const goals = data.goals || { home: 0, away: 0 };
+  const homeGoals = data.goals.home;
+  const awayGoals = data.goals.away;
   const leagueName = data.league.name || "LEAGUE";
   
   matchCard.innerHTML = `
@@ -236,7 +243,7 @@ function createMatchCard(data) {
       </div>
 
       <div class="flex flex-col items-center">
-        <span class="text-4xl sm:text-5xl font-black text-white tracking-widest whitespace-nowrap">${goals.home} - ${goals.away}</span>
+        <span class="text-4xl sm:text-5xl font-black text-white tracking-widest whitespace-nowrap">${homeGoals} - ${awayGoals}</span>
         <span class="text-font text-[10px] sm:text-xs font-bold mt-2 tracking-widest whitespace-nowrap">LIVE</span>
       </div>
 

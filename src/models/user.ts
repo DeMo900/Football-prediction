@@ -15,7 +15,7 @@ const userSChema = new mongoose.Schema({
   ip: { type: Array, required: true },
   coins: { type: Number, default: 1000 },
   wins: { type: Number, default: 0 },
-  lastClaim: { type: Number, default: null },
+  lastClaim: { type: Number, default: 0 },
 });
 
 const User = mongoose.model("User", userSChema);

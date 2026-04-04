@@ -16,6 +16,10 @@ interface GameData {
     home: number;
     away: number;
   };
+  goals: {
+    home: number;
+    away: number;
+  };
   league: {
     name: string;
     logo: string;
@@ -81,6 +85,10 @@ async function extractUpcomingGameData() {
         home: game.teams.home.name,
         away: game.teams.away.name,
       },
+      goals: {
+        home: game.goals.home,
+        away: game.goals.away,
+      },
       teamLogos: {
         home: game.teams.home.logo,
         away: game.teams.away.logo,
@@ -124,6 +132,10 @@ async function extractGameData() {
         home: game.teams.home.id,
         away: game.teams.away.id,
       },
+      goals:{
+        home: game.goals.home,
+        away: game.goals.away,
+      },
       league: {
         name: game.league.name,
         logo: game.league.logo,
@@ -159,4 +171,7 @@ async function upcomingController(req: Request, res: Response) {
 }
 
 export { liveController, upcomingController };
+
+
+
 //GET https://v3.football.api-sports.io/predictions?fixture=FIXTURE_I

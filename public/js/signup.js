@@ -7,7 +7,7 @@ signupBtn.onclick = async (e) => {
   const username = document.getElementById("username").value;
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
-  const confirmpassword = document.getElementById("cpassword").value;
+  const confirmPassword = document.getElementById("cpassword").value;
 
   try {
     const response = await fetch("/signup", {
@@ -15,7 +15,7 @@ signupBtn.onclick = async (e) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ username, email, password, confirmpassword }),
+      body: JSON.stringify({ username, email, password, confirmPassword }),
     });
 
     if (response.status === 400 || response.status === 401) {

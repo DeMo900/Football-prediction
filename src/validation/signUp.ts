@@ -1,5 +1,11 @@
 import { z } from "zod";
-
+//types
+type body ={
+  username:string,
+  email:string,
+  password:string,
+  confirmPassword:string,
+}
 //schema
 const signUpSchema = z
   .object({
@@ -27,7 +33,7 @@ const signUpSchema = z
     path: ["confirmPassword"],
   });
 //function
-function validateSignUp(body: unknown) {
+function validateSignUp(body: body) {
   return signUpSchema.safeParse(body);
 }
 
