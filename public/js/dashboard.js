@@ -198,22 +198,139 @@ leagues.forEach((el) => {
   li.appendChild(p);
   leaguesUl.appendChild(li);
 });
+const liveMatchesContainer = document.getElementById("live-matches");
+const userCoins = document.getElementById("user-coins").querySelector("h4");
+const getUser = async () => {
+    try {
+        const res = await fetch("/user");
+        const data = await res.json();
+        userCoins.textContent = `${data.coins} Coins`;
+    } catch (err) {
+        console.error(err);
+    }
+}
+getUser();
+
+function createMatchCard(data) {
+  const matchCard = document.createElement("div");
+  matchCard.className = "w-[90%] mx-auto rounded-xl p-6 h-80 bg-dbPrimary hover:opacity-80 cursor-pointer transition-opacity duration-150";
+  
+  const homeTeam = data.teams.home;
+  const awayTeam = data.teams.away;
+  const homeLogo = data.teamLogos.home
+  const awayLogo = data.teamLogos.away
+  const goals = data.goals || { home: 0, away: 0 };
+  const leagueName = data.league.name || "LEAGUE";
+  
+  matchCard.innerHTML = `
+    <div class="flex w-full justify-between items-center mt-[-15px] mb-6">
+      <span class="text-dashboardfont text-xs font-bold tracking-wider uppercase">${leagueName}</span>
+    </div>
+
+    <div class="flex w-full justify-between sm:justify-center items-center gap-2 sm:gap-16 px-2 sm:px-8">
+      <div class="flex flex-col items-center gap-3">
+        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#060F06] flex justify-center items-center">
+          <img src="${homeLogo}" alt="${homeTeam}" class="w-10 h-10 sm:w-12 sm:h-12 object-contain" />
+        </div>
+        <span class="text-white font-bold tracking-wide text-xs sm:text-sm lg:text-base uppercase">${homeTeam}</span>
+      </div>
+
+      <div class="flex flex-col items-center">
+        <span class="text-4xl sm:text-5xl font-black text-white tracking-widest whitespace-nowrap">${goals.home} - ${goals.away}</span>
+        <span class="text-font text-[10px] sm:text-xs font-bold mt-2 tracking-widest whitespace-nowrap">LIVE</span>
+      </div>
+
+      <div class="flex flex-col items-center gap-3">
+        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#060F06] flex justify-center items-center">
+          <img src="${awayLogo}" alt="${awayTeam}" class="w-10 h-10 sm:w-12 sm:h-12 object-contain" />
+        </div>
+        <span class="text-white font-bold tracking-wide text-xs sm:text-sm lg:text-base uppercase">${awayTeam}</span>
+      </div>
+    </div>
+
+    <div class="flex w-full justify-between gap-3 sm:gap-4 mt-8">
+      <div class="flex flex-1 flex-col items-center justify-center bg-[#060F06] rounded-xl py-3 hover:opacity-75 cursor-pointer transition-opacity duration-200">
+        <span class="text-dashboardfont text-[10px] sm:text-xs mb-1 uppercase">HOME</span>
+        <span class="text-font font-bold text-base sm:text-lg">1.85</span>
+      </div>
+      <div class="flex flex-1 flex-col items-center justify-center bg-[#060F06] rounded-xl py-3 hover:opacity-75 cursor-pointer transition-opacity duration-200">
+        <span class="text-dashboardfont text-[10px] sm:text-xs mb-1 uppercase">DRAW</span>
+        <span class="text-font font-bold text-base sm:text-lg">3.40</span>
+      </div>
+      <div class="flex flex-1 flex-col items-center justify-center bg-[#060F06] rounded-xl py-3 hover:opacity-75 cursor-pointer transition-opacity duration-200">
+        <span class="text-dashboardfont text-[10px] sm:text-xs mb-1 uppercase">AWAY</span>
+        <span class="text-font font-bold text-base sm:text-lg">4.20</span>
+      </div>
+    </div>
+  `;
+
+  return matchCard;
+}
+
 const li = document.querySelectorAll("li");
 li.forEach((el) => {
-  el.addEventListener("click", () => {
-    leagueId = el.dataset.id;
-    fetch(`/fixtures/live?league=${leagueId}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
+  el.addEventListener("click", async () => {
+    const leagueId = el.dataset.id;
+    try {
+      const res = await fetch(`/fixtures/live?league=${leagueId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
+      const data = await res.json();
+      console.log(data);
+        liveMatchesContainer.innerHTML = "";
+        data.forEach(match => {
+          console.log(match)
+          const card = createMatchCard(match);
+          liveMatchesContainer.appendChild(card);
+        });
+    } catch (err) {
+      console.error(err);
+    }
   });
 });
+//checking for reward
+const rewardBtn = document.getElementById("claim-reward");
+
+rewardBtn.addEventListener("click", async () => {
+  rewardBtn.disabled = true; // prevent multiple clicks
+  try {
+    const claimResponse = await fetch("/claimReward", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    });
+    const claimData = await claimResponse.json();
+    if (claimResponse.ok && claimData.message === "reward claimed") {
+      rewardBtn.classList.add("hidden");
+    }
+    console.log(claimData.message || claimData.msg);
+  } catch (err) {
+    console.error("Error claiming reward:", err);
+  } finally {
+    rewardBtn.disabled = false;
+  }
+});
+
+const checkReward = async () => {
+  try {
+    const response = await fetch("/checkReward", {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    const data = await response.json();
+
+    if (data.message === true) {
+      console.log("Daily reward available!");
+      rewardBtn.classList.remove("hidden");
+    }
+  } catch (err) {
+    console.error("Error checking reward:", err);
+  }
+};
+checkReward();
+
 /* 
 <li class="text-dashboardfont font-sans text-sm h-12 w-full flex items-center gap-2 pl-4 cursor-pointer hover:bg-white/5 transition duration-200 hover:border-l-4 hover:border-font">
                         <img src="/icons/ball.svg" alt="ball">

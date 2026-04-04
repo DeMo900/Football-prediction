@@ -7,6 +7,7 @@ const dashboardRouter = express.Router();
 dashboardRouter.get("/", dashboardController.dashboard);
 dashboardRouter.get("/checkReward", dashboardController.checkReward);
 //POST
+dashboardRouter.get("/user", dashboardController.getUser);
 dashboardRouter.post("/claimReward", dashboardController.claimReward);
 //exporting
 export default dashboardRouter;

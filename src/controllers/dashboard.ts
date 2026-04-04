@@ -14,13 +14,12 @@ async function checkReward(req: Request, res: Response) {
   const {_id} = jwt.verify( req.cookies.jwt,process.env.JWT_SECRET!) as {_id:string};
   const user = await User.findOne({_id});
   if(!user) return res.status(404).json({msg:"user not found"});
-  if(user.lastClaim){
+  //check if user claimed reward today
     const today = Date.now();
     const lastClaim = user.lastClaim;
     if(today - lastClaim >= 86400000){
       await db.set(`rewardForUser:${user._id}`,"10",{EX:5*60});
       return res.status(200).json({message:true});
-    }
   }
   return res.status(200).json({message:false});
 }
@@ -46,5 +45,23 @@ async function claimReward(req: Request, res: Response) {
     return res.status(500).json({msg:"internal server error"});
   }
 }
+//GET USER
+async function getUser(req: Request, res: Response) {
+  try {
+    const { _id } = jwt.verify(req.cookies.jwt, process.env.JWT_SECRET!) as { _id: string };
+    const user = await User.findOne({ _id })
+    .select("-password")
+    .select("-email")
+    .select("-lastClaim")
+    .select("-__v")
+    .select("-createdAt");
+    if (!user) return res.status(404).json({ msg: "user not found" });
+    return res.status(200).json(user);
+  }
+  catch (err) {
+    console.log(err);
+    return res.status(500).json({ msg: "internal server error" });
+  }
+}
 //exporting
-export { dashboard, checkReward ,claimReward};
+export { dashboard, checkReward, claimReward, getUser };

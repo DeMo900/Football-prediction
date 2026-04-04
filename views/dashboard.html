@@ -38,10 +38,10 @@
       </div>
 
       <div class="flex items-center gap-4 sm:mr-18">
-        <div class="rounded-3xl bg-[#192219] p-2 px-8 shadow-[0_0_3px_#36f71d]">
-          <h4 class="text-font text-xs font-bold">500 Coins</h4>
+        <div class="rounded-3xl bg-[#192219] p-2 px-8 shadow-[0_0_3px_#36f71d]" id="user-coins">
+          <h4 class="text-font text-xs font-bold"></h4>
         </div>
-        <div class="rounded-3xl bg-[#192219] p-2  shadow-[0_0_3px_#36f71d] cursor-pointer" id="claim-reward">
+        <div class="rounded-3xl bg-[#192219] p-2  shadow-[0_0_3px_#36f71d] cursor-pointer hidden" id="claim-reward">
           <h4 class="text-font text-xs font-bold">click to claim your reward!</h4>
         </div>
       </div>
@@ -69,7 +69,7 @@
           LIVE MATCHES
         </h1>
 
-        <div class="w-full h-full grid grid-cols-1 gap-4">
+        <div class="w-full h-full grid grid-cols-1 gap-4" id="live-matches">
           <div
             class="w-[90%] mx-auto rounded-xl p-6 h-80 bg-dbPrimary hover:opacity-80 cursor-pointer transition-opacity duration-150"
           >
