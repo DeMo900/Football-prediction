@@ -63,7 +63,7 @@ const logInPost = async (req: Request, res: Response) => {
         .status(400)
         .json({ msg: validationResult.error.issues[0]!.message });
     //checking if user with same data exist
-    const user = await pool.query("SELECT * FROM users WHERE email=$1 OR username=$2;",[identifier,identifier])
+    const user = await pool.query("SELECT username,email,password_hash,id FROM users WHERE email=$1 OR username=$2;",[identifier,identifier])
     if (user.rowCount===0)
       return res
         .status(401)

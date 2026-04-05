@@ -39,8 +39,6 @@ async function getLiveGames() {
       },
     );
     const data = await res.json();
-    //cachedData = data;
-    console.log("created new cache");
     return data.response;
   } catch (err) {
     console.log("Error fetching live games:", err);

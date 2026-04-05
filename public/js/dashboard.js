@@ -316,6 +316,8 @@ li.forEach((el) => {
         },
       });
       const data = await res.json();
+      if (data) {
+        
       console.log(data);
       liveMatchesContainer.innerHTML = "";
       data.forEach((match) => {
@@ -323,7 +325,7 @@ li.forEach((el) => {
         const card = createMatchCard(match);
         liveMatchesContainer.appendChild(card);
       });
-
+    }
       // Upcoming Matches
       const upcomingRes = await fetch(`/fixtures/upcoming?league=${leagueId}`, {
         method: "GET",
