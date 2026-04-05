@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 //interfaces
 interface GameData {
   gameId: number;
-  //minutesElapsed: number;
+  minutesElapsed?: number;
   teams: {
     home: string;
     away: string;
@@ -16,7 +16,7 @@ interface GameData {
     home: number;
     away: number;
   };
-  goals: {
+  goals?: {
     home: number;
     away: number;
   };

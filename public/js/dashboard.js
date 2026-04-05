@@ -205,6 +205,7 @@ leagues.forEach((el) => {
   leaguesUl.appendChild(li);
 });
 const liveMatchesContainer = document.getElementById("live-matches");
+const upcomingMatchesContainer = document.getElementById("upcoming-matches");
 const userCoins = document.getElementById("user-coins").querySelector("h4");
 const getUser = async () => {
     try {
@@ -274,11 +275,40 @@ function createMatchCard(data) {
   return matchCard;
 }
 
+function createUpcomingMatchCard(data) {
+  const date = new Date(data.startsAt * 1000);
+  const time = `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+  const upcomingCard = document.createElement("div");
+  upcomingCard.className = "flex items-center p-6 justify-between w-[90%] h-10 rounded-lg border-l-2 border-font bg-dbPrimary mx-auto hover:opacity-80 cursor-pointer transition-opacity duration-200";
+  
+  upcomingCard.innerHTML = `
+          <div>
+            <p class="text-sm text-slate-50">${time}</p>
+          </div>
+          <div>
+            <p class="text-lg text-slate-50">${data.teams.home} vs ${data.teams.away}</p>
+          </div>
+          <div class="flex gap-2">
+            <div class="bg-primary w-10 h-8 text-center py-1 rounded-lg">
+              <p class="text-sm text-slate-50">1.85</p>
+            </div>
+            <div class="bg-primary w-10 h-8 text-center py-1 rounded-lg">
+              <p class="text-sm text-slate-50">3.40</p>
+            </div>
+            <div class="bg-primary w-10 h-8 text-center py-1 rounded-lg">
+              <p class="text-sm text-slate-50">4.20</p>
+            </div>
+          </div>
+  `;
+  return upcomingCard;
+}
+
 const li = document.querySelectorAll("li");
 li.forEach((el) => {
   el.addEventListener("click", async () => {
     const leagueId = el.dataset.id;
     try {
+      // Live Matches
       const res = await fetch(`/fixtures/live?league=${leagueId}`, {
         method: "GET",
         headers: {
@@ -287,12 +317,26 @@ li.forEach((el) => {
       });
       const data = await res.json();
       console.log(data);
-        liveMatchesContainer.innerHTML = "";
-        data.forEach(match => {
-          console.log(match)
-          const card = createMatchCard(match);
-          liveMatchesContainer.appendChild(card);
-        });
+      liveMatchesContainer.innerHTML = "";
+      data.forEach((match) => {
+        console.log(match);
+        const card = createMatchCard(match);
+        liveMatchesContainer.appendChild(card);
+      });
+
+      // Upcoming Matches
+      const upcomingRes = await fetch(`/fixtures/upcoming?league=${leagueId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const upcomingData = await upcomingRes.json();
+      upcomingMatchesContainer.innerHTML = "";
+      upcomingData.forEach((match) => {
+        const card = createUpcomingMatchCard(match);
+        upcomingMatchesContainer.appendChild(card);
+      });
     } catch (err) {
       console.error(err);
     }

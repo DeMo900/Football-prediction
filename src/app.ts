@@ -12,6 +12,7 @@ import cookieParser from "cookie-parser";
 import "./jobs/currencyDaily";
 import "./jobs/resolvingBet";
 import "./jobs/clearBets";
+import "./lib/pg/db";
 import dotenv from "dotenv";
 dotenv.config();
 const app = express();
