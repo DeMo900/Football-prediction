@@ -6,7 +6,6 @@ dotenv.config();
 const pool = new Pool({
   connectionString: process.env.PG_URI,
 });
-pool.connect()
 pool.on('connect', () => {
   console.log('Connected to PostgreSQL database');
 });

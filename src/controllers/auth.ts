@@ -5,6 +5,7 @@ import bcrypt from "bcrypt";
 import validateSignUp from "../validation/signUp";
 import validateLogIn from "../validation/login";
 import jwt from "jsonwebtoken";
+import pool from "../lib/pg/db"
 import { db } from "../lib/redis";
 import { eventEmitter } from "../events/emailSubmit";
 import { body, validationResult } from "express-validator";
@@ -14,7 +15,7 @@ const signUpGet = async (req: Request, res: Response) => {
 };
 //POST SIGN UP
 const signUpPost = async (req: Request, res: Response) => {
-  const Body = req.body;
+  const {username,email,password,confirmPassword} = req.body;
   const ip =
     req.headers["x-forwarded-for"]?.toString().split(",")[0] ||
     req.socket.remoteAddress ||
@@ -24,29 +25,21 @@ const signUpPost = async (req: Request, res: Response) => {
   }
   try {
     //validation
-    console.log(req.body)
-    const validationResult = validateSignUp(Body);
+    const validationResult = validateSignUp({username,email,password,confirmPassword});
     if (!validationResult.success)
       return res
         .status(400)
         .json({ msg: validationResult.error.issues[0]!.message });
     //checking if user with same data exist
-    const user = await User.findOne({
-      $or: [{ username: Body.username }, { email: Body.email }],
-    });
-    if (user)
+    const user = await pool.query("SELECT * FROM users WHERE email=$1 OR username=$2;",[email,username])
+    if (user.rows.length>0)
       return res
         .status(401)
         .json({ msg: "user with same email/username already exists" });
     //hashing
-    const hashedPassword = await bcrypt.hash(Body.password, 11);
+    const hashedPassword = await bcrypt.hash(password, 11);
     //storing
-   await User.create({
-      username: Body.username,
-      email: Body.email,
-      password: hashedPassword,
-      ip: [ip],
-    });
+   await pool.query("INSERT INTO users (username,email,password_hash,ip) VALUES($1,$2,$3,$4);",[username,email,hashedPassword,ip])
     return res.status(201).json({ message: "user created" });
     //return res.redirect("/login")
   } catch (error) {
@@ -70,16 +63,14 @@ const logInPost = async (req: Request, res: Response) => {
         .status(400)
         .json({ msg: validationResult.error.issues[0]!.message });
     //checking if user with same data exist
-    const user = await User.findOne({
-      $or: [{ username: identifier }, { email: identifier }],
-    });
-    if (!user)
+    const user = await pool.query("SELECT * FROM users WHERE email=$1 OR username=$2;",[identifier,identifier])
+    if (user.rowCount===0)
       return res
         .status(401)
         .json({ msg: "invalid username/email or password" });
     //cheching if password is correct
-    const hashedPassword = user.password;
-    const isEqual = await bcrypt.compare(password, hashedPassword!);
+    const hashedPassword = user.rows[0].password_hash;
+    const isEqual = await bcrypt.compare(password, hashedPassword);
     if (!isEqual)
       return res
         .status(401)
@@ -87,8 +78,8 @@ const logInPost = async (req: Request, res: Response) => {
     //creating jwt
     const token = jwt.sign(
       {
-        username: user.username,
-        _id: user._id,
+        username: user.rows[0].username,
+        _id: user.rows[0].id,
       },
       process.env.JWT_SECRET!,
       { expiresIn: "1h" },
