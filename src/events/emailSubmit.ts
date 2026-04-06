@@ -27,7 +27,7 @@ eventEmitter.on("emailSubmit", async (email) => {
       text: "hey there,click the button below to reset yout password",
       html: `
 <p style="color:red;font-weight:bold;font-size:20px">NEVER SHARE THIS LINK</p>
-<a href="http://localhost:9000/resetpassword?token=${token}">click here
+<a href="http://localhost:9000/updatepassword?token=${token}">click here
 </a>   `,
     });
   } catch (err) {

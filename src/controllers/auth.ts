@@ -121,13 +121,10 @@ const submitEmailPost = async (req: Request, res: Response) => {
       return res.status(400).json({ msg: errors.array()[0]!.msg });
     }
     //checking if user exists
-    const user = await User.findOne({ email: req.body.email })
-      .select("-password")
-      .select("-username")
-      .select("-_id");
-    if (!user) return res.status(404).json({ msg: "user not found" });
+   const user = await pool.query("SELECT email FROM users WHERE email=$1",[req.body.email])
+    if (user.rowCount===0) return res.status(404).json({ msg: "user not found" });
     //firing the emitter
-    eventEmitter.emit("emailSubmit", user.email);
+    eventEmitter.emit("emailSubmit", user.rows[0].email);
     //responding
     res.status(200).json({ message: "email sent sucsessfully" });
   } catch (err) {
@@ -159,13 +156,12 @@ const updatePasswordPost = async (req: Request, res: Response) => {
     const email = await db.get(token);
     if (!email) return res.status(404).json({ msg: "link is expired" });
     //getting user
-    const user = await User.findOne({ email });
-    if (!user) return res.status(404).json({ msg: "user not found " });
+    const user  = await pool.query("SELECT email FROM users WHERE email = $1",[email])
+    if (user.rowCount===0) return res.status(404).json({ msg: "user not found " });
     //hashing the password
     const hashedPassword = await bcrypt.hash(req.body.password, 11);
     //storing
-    user.password = hashedPassword;
-    await user.save();
+  await pool.query("UPDATE users SET password_hash = $1 WHERE email = $2",[hashedPassword,email])
     return res.json({ message: "password reset sucessfully" });
   } catch (err) {
     res.status(500).send(`internal server error ${err}`);
