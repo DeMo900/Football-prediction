@@ -54,7 +54,7 @@ async function googleCallbackController(req: Request, res: Response) {
     sameSite: "strict",
     maxAge: 3600000, // 1 hour
   });
-  return res.redirect("/fixtures/live");
+  return res.redirect("/");
 }
 
 export { passportController, googleCallbackController, authenticateGoogle };

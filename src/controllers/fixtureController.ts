@@ -155,6 +155,7 @@ async function liveController(req: Request, res: Response) {
     );
   }
   res.send(games);
+  console.log(games)
 }
 //upcoming
 async function upcomingController(req: Request, res: Response) {
@@ -165,6 +166,7 @@ async function upcomingController(req: Request, res: Response) {
       (game) => game.league.id === parseInt(req.query.league as string),
     );
   }
+  console.log(games);
   res.send(games);
 }
 
