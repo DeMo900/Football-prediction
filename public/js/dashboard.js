@@ -363,8 +363,8 @@ rewardBtn.addEventListener("click", async () => {
     const claimData = await claimResponse.json();
     if (claimResponse.ok && claimData.message === "reward claimed") {
       rewardBtn.classList.add("hidden");
-      const coins = document.getElementById("user-coins");
-      coins.textContent = claimData.coins;
+      const coinsValue = document.getElementById("user-coins").querySelector("h4");
+      coinsValue.textContent = `${claimData.coins} Coins`;
     }
     console.log(claimData.message || claimData.msg);
   } catch (err) {

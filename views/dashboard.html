@@ -9,44 +9,59 @@
 
   <body class="bg-[#060F06]">
     <nav
-      class="w-full flex items-center bg-[#060E06] h-20 justify-between border border-b-border/50 border-0.5 fixed top-0 z-50"
+      class="w-full flex items-center bg-[#060E06] h-20 justify-between border-b border-white/5 fixed top-0 z-50 px-6 sm:px-10"
     >
-      <div class="flex w-fit items-center">
+      <div class="flex items-center gap-10">
         <img src="/icons/logo.png" alt="volt bet" class="w-26" />
-        <ul class="flex gap-8 sm:ml-10">
+        <ul class="flex gap-8">
           <li
-            class="text-dashboardfont font-sans text-sm hover:text-font cursor-pointer transition duration-200"
-          >
-            Live
-          </li>
-          <li
-            class="text-dashboardfont font-sans text-sm hover:text-font cursor-pointer transition duration-200"
-          >
-            Schedule
-          </li>
-          <li
-            class="text-dashboardfont font-sans text-sm hover:text-font cursor-pointer transition duration-200"
+            class="text-dashboardfont font-sans text-sm hover:text-white cursor-pointer transition duration-200"
           >
             Results
           </li>
           <li
-            class="text-dashboardfont font-sans text-sm hover:text-font cursor-pointer transition duration-200"
+            class="text-dashboardfont font-sans text-sm hover:text-white cursor-pointer transition duration-200"
           >
             Leaderboard
           </li>
         </ul>
       </div>
 
-      <div class="flex items-center gap-4 sm:mr-18">
-        <div class="rounded-3xl bg-[#192219] p-2 px-8 shadow-[0_0_3px_#36f71d]" id="user-coins">
-          <h4 class="text-font text-xs font-bold"></h4>
+      <div class="flex items-center gap-4 sm:gap-6">
+        <div
+          class="flex items-center bg-[#192219] border border-font/20 rounded-2xl px-6 py-2 shadow-[0_0_15px_rgba(54,247,29,0.05)] hover:border-font/40 transition-all duration-300 cursor-default"
+          id="user-coins"
+        >
+          <h4 class="text-font text-sm font-black tracking-wide">0.00</h4>
         </div>
-        <div class="rounded-3xl bg-[#192219] p-2  shadow-[0_0_3px_#36f71d] cursor-pointer hidden" id="claim-reward">
-          <h4 class="text-font text-xs font-bold">click to claim your reward!</h4>
+
+        <div
+          class="flex items-center gap-2 bg-font/10 border border-font/30 rounded-2xl px-4 py-1.5 cursor-pointer hover:bg-font/20 transition-all duration-300 hidden"
+          id="claim-reward"
+        >
+          <span class="relative flex h-2 w-2">
+            <span
+              class="animate-ping absolute inline-flex h-full w-full rounded-full bg-font opacity-75"
+            ></span>
+            <span
+              class="relative inline-flex rounded-full h-2 w-2 bg-font"
+            ></span>
+          </span>
+          <h4 class="text-font text-xs font-bold uppercase tracking-wider">
+            Claim Reward
+          </h4>
+        </div>
+
+        <div
+          class="w-10 h-10 rounded-full border-2 border-white/10 p-1 hover:border-font/50 transition-all duration-300 cursor-pointer overflow-hidden bg-[#192219]"
+        >
+          <img
+            src="/icons/profile.svg"
+            alt="profile"
+            class="w-full h-full object-cover"
+          />
         </div>
       </div>
-        <img src="/icons/profile.svg" alt="profile" class="w-8" />
-
     </nav>
 
     <div
@@ -59,9 +74,9 @@
         </div>
       </div>
 
-      <div class="bg-[#060F06] pt-16 h-fit overflow-y-auto">
+      <div class="bg-[#060F06] pt-16 h-full overflow-y-auto pb-20 custom-scrollbar">
         <h1
-          class="text-dashboardfont ml-10 -mt-10 mb-4 text-2xl font-bold flex items-center gap-2"
+          class="text-dashboardfont ml-10 -mt-10 mb-8 text-2xl font-bold flex items-center gap-2"
         >
           <div
             class="w-3 h-3 bg-font rounded-full shadow-[0_0_8px_#36f71d] animate-pulse"
@@ -69,9 +84,10 @@
           LIVE MATCHES
         </h1>
 
-        <div class="w-full h-full grid grid-cols-1 gap-4" id="live-matches">
+        <div class="w-full flex flex-col gap-12 pb-20" id="live-matches">
+          <!-- Card 1 -->
           <div
-            class="w-[90%] mx-auto rounded-xl p-6 h-80 bg-dbPrimary hover:opacity-80 cursor-pointer transition-opacity duration-150"
+            class="w-[90%] mx-auto rounded-xl p-6 min-h-[360px] bg-dbPrimary shadow-lg border border-white/5 flex flex-col justify-between hover:border-font/30 transition-all duration-300"
           >
             <!-- Top Match Details -->
             <div
@@ -165,9 +181,106 @@
               </div>
             </div>
           </div>
+          
+          <!-- Card 2 (Duplicate for demo) -->
+          <div
+            class="w-[90%] mx-auto rounded-xl p-6 min-h-[360px] bg-dbPrimary shadow-lg border border-white/5 flex flex-col justify-between hover:border-font/30 transition-all duration-300"
+          >
+            <!-- Top Match Details -->
+            <div
+              class="flex w-full justify-between items-center mt-[-15px] mb-6"
+            >
+              <span
+                class="text-dashboardfont text-xs font-bold tracking-wider uppercase"
+                >PREMIER LEAGUE</span
+              >
+            </div>
+
+            <!-- Logos and Result -->
+            <div
+              class="flex w-full justify-between sm:justify-center items-center gap-2 sm:gap-16 px-2 sm:px-8"
+            >
+              <div class="flex flex-col items-center gap-3">
+                <div
+                  class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#060F06] flex justify-center items-center"
+                >
+                  <img
+                    src="/icons/city.png"
+                    alt="Man City"
+                    class="w-18 h-18 sm:w-20 sm:h-20 object-contain"
+                  />
+                </div>
+                <span
+                  class="text-white font-bold tracking-wide text-xs sm:text-sm lg:text-base"
+                  >MAN CITY</span
+                >
+              </div>
+
+              <div class="flex flex-col items-center">
+                <span
+                  class="text-4xl sm:text-5xl font-black text-white tracking-widest whitespace-nowrap"
+                  >2 - 2</span
+                >
+                <span
+                  class="text-font text-[10px] sm:text-xs font-bold mt-2 tracking-widest whitespace-nowrap"
+                  >LIVE</span
+                >
+              </div>
+
+              <div class="flex flex-col items-center gap-3">
+                <div
+                  class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#060F06] flex justify-center items-center"
+                >
+                  <img
+                    src="/icons/madrid.png"
+                    alt="Real Madrid"
+                    class="w-10 h-10 sm:w-12 sm:h-12 object-contain"
+                  />
+                </div>
+                <span
+                  class="text-white font-bold tracking-wide text-xs sm:text-sm lg:text-base"
+                  >REAL MADRID</span
+                >
+              </div>
+            </div>
+
+            <!-- Betting Profits -->
+            <div class="flex w-full justify-between gap-3 sm:gap-4 mt-8">
+              <div
+                class="flex flex-1 flex-col items-center justify-center bg-[#060F06] rounded-xl py-3 hover:opacity-75 cursor-pointer transition-opacity duration-200"
+              >
+                <span class="text-dashboardfont text-[10px] sm:text-xs mb-1"
+                  >HOME</span
+                >
+                <span class="text-font font-bold text-base sm:text-lg"
+                  >2.10</span
+                >
+              </div>
+              <div
+                class="flex flex-1 flex-col items-center justify-center bg-[#060F06] rounded-xl py-3 hover:opacity-75 cursor-pointer transition-opacity duration-200"
+              >
+                <span class="text-dashboardfont text-[10px] sm:text-xs mb-1"
+                  >DRAW</span
+                >
+                <span class="text-font font-bold text-base sm:text-lg"
+                  >3.10</span
+                >
+              </div>
+              <div
+                class="flex flex-1 flex-col items-center justify-center bg-[#060F06] rounded-xl py-3 hover:opacity-75 cursor-pointer transition-opacity duration-200"
+              >
+                <span class="text-dashboardfont text-[10px] sm:text-xs mb-1"
+                  >AWAY</span
+                >
+                <span class="text-font font-bold text-base sm:text-lg"
+                  >3.80</span
+                >
+              </div>
+            </div>
+          </div>
         </div>
         <h1
-          class="text-dashboardfont ml-10 mt-10 mb-4 text-2xl font-bold flex items-center gap-2"
+          class="text-dashboardfont ml-10 mt-16 mb-8 text-2xl font-bold flex items-center gap-2"
         >
           <div
             class="w-3 h-3 bg-grey-500 rounded-full shadow-[0_0_8px_#36f71d] animate-pulse"
