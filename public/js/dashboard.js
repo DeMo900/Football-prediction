@@ -306,6 +306,12 @@ function createUpcomingMatchCard(data) {
 const li = document.querySelectorAll("li");
 li.forEach((el) => {
   el.addEventListener("click", async () => {
+    li.forEach((el) => {
+      if (el.classList.contains("border-l-4")) {
+        el.classList = "text-dashboardfont font-sans text-sm h-12 w-full flex items-center gap-2 pl-4 cursor-pointer hover:transition hover:bg-white/5 hover:border-l-4 hover:border-font hover:duration-200";
+      }
+    });
+    el.classList = "text-dashboardfont border-l-4 border-font font-sans text-sm h-12 w-full flex items-center gap-2 pl-4 cursor-pointer bg-white/5 hover:transition hover:duration-200";
     const leagueId = el.dataset.id;
     try {
       // Live Matches
