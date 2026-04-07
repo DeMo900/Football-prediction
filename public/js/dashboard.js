@@ -322,15 +322,14 @@ li.forEach((el) => {
         },
       });
       const data = await res.json();
-      if (data) {
-        
-      console.log(data);
+      if (data.length > 0) {
       liveMatchesContainer.innerHTML = "";
       data.forEach((match) => {
-        console.log(match);
         const card = createMatchCard(match);
         liveMatchesContainer.appendChild(card);
       });
+    }else{
+      liveMatchesContainer.innerHTML = "<p class='text-dashboardfont text-center'>No live matches</p>";
     }
       // Upcoming Matches
       const upcomingRes = await fetch(`/fixtures/upcoming?league=${leagueId}`, {
@@ -340,11 +339,15 @@ li.forEach((el) => {
         },
       });
       const upcomingData = await upcomingRes.json();
-      upcomingMatchesContainer.innerHTML = "";
-      upcomingData.forEach((match) => {
-        const card = createUpcomingMatchCard(match);
-        upcomingMatchesContainer.appendChild(card);
-      });
+      if(upcomingData.length > 0){
+        upcomingMatchesContainer.innerHTML = "";
+        upcomingData.forEach((match) => {
+          const card = createUpcomingMatchCard(match);
+          upcomingMatchesContainer.appendChild(card);
+        });
+      }else{
+        upcomingMatchesContainer.innerHTML = "<p class='text-dashboardfont text-center'>No upcoming matches</p>";
+      }
     } catch (err) {
       console.error(err);
     }
