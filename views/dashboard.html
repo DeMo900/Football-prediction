@@ -147,13 +147,20 @@
               </div>
             </div>
 
-            <!-- Betting Profits -->
-            <div class="flex w-full justify-between gap-3 sm:gap-4 mt-8">
+            <!-- Betting Odds Toggle -->
+            <div class="w-full mt-8 click-to-view-odds">
+              <div class="flex items-center justify-center bg-[#060F06] border border-white/10 rounded-xl py-4 hover:border-font/50 cursor-pointer transition-all duration-300 group">
+                <span class="text-dashboardfont text-sm font-bold group-hover:text-font transition-colors">CLICK TO VIEW ODDS</span>
+              </div>
+            </div>
+
+            <!-- Betting Profits (Hidden by default) -->
+            <div class="hidden flex w-full justify-between gap-3 sm:gap-4 mt-8 odds">
               <div
                 class="flex flex-1 flex-col items-center justify-center bg-[#060F06] rounded-xl py-3 hover:opacity-75 cursor-pointer transition-opacity duration-200"
               >
                 <span class="text-dashboardfont text-[10px] sm:text-xs mb-1"
-                  >HOME</span
+                id="home"  >HOME</span
                 >
                 <span class="text-font font-bold text-base sm:text-lg"
                   >1.85</span
@@ -166,7 +173,7 @@
                   >DRAW</span
                 >
                 <span class="text-font font-bold text-base sm:text-lg"
-                  >3.40</span
+                 id="draw" >3.40</span
                 >
               </div>
               <div
@@ -176,7 +183,7 @@
                   >AWAY</span
                 >
                 <span class="text-font font-bold text-base sm:text-lg"
-                  >4.20</span
+                 id="away" >4.20</span
                 >
               </div>
             </div>
@@ -244,8 +251,15 @@
               </div>
             </div>
 
-            <!-- Betting Profits -->
-            <div class="flex w-full justify-between gap-3 sm:gap-4 mt-8">
+            <!-- Betting Odds Toggle -->
+            <div class="w-full mt-8 click-to-view-odds" >
+              <div class="flex items-center justify-center bg-[#060F06] border border-white/10 rounded-xl py-4 hover:border-font/50 cursor-pointer transition-all duration-300 group">
+                <span class="text-dashboardfont text-sm font-bold group-hover:text-font transition-colors">CLICK TO VIEW ODDS</span>
+              </div>
+            </div>
+
+            <!-- Betting Profits (Hidden by default) -->
+            <div class="hidden flex w-full justify-between gap-3 sm:gap-4 mt-8 odds" >
               <div
                 class="flex flex-1 flex-col items-center justify-center bg-[#060F06] rounded-xl py-3 hover:opacity-75 cursor-pointer transition-opacity duration-200"
               >
@@ -253,7 +267,7 @@
                   >HOME</span
                 >
                 <span class="text-font font-bold text-base sm:text-lg"
-                  >2.10</span
+                id="home"  >2.10</span
                 >
               </div>
               <div
@@ -263,7 +277,7 @@
                   >DRAW</span
                 >
                 <span class="text-font font-bold text-base sm:text-lg"
-                  >3.10</span
+                id="draw"  >3.10</span
                 >
               </div>
               <div
@@ -273,7 +287,7 @@
                   >AWAY</span
                 >
                 <span class="text-font font-bold text-base sm:text-lg"
-                  >3.80</span
+                id="away"  >3.80</span
                 >
               </div>
             </div>

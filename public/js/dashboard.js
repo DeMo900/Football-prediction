@@ -229,6 +229,7 @@ function createMatchCard(data) {
   const homeGoals = data.goals.home;
   const awayGoals = data.goals.away;
   const leagueName = data.league.name || "LEAGUE";
+  const gameId = data.gameId
   
   matchCard.innerHTML = `
     <div class="flex w-full justify-between items-center mt-[-15px] mb-6">
@@ -256,7 +257,15 @@ function createMatchCard(data) {
       </div>
     </div>
 
-    <div class="flex w-full justify-between gap-3 sm:gap-4 mt-8">
+    <!-- Betting Odds Toggle -->
+    <div class="w-full mt-8 odds-toggle">
+      <div class="flex items-center justify-center bg-[#060F06] border border-white/10 rounded-xl py-4 hover:border-font/50 cursor-pointer transition-all duration-300 group">
+        <span class="text-dashboardfont text-sm font-bold group-hover:text-font transition-colors uppercase">CLICK TO VIEW ODDS</span>
+      </div>
+    </div>
+
+    <!-- Betting Profits (Hidden by default) -->
+    <div class="hidden flex w-full justify-between gap-3 sm:gap-4 mt-8" data-game-id="${gameId}">
       <div class="flex flex-1 flex-col items-center justify-center bg-[#060F06] rounded-xl py-3 hover:opacity-75 cursor-pointer transition-opacity duration-200">
         <span class="text-dashboardfont text-[10px] sm:text-xs mb-1 uppercase">HOME</span>
         <span class="text-font font-bold text-base sm:text-lg">1.85</span>
@@ -395,6 +404,15 @@ const checkReward = async () => {
 };
 checkReward();
 
+
+const oddsToggle = document.querySelectorAll(".click-to-view-odds");
+const odds = document.querySelectorAll(".odds");
+oddsToggle.forEach((el) => {
+  el.addEventListener("click", () => {
+    el.classList.add("hidden");
+el.nextElementSibling.classList.remove("hidden");
+});
+})
 /* 
 <li class="text-dashboardfont font-sans text-sm h-12 w-full flex items-center gap-2 pl-4 cursor-pointer hover:bg-white/5 transition duration-200 hover:border-l-4 hover:border-font">
                         <img src="/icons/ball.svg" alt="ball">

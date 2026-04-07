@@ -930,6 +930,13 @@
     --tw-outline-style: none;
     outline-style: none;
   }
+  .group-hover\:text-font {
+    &:is(:where(.group):hover *) {
+      @media (hover: hover) {
+        color: var(--color-font);
+      }
+    }
+  }
   .placeholder\:font-normal {
     &::placeholder {
       --tw-font-weight: var(--font-weight-normal);
