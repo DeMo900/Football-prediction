@@ -68,11 +68,10 @@ const data:WinChances = parsedData.response[0].predictions.percent
 const home = parseFloat(data.home)
 const away = parseFloat(data.away)
 const draw = parseFloat(data.draw)
-//const odds = [1 / (home / 100), 1 / (away / 100), 1 / (draw / 100)];
-const odds:WinChances = {
-  home : (1 / (home / 100)).toFixed(2),
-  away : (1 / (away / 100)).toFixed(2),
-  draw  : (1 / (draw / 100)).toFixed(2)
+const odds: WinChances = {
+  home: home > 0 ? (1 / (home / 100)).toFixed(2) : "N/A",
+  away: away > 0 ? (1 / (away / 100)).toFixed(2) : "N/A",
+  draw: draw > 0 ? (1 / (draw / 100)).toFixed(2) : "N/A",
 }
 return odds
   }catch(err){

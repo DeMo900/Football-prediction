@@ -258,25 +258,25 @@ function createMatchCard(data) {
     </div>
 
     <!-- Betting Odds Toggle -->
-    <div class="w-full mt-8 odds-toggle">
+    <div class="w-full mt-8 click-to-view-odds odds-toggle">
       <div class="flex items-center justify-center bg-[#060F06] border border-white/10 rounded-xl py-4 hover:border-font/50 cursor-pointer transition-all duration-300 group">
         <span class="text-dashboardfont text-sm font-bold group-hover:text-font transition-colors uppercase">CLICK TO VIEW ODDS</span>
       </div>
     </div>
 
     <!-- Betting Profits (Hidden by default) -->
-    <div class="hidden flex w-full justify-between gap-3 sm:gap-4 mt-8" data-game-id="${gameId}">
+    <div class="hidden flex w-full justify-between gap-3 sm:gap-4 mt-8 odds" data-game-id="${gameId}">
       <div class="flex flex-1 flex-col items-center justify-center bg-[#060F06] rounded-xl py-3 hover:opacity-75 cursor-pointer transition-opacity duration-200">
         <span class="text-dashboardfont text-[10px] sm:text-xs mb-1 uppercase">HOME</span>
-        <span class="text-font font-bold text-base sm:text-lg"data-odd="home">1.85</span>
+        <span class="text-font font-bold text-base sm:text-lg" data-odd="home">---</span>
       </div>
       <div class="flex flex-1 flex-col items-center justify-center bg-[#060F06] rounded-xl py-3 hover:opacity-75 cursor-pointer transition-opacity duration-200">
         <span class="text-dashboardfont text-[10px] sm:text-xs mb-1 uppercase">DRAW</span>
-        <span class="text-font font-bold text-base sm:text-lg"data-odd="draw">3.40</span>
+        <span class="text-font font-bold text-base sm:text-lg" data-odd="draw">---</span>
       </div>
       <div class="flex flex-1 flex-col items-center justify-center bg-[#060F06] rounded-xl py-3 hover:opacity-75 cursor-pointer transition-opacity duration-200">
         <span class="text-dashboardfont text-[10px] sm:text-xs mb-1 uppercase">AWAY</span>
-        <span class="text-font font-bold text-base sm:text-lg"data-odd="away">4.20</span>
+        <span class="text-font font-bold text-base sm:text-lg" data-odd="away">---</span>
       </div>
     </div>
   `;
@@ -297,15 +297,23 @@ function createUpcomingMatchCard(data) {
           <div>
             <p class="text-lg text-slate-50">${data.teams.home} vs ${data.teams.away}</p>
           </div>
-          <div class="flex gap-2">
-            <div class="bg-primary w-10 h-8 text-center py-1 rounded-lg">
-              <p class="text-sm text-slate-50">1.85</p>
+          <div class="click-to-view-odds">
+            <div class="flex items-center justify-center bg-[#060F06] border border-white/10 rounded-xl p-2 hover:border-font/50 cursor-pointer transition-all duration-300 group">
+              <span class="text-dashboardfont text-xs font-bold group-hover:text-font transition-colors uppercase">CLICK TO VIEW ODDS</span>
             </div>
-            <div class="bg-primary w-10 h-8 text-center py-1 rounded-lg">
-              <p class="text-sm text-slate-50">3.40</p>
+          </div>
+          <div class="flex gap-2 hidden odds" data-game-id="${data.gameId}">
+            <div class="bg-primary w-12 h-10 text-center p-2 rounded-lg">
+              <p class="text-[10px] text-font font-bold uppercase">H</p>
+              <p class="text-sm text-slate-50" data-odd="home">---</p>
             </div>
-            <div class="bg-primary w-10 h-8 text-center py-1 rounded-lg">
-              <p class="text-sm text-slate-50">4.20</p>
+            <div class="bg-primary w-12 h-10 text-center p-2 rounded-lg">
+              <p class="text-[10px] text-font font-bold uppercase">D</p>
+              <p class="text-sm text-slate-50" data-odd="draw">---</p>
+            </div>
+            <div class="bg-primary w-12 h-10 text-center p-2 rounded-lg">
+              <p class="text-[10px] text-font font-bold uppercase">A</p>
+              <p class="text-sm text-slate-50" data-odd="away">---</p>
             </div>
           </div>
   `;
@@ -405,31 +413,38 @@ const checkReward = async () => {
 checkReward();
 
 
-const oddsToggle = document.querySelectorAll(".click-to-view-odds");
-const odds = document.querySelectorAll(".odds");
-oddsToggle.forEach((el) => {
-  el.addEventListener("click", async () => {
-    try{
-    el.classList.add("hidden");
-el.nextElementSibling.classList.remove("hidden");
-const response = await fetch(`/odds?gameId=${el.nextElementSibling.dataset.gameId}`)
-const odds = await response.json()
-if(response.ok){
-  const oddsData = odds.odds
-  const oddsHome = document.querySelector(`[data-odd="home"]`)
-  const oddsDraw = document.querySelector(`[data-odd="draw"]`)
-  const oddsAway = document.querySelector(`[data-odd="away"]`)
-  oddsHome.textContent = oddsData.home
-  oddsDraw.textContent = oddsData.draw
-  oddsAway.textContent = oddsData.away
-}else{
-  console.log(odds.msg)
-}
-}catch(err){
-  console.error(err)
-}
+document.addEventListener("click", async (e) => {
+  const toggle = e.target.closest(".click-to-view-odds");
+  if (!toggle) return;
+
+  try {
+    const oddsContainer = toggle.nextElementSibling;
+    if (!oddsContainer || !oddsContainer.classList.contains("odds")) return;
+
+    toggle.classList.add("hidden");
+    oddsContainer.classList.remove("hidden");
+
+    const gameId = oddsContainer.dataset.gameId;
+    const response = await fetch(`/odds?gameId=${gameId}`);
+    const data = await response.json();
+
+    if (response.ok) {
+      const oddsData = data.odds;
+      const oddsHome = oddsContainer.querySelector(`[data-odd="home"]`);
+      const oddsDraw = oddsContainer.querySelector(`[data-odd="draw"]`);
+      const oddsAway = oddsContainer.querySelector(`[data-odd="away"]`);
+
+      if (oddsHome) oddsHome.textContent = oddsData.home;
+      if (oddsDraw) oddsDraw.textContent = oddsData.draw;
+      if (oddsAway) oddsAway.textContent = oddsData.away;
+    } else {
+      console.log(data.msg);
+    }
+  } catch (err) {
+    console.error(err);
+  }
 });
-})
+
 /* 
 <li class="text-dashboardfont font-sans text-sm h-12 w-full flex items-center gap-2 pl-4 cursor-pointer hover:bg-white/5 transition duration-200 hover:border-l-4 hover:border-font">
                         <img src="/icons/ball.svg" alt="ball">
