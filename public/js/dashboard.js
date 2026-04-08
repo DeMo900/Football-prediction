@@ -268,15 +268,15 @@ function createMatchCard(data) {
     <div class="hidden flex w-full justify-between gap-3 sm:gap-4 mt-8" data-game-id="${gameId}">
       <div class="flex flex-1 flex-col items-center justify-center bg-[#060F06] rounded-xl py-3 hover:opacity-75 cursor-pointer transition-opacity duration-200">
         <span class="text-dashboardfont text-[10px] sm:text-xs mb-1 uppercase">HOME</span>
-        <span class="text-font font-bold text-base sm:text-lg">1.85</span>
+        <span class="text-font font-bold text-base sm:text-lg"data-odd="home">1.85</span>
       </div>
       <div class="flex flex-1 flex-col items-center justify-center bg-[#060F06] rounded-xl py-3 hover:opacity-75 cursor-pointer transition-opacity duration-200">
         <span class="text-dashboardfont text-[10px] sm:text-xs mb-1 uppercase">DRAW</span>
-        <span class="text-font font-bold text-base sm:text-lg">3.40</span>
+        <span class="text-font font-bold text-base sm:text-lg"data-odd="draw">3.40</span>
       </div>
       <div class="flex flex-1 flex-col items-center justify-center bg-[#060F06] rounded-xl py-3 hover:opacity-75 cursor-pointer transition-opacity duration-200">
         <span class="text-dashboardfont text-[10px] sm:text-xs mb-1 uppercase">AWAY</span>
-        <span class="text-font font-bold text-base sm:text-lg">4.20</span>
+        <span class="text-font font-bold text-base sm:text-lg"data-odd="away">4.20</span>
       </div>
     </div>
   `;
@@ -408,9 +408,26 @@ checkReward();
 const oddsToggle = document.querySelectorAll(".click-to-view-odds");
 const odds = document.querySelectorAll(".odds");
 oddsToggle.forEach((el) => {
-  el.addEventListener("click", () => {
+  el.addEventListener("click", async () => {
+    try{
     el.classList.add("hidden");
 el.nextElementSibling.classList.remove("hidden");
+const response = await fetch(`/odds?gameId=${el.nextElementSibling.dataset.gameId}`)
+const odds = await response.json()
+if(response.ok){
+  const oddsData = odds.odds
+  const oddsHome = document.querySelector(`[data-odd="home"]`)
+  const oddsDraw = document.querySelector(`[data-odd="draw"]`)
+  const oddsAway = document.querySelector(`[data-odd="away"]`)
+  oddsHome.textContent = oddsData.home
+  oddsDraw.textContent = oddsData.draw
+  oddsAway.textContent = oddsData.away
+}else{
+  console.log(odds.msg)
+}
+}catch(err){
+  console.error(err)
+}
 });
 })
 /* 

@@ -5,4 +5,5 @@ const predictionRouter = express.Router();
 predictionRouter.post("/bet", predictionController.betController);
 //GET LEADBOARD
 predictionRouter.get("/leadboard", predictionController.leadBoardController);
+predictionRouter.get("/odds", predictionController.getOddsController);
 export default predictionRouter;
