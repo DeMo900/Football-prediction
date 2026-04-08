@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import User from "../models/user";
-import Bet from "../models/bet";
+import { redis } from "../lib/redis";
 import pool from "../lib/pg/db";
 export async function betController(req: Request, res: Response) {
   try {
@@ -86,8 +85,16 @@ export async function getOddsController(req: Request, res: Response) {
     if (!gameId || typeof gameId !== 'string') {
   return res.status(400).json({ msg: "invalid game id" })
 }
+const cache = await redis.get(`odds for game ${gameId}`)
+if(cache){
+  console.log("loaded from cache")
+  return res.json({ odds: JSON.parse(cache) })
+}
+
     const odds = await gettingData(gameId)
     if ("error" in odds) return res.status(400).json({ msg: odds.error })
+    await redis.set(`odds for game ${gameId}`, JSON.stringify(odds), {EX: 60*300 });
+  
     return res.json({ odds });
   } catch (err) {
     console.log(err);
