@@ -44,7 +44,57 @@ export async function leadBoardController(req: Request, res: Response) {
     return res.status(500).send("internal server error" + err);
   }
 }
-
+//odds types
+type WinChances = {
+  home: string;
+  away: string;
+  draw: string;
+}
+//calculating odds
+async function gettingData (gameId:string) : Promise<WinChances | {error:string}>{
+  //fetching 
+  try{
+    if (!process.env.API_KEY) throw new Error("API_KEY is not set")
+ const response = await fetch(`https://v3.football.api-sports.io/predictions?fixture=${gameId}`,{
+    headers:{
+      "x-apisports-key":process.env.API_KEY
+    }
+  })
+  const parsedData =await response.json()
+  if(!parsedData?.response?.[0]?.predictions?.percent){
+  return {error : "invalid game id"}
+}
+const data:WinChances = parsedData.response[0].predictions.percent 
+const home = parseFloat(data.home)
+const away = parseFloat(data.away)
+const draw = parseFloat(data.draw)
+//const odds = [1 / (home / 100), 1 / (away / 100), 1 / (draw / 100)];
+const odds:WinChances = {
+  home : (1 / (home / 100)).toFixed(2),
+  away : (1 / (away / 100)).toFixed(2),
+  draw  : (1 / (draw / 100)).toFixed(2)
+}
+return odds
+  }catch(err){
+    console.log(`an error ocurred while calculating odds ${err}`)
+    return {error:"an error ocurred while calculating odds"}
+  }
+}
+export async function getOddsController(req: Request, res: Response) {
+  try {
+    const gameId = req.query.gameId;
+    
+    if (!gameId || typeof gameId !== 'string') {
+  return res.status(400).json({ msg: "invalid game id" })
+}
+    const odds = await gettingData(gameId)
+    if ("error" in odds) return res.status(400).json({ msg: odds.error })
+    return res.json({ odds });
+  } catch (err) {
+    console.log(err);
+   return res.status(500).json({ msg: "Internal Server Error" });
+  }
+}
 //needed data to make a bet
 //game id  	1380590
 //team id 345

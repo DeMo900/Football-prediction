@@ -3,7 +3,7 @@ import nodemailer from "nodemailer";
 import crypto from "crypto";
 import dotenv from "dotenv";
 dotenv.config();
-import { db } from "../lib/redis";
+import { redis } from "../lib/redis";
 //EMAIL SUBMIT FOR RESSETING PASSWORD
 export const eventEmitter = new EventEmitter();
 eventEmitter.on("emailSubmit", async (email) => {
@@ -12,7 +12,7 @@ eventEmitter.on("emailSubmit", async (email) => {
     //creating token
     const token: string = crypto.randomBytes(32).toString("hex");
     //storing the token
-    await db.set(token, email, { EX: 3600 });
+    await redis.set(token, email, { EX: 3600 });
     //setting transport
     const transport = nodemailer.createTransport({
       service: "gmail",

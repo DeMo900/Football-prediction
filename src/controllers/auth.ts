@@ -6,7 +6,7 @@ import validateSignUp from "../validation/signUp";
 import validateLogIn from "../validation/login";
 import jwt from "jsonwebtoken";
 import pool from "../lib/pg/db"
-import { db } from "../lib/redis";
+import { redis } from "../lib/redis";
 import { eventEmitter } from "../events/emailSubmit";
 import { body, validationResult } from "express-validator";
 //GET SIGNUP
@@ -153,7 +153,7 @@ const updatePasswordPost = async (req: Request, res: Response) => {
     //checking if token exists in db
     const token = req.query.token as string;
     if (!token) throw new Error("error");
-    const email = await db.get(token);
+    const email = await redis.get(token);
     if (!email) return res.status(404).json({ msg: "link is expired" });
     //getting user
     const user  = await pool.query("SELECT email FROM users WHERE email = $1",[email])

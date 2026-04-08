@@ -2,7 +2,7 @@
 import { Request, Response } from "express";
 import User from "../models/user";
 import jwt from "jsonwebtoken";
-import {db} from "../lib/redis";
+import {redis} from "../lib/redis";
 import pool from "../lib/pg/db";
 import path from "path";
 //DASHBOARD
@@ -19,7 +19,7 @@ async function checkReward(req: Request, res: Response) {
     const today = Date.now();
     const lastClaim = user.rows[0].last_claim;
     if(today - lastClaim >= 86400000){
-      await db.set(`rewardForUser:${id}`,"10",{EX:5*60});
+      await redis.set(`rewardForUser:${id}`,"10",{EX:5*60});
       return res.status(200).json({message:true});
   }
   return res.status(200).json({message:false});
@@ -35,10 +35,10 @@ async function claimReward(req: Request, res: Response) {
     const {id} = jwt.verify( req.cookies.jwt,process.env.JWT_SECRET!) as {id:string};
     const user = await pool.query("SELECT id FROM users WHERE id=$1",[id])
     if(user.rowCount===0) return res.status(404).json({msg:"user not found"});
-    const reward = await db.get(`rewardForUser:${id}`);
+    const reward = await redis.get(`rewardForUser:${id}`);
     if(!reward) return res.status(404).json({msg:"no reward available"});
     const updatedUser = await pool.query("UPDATE users SET coins = coins + 10, last_claim = $1 WHERE id = $2 RETURNING coins",[Date.now(),id])
-    await db.del(`rewardForUser:${id}`);
+    await redis.del(`rewardForUser:${id}`);
     return res.status(200).json({message:"reward claimed",coins:updatedUser.rows[0].coins});
   }
   catch(err){
