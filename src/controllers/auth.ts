@@ -30,19 +30,17 @@ const signUpPost = async (req: Request, res: Response) => {
       return res
         .status(400)
         .json({ msg: validationResult.error.issues[0]!.message });
-    //checking if user with same data exist
-    const user = await pool.query("SELECT * FROM users WHERE email=$1 OR username=$2;",[email,username])
-    if (user.rows.length>0)
-      return res
-        .status(401)
-        .json({ msg: "user with same email/username already exists" });
     //hashing
     const hashedPassword = await bcrypt.hash(password, 11);
     //storing
    await pool.query("INSERT INTO users (username,email,password_hash,ip) VALUES($1,$2,$3,$4);",[username,email,hashedPassword,ip])
     return res.status(201).json({ message: "user created" });
-    //return res.redirect("/login")
-  } catch (error) {
+  } catch (error:any) {
+    if(error.code === "23505"){
+      //extracting the field name from the constraint
+      const field = error.constraint?.includes("email")?"email":"username"
+      return res.status(409).json({msg:`user with same ${field} already exists`});
+    }
     console.error("Error during signup:", error);
     res.status(500).json({ message: "Internal server error" });
   }
@@ -155,13 +153,12 @@ const updatePasswordPost = async (req: Request, res: Response) => {
     if (!token) throw new Error("error");
     const email = await redis.get(token);
     if (!email) return res.status(404).json({ msg: "link is expired" });
-    //getting user
-    const user  = await pool.query("SELECT email FROM users WHERE email = $1",[email])
-    if (user.rowCount===0) return res.status(404).json({ msg: "user not found " });
     //hashing the password
     const hashedPassword = await bcrypt.hash(req.body.password, 11);
     //storing
-  await pool.query("UPDATE users SET password_hash = $1 WHERE email = $2",[hashedPassword,email])
+  const updatePassword = await pool.query("UPDATE users SET password_hash = $1 WHERE email = $2",[hashedPassword,email])
+  //checking if user was found
+  if(updatePassword.rowCount===0) return res.status(404).json({ msg: "user not found " });
     return res.json({ message: "password reset sucessfully" });
   } catch (err) {
     res.status(500).send(`internal server error ${err}`);

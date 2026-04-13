@@ -3,17 +3,11 @@ import pool from "../lib/pg/db";
 
 cron.schedule("*/3 * * * *", async () => {
   try {
-    const resolvedBets = await pool.query(
-      "SELECT status FROM bets WHERE status <> 'pending'"
-    )
-    if (resolvedBets.rowCount === 0) {
-      console.log("No bets to clear");
-      return;
-    }
-    await pool.query(
+    const deleteBet = await pool.query(
       "DELETE FROM bets WHERE status <> 'pending'"
     );
-    console.log("All bets cleared successfully");
+    if(deleteBet.rowCount === 0) return console.log("No bets to clear");
+    console.log(`All bets cleared successfully ${deleteBet.rowCount}`);
   } catch (err) {
     console.error("Error clearing bets:", err);
   }

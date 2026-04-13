@@ -33,12 +33,10 @@ catch(err){
 async function claimReward(req: Request, res: Response) {
   try{
     const {id} = jwt.verify( req.cookies.jwt,process.env.JWT_SECRET!) as {id:string};
-    const user = await pool.query("SELECT id FROM users WHERE id=$1",[id])
-    if(user.rowCount===0) return res.status(404).json({msg:"user not found"});
-    const reward = await redis.get(`rewardForUser:${id}`);
-    if(!reward) return res.status(404).json({msg:"no reward available"});
+    const wasDelete = await redis.del(`rewardForUser:${id}`);
+    if(wasDelete===0) return res.status(404).json({msg:"no reward available"});
     const updatedUser = await pool.query("UPDATE users SET coins = coins + 10, last_claim = $1 WHERE id = $2 RETURNING coins",[Date.now(),id])
-    await redis.del(`rewardForUser:${id}`);
+    if(updatedUser.rowCount===0) return res.status(404).json({msg:"user not found"});
     return res.status(200).json({message:"reward claimed",coins:updatedUser.rows[0].coins});
   }
   catch(err){
