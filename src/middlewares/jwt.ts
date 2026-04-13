@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import JWT from "jsonwebtoken";
-require("dotenv").config();
-
+import "dotenv/config";
 export default async function isAllowed(
   req: Request,
   res: Response,
@@ -21,6 +20,7 @@ export default async function isAllowed(
     (req as any).user = decode;
     next();
   } catch (err) {
+    console.error(`jwt verification failed: ${err}`)
     return res.status(401).json({ message: "Unauthorized" });
   }
 }

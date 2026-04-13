@@ -1,5 +1,4 @@
-import express, { Request, Response } from "express";
-import path from "path";
+import express from "express";
 import * as dashboardController from "../controllers/dashboard";
 //Router
 const dashboardRouter = express.Router();

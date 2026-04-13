@@ -1,11 +1,11 @@
 import { z } from "zod";
 //types
-type body ={
-  username:string,
-  email:string,
-  password:string,
-  confirmPassword:string,
-}
+type body = {
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
 //schema
 const signUpSchema = z
   .object({

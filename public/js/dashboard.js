@@ -208,29 +208,30 @@ const liveMatchesContainer = document.getElementById("live-matches");
 const upcomingMatchesContainer = document.getElementById("upcoming-matches");
 const userCoins = document.getElementById("user-coins").querySelector("h4");
 const getUser = async () => {
-    try {
-        const res = await fetch("/user");
-        const data = await res.json();
-        userCoins.textContent = `${data.coins} Coins`;
-    } catch (err) {
-        console.error(err);
-    }
-}
+  try {
+    const res = await fetch("/user");
+    const data = await res.json();
+    userCoins.textContent = `${data.coins} Coins`;
+  } catch (err) {
+    console.error(err);
+  }
+};
 getUser();
 
 function createMatchCard(data) {
   const matchCard = document.createElement("div");
-  matchCard.className = "w-[90%] mx-auto rounded-xl p-6 h-80 bg-dbPrimary hover:opacity-80 cursor-pointer transition-opacity duration-150";
-  
+  matchCard.className =
+    "w-[90%] mx-auto rounded-xl p-6 h-80 bg-dbPrimary hover:opacity-80 cursor-pointer transition-opacity duration-150";
+
   const homeTeam = data.teams.home;
   const awayTeam = data.teams.away;
-  const homeLogo = data.teamLogos.home
-  const awayLogo = data.teamLogos.away
+  const homeLogo = data.teamLogos.home;
+  const awayLogo = data.teamLogos.away;
   const homeGoals = data.goals.home;
   const awayGoals = data.goals.away;
   const leagueName = data.league.name || "LEAGUE";
-  const gameId = data.gameId
-  
+  const gameId = data.gameId;
+
   matchCard.innerHTML = `
     <div class="flex w-full justify-between items-center mt-[-15px] mb-6">
       <span class="text-dashboardfont text-xs font-bold tracking-wider uppercase">${leagueName}</span>
@@ -286,10 +287,11 @@ function createMatchCard(data) {
 
 function createUpcomingMatchCard(data) {
   const date = new Date(data.startsAt * 1000);
-  const time = `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+  const time = `${date.getHours().toString().padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`;
   const upcomingCard = document.createElement("div");
-  upcomingCard.className = "flex items-center p-6 justify-between w-[90%] h-10 rounded-lg border-l-2 border-font bg-dbPrimary mx-auto hover:opacity-80 cursor-pointer transition-opacity duration-200";
-  
+  upcomingCard.className =
+    "flex items-center p-6 justify-between w-[90%] h-10 rounded-lg border-l-2 border-font bg-dbPrimary mx-auto hover:opacity-80 cursor-pointer transition-opacity duration-200";
+
   upcomingCard.innerHTML = `
           <div>
             <p class="text-sm text-slate-50">${time}</p>
@@ -325,10 +327,12 @@ li.forEach((el) => {
   el.addEventListener("click", async () => {
     li.forEach((el) => {
       if (el.classList.contains("border-l-4")) {
-        el.classList = "text-dashboardfont font-sans text-sm h-12 w-full flex items-center gap-2 pl-4 cursor-pointer hover:transition hover:bg-white/5 hover:border-l-4 hover:border-font hover:duration-200";
+        el.classList =
+          "text-dashboardfont font-sans text-sm h-12 w-full flex items-center gap-2 pl-4 cursor-pointer hover:transition hover:bg-white/5 hover:border-l-4 hover:border-font hover:duration-200";
       }
     });
-    el.classList = "text-dashboardfont border-l-4 border-font font-sans text-sm h-12 w-full flex items-center gap-2 pl-4 cursor-pointer bg-white/5 hover:transition hover:duration-200";
+    el.classList =
+      "text-dashboardfont border-l-4 border-font font-sans text-sm h-12 w-full flex items-center gap-2 pl-4 cursor-pointer bg-white/5 hover:transition hover:duration-200";
     const leagueId = el.dataset.id;
     try {
       // Live Matches
@@ -340,14 +344,15 @@ li.forEach((el) => {
       });
       const data = await res.json();
       if (data.length > 0) {
-      liveMatchesContainer.innerHTML = "";
-      data.forEach((match) => {
-        const card = createMatchCard(match);
-        liveMatchesContainer.appendChild(card);
-      });
-    }else{
-      liveMatchesContainer.innerHTML = "<p class='text-dashboardfont text-center'>No live matches</p>";
-    }
+        liveMatchesContainer.innerHTML = "";
+        data.forEach((match) => {
+          const card = createMatchCard(match);
+          liveMatchesContainer.appendChild(card);
+        });
+      } else {
+        liveMatchesContainer.innerHTML =
+          "<p class='text-dashboardfont text-center'>No live matches</p>";
+      }
       // Upcoming Matches
       const upcomingRes = await fetch(`/fixtures/upcoming?league=${leagueId}`, {
         method: "GET",
@@ -356,14 +361,15 @@ li.forEach((el) => {
         },
       });
       const upcomingData = await upcomingRes.json();
-      if(upcomingData.length > 0){
+      if (upcomingData.length > 0) {
         upcomingMatchesContainer.innerHTML = "";
         upcomingData.forEach((match) => {
           const card = createUpcomingMatchCard(match);
           upcomingMatchesContainer.appendChild(card);
         });
-      }else{
-        upcomingMatchesContainer.innerHTML = "<p class='text-dashboardfont text-center'>No upcoming matches</p>";
+      } else {
+        upcomingMatchesContainer.innerHTML =
+          "<p class='text-dashboardfont text-center'>No upcoming matches</p>";
       }
     } catch (err) {
       console.error(err);
@@ -383,7 +389,9 @@ rewardBtn.addEventListener("click", async () => {
     const claimData = await claimResponse.json();
     if (claimResponse.ok && claimData.message === "reward claimed") {
       rewardBtn.classList.add("hidden");
-      const coinsValue = document.getElementById("user-coins").querySelector("h4");
+      const coinsValue = document
+        .getElementById("user-coins")
+        .querySelector("h4");
       coinsValue.textContent = `${claimData.coins} Coins`;
     }
     console.log(claimData.message || claimData.msg);
@@ -411,7 +419,6 @@ const checkReward = async () => {
   }
 };
 checkReward();
-
 
 document.addEventListener("click", async (e) => {
   const toggle = e.target.closest(".click-to-view-odds");

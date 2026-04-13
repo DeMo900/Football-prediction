@@ -1,7 +1,7 @@
 //hs2ue7Ce8RiGmNWv
 import mongoose from "mongoose";
 
-const userSChema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   googleId: { type: String, unique: true, sparse: true },
   username: {
     type: String,
@@ -18,6 +18,6 @@ const userSChema = new mongoose.Schema({
   lastClaim: { type: Number, default: 0 },
 });
 
-const User = mongoose.model("User", userSChema);
+const User = mongoose.model("User", userSchema);
 
 export default User;

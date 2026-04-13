@@ -30,7 +30,7 @@ interface FetchedData {
 async function resolveBet(
   fetchedData: FetchedData,
   filteredBets: Bet[],
-  gameId: string
+  gameId: string,
 ) {
   const gameStatus = fetchedData.fixture.status.short;
   const finishedStatuses = ["FT", "AET", "PEN"];
@@ -53,15 +53,19 @@ async function resolveBet(
       if (isWin) {
         console.log(`Bet ${bet.id} won. Updating balance.`);
         await client.query("BEGIN");
-        await client.query("UPDATE bets SET status = 'won' WHERE id = $1", [bet.id]);
-        await client.query("UPDATE users SET coins = coins + $1 WHERE id = $2", [
-          bet.amount * 1.8,
-          bet.user_id,
+        await client.query("UPDATE bets SET status = 'won' WHERE id = $1", [
+          bet.id,
         ]);
+        await client.query(
+          "UPDATE users SET coins = coins + $1 WHERE id = $2",
+          [bet.amount * 1.8, bet.user_id],
+        );
         await client.query("COMMIT");
       } else {
         console.log(`Bet ${bet.id} lost.`);
-        await client.query("UPDATE bets SET status = 'lost' WHERE id = $1", [bet.id]);
+        await client.query("UPDATE bets SET status = 'lost' WHERE id = $1", [
+          bet.id,
+        ]);
       }
     } catch (err) {
       await client.query("ROLLBACK");
@@ -74,7 +78,9 @@ async function resolveBet(
 
 async function extractGameIdFromBet(): Promise<void> {
   try {
-    const result = await pool.query("SELECT * FROM bets WHERE status = 'pending'");
+    const result = await pool.query(
+      "SELECT * FROM bets WHERE status = 'pending'",
+    );
     const pendingBets: Bet[] = result.rows;
 
     if (pendingBets.length === 0) {
@@ -82,7 +88,9 @@ async function extractGameIdFromBet(): Promise<void> {
       return;
     }
 
-    const uniqueGameIds = Array.from(new Set(pendingBets.map((b) => b.game_id)));
+    const uniqueGameIds = Array.from(
+      new Set(pendingBets.map((b) => b.game_id)),
+    );
 
     for (const gameId of uniqueGameIds) {
       const response = await fetch(
@@ -90,7 +98,7 @@ async function extractGameIdFromBet(): Promise<void> {
         {
           method: "GET",
           headers: { "x-apisports-key": process.env.API_KEY! },
-        }
+        },
       );
 
       const json = await response.json();
@@ -100,21 +108,21 @@ async function extractGameIdFromBet(): Promise<void> {
       if (!gameData) {
         console.log(`No data for ${gameId}. Refunding...`);
         for (const bet of gameBets) {
-          const client = await pool.connect()
-          try{
-          await client.query("BEGIN")
-          await client.query("UPDATE users SET coins = coins + $1 WHERE id = $2", [
-            bet.amount,
-            bet.user_id,
-          ]);
-          await client.query("DELETE FROM bets WHERE id = $1", [bet.id]);
-          await client.query("COMMIT")
-        }catch(err){
-         if (client) await client.query("ROLLBACK")
+          const client = await pool.connect();
+          try {
+            await client.query("BEGIN");
+            await client.query(
+              "UPDATE users SET coins = coins + $1 WHERE id = $2",
+              [bet.amount, bet.user_id],
+            );
+            await client.query("DELETE FROM bets WHERE id = $1", [bet.id]);
+            await client.query("COMMIT");
+          } catch (err) {
+            if (client) await client.query("ROLLBACK");
             console.error(`Refund failed for bet ${bet.id}:`, err);
-        }finally{
-         if(client) client.release()
-        }
+          } finally {
+            if (client) client.release();
+          }
         }
         continue;
       }

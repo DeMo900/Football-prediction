@@ -12,7 +12,7 @@ interface GameData {
     home: string;
     away: string;
   };
-  teamsIds: {
+  teamIds: {
     home: number;
     away: number;
   };
@@ -31,15 +31,15 @@ interface GameData {
 async function getLiveGames() {
   try {
     //if (cachedData) return cachedData.response;
-    const res = await fetch(
+    const response = await fetch(
       "https://v3.football.api-sports.io/fixtures?live=all",
       {
         method: "GET",
         headers: { "x-apisports-key": process.env.API_KEY! },
       },
     );
-    const data = await res.json();
-    return data.response;
+    const apiData = await response.json();
+    return apiData.response;
   } catch (err) {
     console.log("Error fetching live games:", err);
     return null;
@@ -51,21 +51,21 @@ async function getUpcomingGames() {
     //date
     const date = new Date(); // current date
 
-    const yy = String(date.getFullYear());
-    const mm = String(date.getMonth() + 1).padStart(2, "0"); // months are 0-based
-    const dd = String(date.getDate()).padStart(2, "0");
+    const year = String(date.getFullYear());
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // months are 0-based
+    const day = String(date.getDate()).padStart(2, "0");
 
-    const formatted = `${yy}-${mm}-${dd}`;
+    const formattedDate = `${year}-${month}-${day}`;
 
-    const res = await fetch(
-      `https://v3.football.api-sports.io/fixtures?date=${formatted}`,
+    const response = await fetch(
+      `https://v3.football.api-sports.io/fixtures?date=${formattedDate}`,
       {
         method: "GET",
         headers: { "x-apisports-key": process.env.API_KEY! },
       },
     );
-    const data = await res.json();
-    return data.response;
+    const apiData = await response.json();
+    return apiData.response;
   } catch (err) {
     console.log("Error fetching live games:", err);
     return null;
@@ -91,7 +91,7 @@ async function extractUpcomingGameData() {
         home: game.teams.home.logo,
         away: game.teams.away.logo,
       },
-      teamsIds: {
+      teamIds: {
         home: game.teams.home.id,
         away: game.teams.away.id,
       },
@@ -126,11 +126,11 @@ async function extractGameData() {
         home: game.teams.home.logo,
         away: game.teams.away.logo,
       },
-      teamsIds: {
+      teamIds: {
         home: game.teams.home.id,
         away: game.teams.away.id,
       },
-      goals:{
+      goals: {
         home: game.goals.home,
         away: game.goals.away,
       },
@@ -145,7 +145,7 @@ async function extractGameData() {
 }
 //controllers
 //live
-async function liveController(req: Request, res: Response) {
+async function getLiveFixturesController(req: Request, res: Response) {
   let games = await extractGameData();
   if (!games) return null;
 
@@ -155,10 +155,10 @@ async function liveController(req: Request, res: Response) {
     );
   }
   res.send(games);
-  console.log(games)
+  console.log(games);
 }
 //upcoming
-async function upcomingController(req: Request, res: Response) {
+async function getUpcomingFixturesController(req: Request, res: Response) {
   let games = await extractUpcomingGameData();
   if (!games) return [];
   if (req.query.league) {
@@ -170,8 +170,6 @@ async function upcomingController(req: Request, res: Response) {
   res.send(games);
 }
 
-export { liveController, upcomingController };
-
-
+export { getLiveFixturesController, getUpcomingFixturesController };
 
 //GET https://v3.football.api-sports.io/predictions?fixture=FIXTURE_I

@@ -3,9 +3,9 @@ import express from "express";
 import mongoose from "mongoose";
 import path from "path";
 import currencyRouter from "./routes/currencyRoutes";
-import OauthRouter from "./routes/Oauth2.0Routes";
+import googleAuthRouter from "./routes/googleAuthRoutes";
 import fixtureRouter from "./routes/fixtureRoutes";
-import predectionRouter from "./routes/predictionRoutes";
+import predictionRouter from "./routes/predictionRoutes";
 import dashboardRouter from "./routes/dashboard";
 import authRouter from "./routes/auth";
 import cookieParser from "cookie-parser";
@@ -26,7 +26,6 @@ mongoose
     console.error("Error connecting to MongoDB:", err);
   });
 
-
 //set
 app.set("trust proxy", true);
 //rMiddleware
@@ -35,10 +34,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(process.cwd(), "public")));
 //using routes
 app.use(authRouter);
-app.use(OauthRouter);
+app.use(googleAuthRouter);
 app.use(currencyRouter);
 app.use(fixtureRouter);
-app.use(predectionRouter);
+app.use(predictionRouter);
 app.use(dashboardRouter);
 //code
 

@@ -2,7 +2,7 @@ import passport from "passport";
 import { Strategy } from "passport-google-oauth20";
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import pool from "../lib/pg/db"
+import pool from "../lib/pg/db";
 import dotenv from "dotenv";
 dotenv.config();
 //code
@@ -16,11 +16,17 @@ passport.use(
     async (accessToken, refreshToken, profile, done) => {
       // Here you would typically find or create a user in your database
       try {
-        const user = await pool.query("SELECT * FROM users WHERE google_id = $1", [profile.id]);
+        const user = await pool.query(
+          "SELECT * FROM users WHERE google_id = $1",
+          [profile.id],
+        );
         if (user.rows.length > 0) {
           return done(null, user.rows[0]);
         }
-        const newUser = await pool.query("INSERT INTO users (google_id, username, email) VALUES ($1, $2, $3) RETURNING *", [profile.id, profile.displayName, (profile.emails![0] as any).value]);
+        const newUser = await pool.query(
+          "INSERT INTO users (google_id, username, email) VALUES ($1, $2, $3) RETURNING *",
+          [profile.id, profile.displayName, (profile.emails![0] as any).value],
+        );
         return done(null, newUser.rows[0]);
       } catch (err) {
         return done(err);
