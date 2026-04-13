@@ -14,13 +14,24 @@ export async function betController(req: Request, res: Response) {
     if (req.body.amount <= 0) {
       return res.status(400).json({ msg: "Amount must be greater than zero" });
     }
-    const result = await pool.query("UPDATE users SET coins = coins - $1 WHERE id = $2 AND coins >= $1", [req.body.amount, id]);
+    const client = await pool.connect()
+    try{
+      await client.query("BEGIN")
+    const result = await client.query("UPDATE users SET coins = coins - $1 WHERE id = $2 AND coins >= $1", [req.body.amount, id]);
     if(result.rowCount === 0){
+      await client.query("ROLLBACK")
       return res.status(400).json({ msg: "Insufficient coins" });
     }
-    const newBet = await pool.query("INSERT INTO bets (game_id, user_id, predicted_result, amount) VALUES ($1, $2, $3, $4)", [req.body.gameId, id, req.body.predictedResult, req.body.amount]);
+    const newBet = await client.query("INSERT INTO bets (game_id, user_id, predicted_result, amount) VALUES ($1, $2, $3, $4)", [req.body.gameId, id, req.body.predictedResult, req.body.amount]);
+    await client.query("COMMIT")
     return res.status(201).json({ message: "Bet placed successfully" });
-  } catch (err) {
+  }catch(err){
+    await client.query("ROLLBACK")
+    throw err
+  }finally{
+    client.release()
+  }
+ } catch (err) {
     console.error(err);
     res.status(500).json({ msg: "Internal Server Error" });
   }
