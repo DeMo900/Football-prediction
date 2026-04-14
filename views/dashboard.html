@@ -89,7 +89,7 @@
         <div class="w-full flex flex-col gap-12 pb-20" id="live-matches">
           <!-- Card 1 -->
           <div
-            class="w-[90%] mx-auto rounded-xl p-6 min-h-[360px] bg-dbPrimary shadow-lg border border-white/5 flex flex-col justify-between hover:border-font/30 transition-all duration-300"
+            class="w-[90%] mx-auto rounded-xl p-6 min-h-[360px] bg-dbPrimary shadow-lg border border-white/5 flex flex-col justify-between hover:border-font/30 transition-all duration-300 live-card" data-game-id="1431836"
           >
             <!-- Top Match Details -->
             <div
@@ -116,7 +116,7 @@
                   />
                 </div>
                 <span
-                  class="text-white font-bold tracking-wide text-xs sm:text-sm lg:text-base"
+                  class="text-white font-bold tracking-wide text-xs sm:text-sm lg:text-base home-name"
                   >REAL MADRID</span
                 >
               </div>
@@ -143,7 +143,7 @@
                   />
                 </div>
                 <span
-                  class="text-white font-bold tracking-wide text-xs sm:text-sm lg:text-base"
+                  class="text-white font-bold tracking-wide text-xs sm:text-sm lg:text-base away-name"
                   >MAN CITY</span
                 >
               </div>
@@ -207,7 +207,7 @@
 
           <!-- Card 2 (Duplicate for demo) -->
           <div
-            class="w-[90%] mx-auto rounded-xl p-6 min-h-[360px] bg-dbPrimary shadow-lg border border-white/5 flex flex-col justify-between hover:border-font/30 transition-all duration-300"
+            class="w-[90%] mx-auto rounded-xl p-6 min-h-[360px] bg-dbPrimary shadow-lg border border-white/5 flex flex-col justify-between hover:border-font/30 transition-all duration-300 live-card"
           >
             <!-- Top Match Details -->
             <div
@@ -221,7 +221,7 @@
 
             <!-- Logos and Result -->
             <div
-              class="flex w-full justify-between sm:justify-center items-center gap-2 sm:gap-16 px-2 sm:px-8"
+              class="flex w-full justify-between sm:justify-center items-center gap-2 sm:gap-16 px-2 sm:px-8 teams"
             >
               <div class="flex flex-col items-center gap-3">
                 <div
@@ -234,7 +234,7 @@
                   />
                 </div>
                 <span
-                  class="text-white font-bold tracking-wide text-xs sm:text-sm lg:text-base"
+                  class="text-white font-bold tracking-wide text-xs sm:text-sm lg:text-base home-name"
                   >MAN CITY</span
                 >
               </div>
@@ -261,7 +261,7 @@
                   />
                 </div>
                 <span
-                  class="text-white font-bold tracking-wide text-xs sm:text-sm lg:text-base"
+                  class="text-white font-bold tracking-wide text-xs sm:text-sm lg:text-base away-name"
                   >REAL MADRID</span
                 >
               </div>
@@ -328,13 +328,13 @@
 
         <div class="pb-4 space-y-4" id="upcoming-matches">
           <div
-            class="flex items-center p-6 justify-between w-[90%] h-10 rounded-lg border-l-2 border-font bg-dbPrimary mx-auto hover:opacity-80 cursor-pointer transition-opacity duration-200"
+            class="flex items-center p-6 justify-between w-[90%] h-10 rounded-lg border-l-2 border-white/5 bg-dbPrimary mx-auto hover:opacity-80 cursor-pointer transition-all duration-200 live-card"
           >
             <div>
               <p class="text-sm text-slate-50">23:02</p>
             </div>
             <div>
-              <p class="text-lg text-slate-50">Real madrid vs Man city</p>
+              <p class="text-lg text-slate-50"><span class="home-name">Real madrid</span> vs <span class="away-name">Man city</span></p>
             </div>
             <div class="click-to-view-odds">
               <div
@@ -385,7 +385,7 @@
             <div class="flex justify-between items-center mb-2 pl-2">
               <span
                 class="text-font text-[10px] font-bold uppercase tracking-wider"
-                >MAN CITY VS LIVERPOOL</span
+               id="teams" >NO Game Was Selected </span
               >
               <button
                 class="text-dashboardfont hover:text-white transition-colors"
@@ -406,11 +406,14 @@
                 </svg>
               </button>
             </div>
-            <h3 class="text-white font-extrabold text-base mb-4 pl-2">
-              Man City To Win
-            </h3>
+            <div class="flex gap-4 justify-center" id="slip-pick">
+<div class="text-white bg-font/10 rounded-xl  p-2 cursor-pointer hover:bg-primary transition duration-300 winTeam" data-odds="" id="home odd">Home</div>
+<div class="text-white bg-font/10 rounded-xl  p-2 cursor-pointer hover:bg-primary transition duration-300 winTeam" data-odds="" id="draw odd">Draw</div>
+<div class="text-white bg-font/10 rounded-xl  p-2 cursor-pointer hover:bg-primary transition duration-300 winTeam" data-odds="" id="away odd">Away</div>
+<
+            </div>
             <div class="flex justify-between items-center text-xs pl-2 mt-2">
-              <span class="text-dashboardfont">Odds: 1.85</span>
+              <span class="text-dashboardfont" id="slip-odds">Odds: 1.85</span>
               <div class="flex items-center">
                 <input
                   type="number"

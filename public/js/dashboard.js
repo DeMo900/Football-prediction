@@ -220,9 +220,6 @@ getUser();
 
 function createMatchCard(data) {
   const matchCard = document.createElement("div");
-  matchCard.className =
-    "w-[90%] mx-auto rounded-xl p-6 h-80 bg-dbPrimary hover:opacity-80 cursor-pointer transition-opacity duration-150";
-
   const homeTeam = data.teams.home;
   const awayTeam = data.teams.away;
   const homeLogo = data.teamLogos.home;
@@ -231,7 +228,9 @@ function createMatchCard(data) {
   const awayGoals = data.goals.away;
   const leagueName = data.league.name || "LEAGUE";
   const gameId = data.gameId;
-
+matchCard.className =
+    "w-[90%] mx-auto rounded-xl p-6 h-80 bg-dbPrimary hover:opacity-80 cursor-pointer transition-all duration-150 live-card border border-white/5";
+matchCard.setAttribute(`data-game-id`,`${gameId}`)
   matchCard.innerHTML = `
     <div class="flex w-full justify-between items-center mt-[-15px] mb-6">
       <span class="text-dashboardfont text-xs font-bold tracking-wider uppercase">${leagueName}</span>
@@ -242,7 +241,7 @@ function createMatchCard(data) {
         <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#060F06] flex justify-center items-center">
           <img src="${homeLogo}" alt="${homeTeam}" class="w-10 h-10 sm:w-12 sm:h-12 object-contain" />
         </div>
-        <span class="text-white font-bold tracking-wide text-xs sm:text-sm lg:text-base uppercase">${homeTeam}</span>
+        <span class="text-white font-bold tracking-wide text-xs sm:text-sm lg:text-base uppercase home-name">${homeTeam}</span>
       </div>
 
       <div class="flex flex-col items-center">
@@ -254,7 +253,7 @@ function createMatchCard(data) {
         <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#060F06] flex justify-center items-center">
           <img src="${awayLogo}" alt="${awayTeam}" class="w-10 h-10 sm:w-12 sm:h-12 object-contain" />
         </div>
-        <span class="text-white font-bold tracking-wide text-xs sm:text-sm lg:text-base uppercase">${awayTeam}</span>
+        <span class="text-white font-bold tracking-wide text-xs sm:text-sm lg:text-base uppercase away-name">${awayTeam}</span>
       </div>
     </div>
 
@@ -290,14 +289,14 @@ function createUpcomingMatchCard(data) {
   const time = `${date.getHours().toString().padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`;
   const upcomingCard = document.createElement("div");
   upcomingCard.className =
-    "flex items-center p-6 justify-between w-[90%] h-10 rounded-lg border-l-2 border-font bg-dbPrimary mx-auto hover:opacity-80 cursor-pointer transition-opacity duration-200";
+    "flex items-center p-6 justify-between w-[90%] h-10 rounded-lg border-l-2 border-white/5 bg-dbPrimary mx-auto hover:opacity-80 cursor-pointer transition-all duration-200 live-card";
 
   upcomingCard.innerHTML = `
           <div>
             <p class="text-sm text-slate-50">${time}</p>
           </div>
           <div>
-            <p class="text-lg text-slate-50">${data.teams.home} vs ${data.teams.away}</p>
+            <p class="text-lg text-slate-50"><span class="home-name">${data.teams.home}</span> vs <span class="away-name">${data.teams.away}</span></p>
           </div>
           <div class="click-to-view-odds">
             <div class="flex items-center justify-center bg-[#060F06] border border-white/10 rounded-xl p-2 hover:border-font/50 cursor-pointer transition-all duration-300 group">
@@ -420,35 +419,88 @@ const checkReward = async () => {
 };
 checkReward();
 
-document.addEventListener("click", async (e) => {
-  const toggle = e.target.closest(".click-to-view-odds");
-  if (!toggle) return;
-
-  try {
-    const oddsContainer = toggle.nextElementSibling;
-    if (!oddsContainer || !oddsContainer.classList.contains("odds")) return;
-
-    toggle.classList.add("hidden");
-    oddsContainer.classList.remove("hidden");
-
-    const gameId = oddsContainer.dataset.gameId;
+async function fetchOddsasync (gameId,container){
+  try{
     const response = await fetch(`/odds?gameId=${gameId}`);
     const data = await response.json();
 
     if (response.ok) {
       const oddsData = data.odds;
-      const oddsHome = oddsContainer.querySelector(`[data-odd="home"]`);
-      const oddsDraw = oddsContainer.querySelector(`[data-odd="draw"]`);
-      const oddsAway = oddsContainer.querySelector(`[data-odd="away"]`);
+      const oddsHome = container.querySelector(`[data-odd="home"]`);
+      const oddsDraw = container.querySelector(`[data-odd="draw"]`);
+      const oddsAway = container.querySelector(`[data-odd="away"]`);
 
       if (oddsHome) oddsHome.textContent = oddsData.home;
       if (oddsDraw) oddsDraw.textContent = oddsData.draw;
       if (oddsAway) oddsAway.textContent = oddsData.away;
+      return {
+        home: oddsData.home,
+        draw: oddsData.draw,
+        away: oddsData.away,
+      }
     } else {
       console.log(data.msg);
     }
   } catch (err) {
     console.error(err);
+  }
+}
+document.addEventListener("click", async (e) => {
+  const card = e.target.closest(".live-card");
+  if (!card) return;
+
+  // Don't toggle odds if clicking the odd values themselves (to allow selecting an odd)
+  if (e.target.closest(".odds") && !e.target.closest(".click-to-view-odds")) {
+    return;
+  }
+
+  const toggle = card.querySelector(".click-to-view-odds");
+  const container = card.querySelector(".odds");
+  if (!container) return;
+
+  if (container.classList.contains("hidden")) {
+    // Show Odds
+    toggle?.classList.add("hidden");
+    container.classList.remove("hidden");
+    
+    const gameId = container.dataset.gameId;
+    const odds = await fetchOddsasync(gameId, container);
+
+    // Update Slip Title
+    const homeTeam = card.querySelector(".home-name")?.textContent || "Home";
+    const awayTeam = card.querySelector(".away-name")?.textContent || "Away";
+    const teamsSlip = document.getElementById("teams");
+    if (teamsSlip) {
+        teamsSlip.textContent = `${homeTeam} VS ${awayTeam}`;
+    }
+
+    // Highlight Card
+    if (card.classList.contains("border-white/5")) {
+        card.classList.replace("border-white/5", "border-font");
+    } else if (card.classList.contains("border-l-2") && card.classList.contains("border-white/5")) {
+         card.classList.replace("border-white/5", "border-font");
+    }
+    //update odds in slip
+    const oddsHome = document.getElementById("home odd")
+    const oddsDraw = document.getElementById("draw odd");
+    const oddsAway = document.getElementById("away odd");
+    console.log(oddsAway)
+    if (oddsHome) oddsHome.dataset.odds = odds.home;
+    if (oddsDraw) oddsDraw.dataset.odds = odds.draw;
+    if (oddsAway) oddsAway.dataset.odds = odds.away;
+  } else {
+    // Hide Odds
+    toggle?.classList.remove("hidden");
+    container.classList.add("hidden");
+
+    // Reset Selection
+    if (card.classList.contains("border-font")) {
+        card.classList.replace("border-font", "border-white/5");
+    }
+    const teamsSlip = document.getElementById("teams");
+    if (teamsSlip) {
+        teamsSlip.textContent = "NO Game Was Selected";
+    }
   }
 });
 
