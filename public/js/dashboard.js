@@ -503,7 +503,35 @@ document.addEventListener("click", async (e) => {
     }
   }
 });
-
+//clicking on the odds
+document.addEventListener("click",(e)=>{
+  const clickedElement = e.target;
+    const slipOdds = document.getElementById("slip-odds-value");
+   
+  if(clickedElement.id === "home odd" || clickedElement.id === "draw odd" || clickedElement.id === "away odd"){
+   const oddsArray = ["home odd", "draw odd", "away odd"];
+   oddsArray.forEach((odd) => {
+    const oddElement = document.getElementById(odd);
+    if (oddElement) {
+      oddElement.classList.remove("bg-font");
+      oddElement.classList.add("bg-font/10");
+      oddElement.classList.remove("selected")
+    }
+   });
+   clickedElement.classList.add("bg-font");
+   clickedElement.classList.add("selected")
+   clickedElement.classList.remove("bg-font/10");
+   slipOdds.textContent = `Odds: ${clickedElement.dataset.odds}`;
+   const payout = document.getElementById("payout");
+   payout.textContent = `${(parseFloat(clickedElement.dataset.odds) * parseFloat(stakeAmount.value)).toFixed(2)} COINS`;
+  }
+})
+//on change
+ const stakeAmount = document.getElementById("stake-amount");
+    const totalStake = document.getElementById("total-stake");
+    stakeAmount.addEventListener("input",(e)=>{
+      totalStake.textContent = `${stakeAmount.value} COINS`;
+    })
 /* 
 <li class="text-dashboardfont font-sans text-sm h-12 w-full flex items-center gap-2 pl-4 cursor-pointer hover:bg-white/5 transition duration-200 hover:border-l-4 hover:border-font">
                         <img src="/icons/ball.svg" alt="ball">

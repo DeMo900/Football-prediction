@@ -410,15 +410,16 @@
 <div class="text-white bg-font/10 rounded-xl  p-2 cursor-pointer hover:bg-primary transition duration-300 winTeam" data-odds="" id="home odd">Home</div>
 <div class="text-white bg-font/10 rounded-xl  p-2 cursor-pointer hover:bg-primary transition duration-300 winTeam" data-odds="" id="draw odd">Draw</div>
 <div class="text-white bg-font/10 rounded-xl  p-2 cursor-pointer hover:bg-primary transition duration-300 winTeam" data-odds="" id="away odd">Away</div>
-<
+
             </div>
             <div class="flex justify-between items-center text-xs pl-2 mt-2">
-              <span class="text-dashboardfont" id="slip-odds">Odds: 1.85</span>
+              <span class="text-dashboardfont" id="slip-odds-value">Odds: 1.85</span>
               <div class="flex items-center">
                 <input
                   type="number"
                   placeholder="Amount"
                   class="w-20 bg-transparent border-b border-white/20 text-white font-bold text-right outline-none focus:border-font transition-colors pb-1 mr-2 placeholder:text-dashboardfont/50 placeholder:font-normal"
+                  id="stake-amount"
                 />
                 <span class="text-font font-bold uppercase tracking-wider"
                   >TOKENS</span
@@ -435,14 +436,14 @@
               class="text-dashboardfont text-xs font-bold tracking-widest uppercase"
               >TOTAL STAKE</span
             >
-            <span class="text-white font-bold text-lg">70 Tokens</span>
+            <span class="text-white font-bold text-lg" id="total-stake"></span>
           </div>
           <div class="flex justify-between items-center mb-6">
             <span
               class="text-dashboardfont text-xs font-bold tracking-widest uppercase"
               >EST. PAYOUT</span
             >
-            <span class="text-font font-black text-xl">194.50 Tokens</span>
+            <span class="text-font font-black text-xl" id="payout"></span>
           </div>
           <button
             class="w-full bg-font text-[#060E06] font-black text-lg py-4 rounded-xl hover:bg-opacity-90 shadow-[0_0_15px_rgba(54,247,29,0.15)] transition-all duration-200"
