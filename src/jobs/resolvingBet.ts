@@ -13,6 +13,7 @@ interface Bet {
   prediction: "home" | "away" | "draw";
   status: BetStatus;
   amount: number;
+  odds: number;
 }
 
 interface FetchedData {
@@ -58,7 +59,7 @@ async function resolveBet(
         ]);
         await client.query(
           "UPDATE users SET coins = coins + $1 WHERE id = $2",
-          [bet.amount * 1.8, bet.user_id],
+          [bet.amount * bet.odds, bet.user_id],
         );
         await client.query("COMMIT");
       } else {
