@@ -423,9 +423,14 @@ async function fetchOddsasync (gameId,container){
   try{
     const response = await fetch(`/odds?gameId=${gameId}`);
     const data = await response.json();
-
+ const oddsData = data.odds;
+ const odds = {
+  home: oddsData.home,
+  draw: oddsData.draw,
+  away: oddsData.away,
+ }
     if (response.ok) {
-      const oddsData = data.odds;
+      if (container){
       const oddsHome = container.querySelector(`[data-odd="home"]`);
       const oddsDraw = container.querySelector(`[data-odd="draw"]`);
       const oddsAway = container.querySelector(`[data-odd="away"]`);
@@ -433,17 +438,13 @@ async function fetchOddsasync (gameId,container){
       if (oddsHome) oddsHome.textContent = oddsData.home;
       if (oddsDraw) oddsDraw.textContent = oddsData.draw;
       if (oddsAway) oddsAway.textContent = oddsData.away;
-      return {
-        home: oddsData.home,
-        draw: oddsData.draw,
-        away: oddsData.away,
-      }
+    return odds;
     } else {
-      console.log(data.msg);
+      return odds;
     }
-  } catch (err) {
+  }} catch (err) {
     console.error(err);
-  }
+}
 }
 document.addEventListener("click", async (e) => {
   const card = e.target.closest(".live-card");
@@ -465,7 +466,8 @@ document.addEventListener("click", async (e) => {
     
     const gameId = container.dataset.gameId;
     const odds = await fetchOddsasync(gameId, container);
-
+const submitOdd = document.getElementById("submit-bet");
+submitOdd.dataset.gameId = gameId;
     // Update Slip Title
     const homeTeam = card.querySelector(".home-name")?.textContent || "Home";
     const awayTeam = card.querySelector(".away-name")?.textContent || "Away";
@@ -504,7 +506,7 @@ document.addEventListener("click", async (e) => {
   }
 });
 //clicking on the odds
-document.addEventListener("click",(e)=>{
+document.addEventListener("click",async (e)=>{
   const clickedElement = e.target;
     const slipOdds = document.getElementById("slip-odds-value");
    
@@ -525,8 +527,44 @@ document.addEventListener("click",(e)=>{
    const payout = document.getElementById("payout");
    payout.textContent = `${(parseFloat(clickedElement.dataset.odds) * parseFloat(stakeAmount.value)).toFixed(2)} COINS`;
   }
+  if(clickedElement.id === "submit-bet"){
+    const selectedOdd = document.querySelector(".selected");
+    if(!selectedOdd){
+  clickedElement.textContent = "no odd were selected";
+  setTimeout(() => {
+  clickedElement.textContent = "CONFIRM WAGER";
+  }, 2000);
+  return;
+    } 
+    //first requirement
+    const gameId = clickedElement.dataset.gameId;
+    const liveOdds = await fetchOddsasync(gameId);
+    const team = selectedOdd.id;
+    const pickedTeam = document.getElementById(team).textContent;
+    const slice = pickedTeam.slice(1,pickedTeam.length)
+    //second requirement
+    const predictedResult = pickedTeam[0].toLowerCase() + slice
+    //third requirement 
+    const odds = liveOdds[predictedResult]
+    //fourth requirement
+      const amount = stakeAmount.value;
+const bodyObject = {
+  predictedResult,
+  odds,
+  gameId,
+  amount
+}
+//fetching bet
+const response = await fetch("/bet", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(bodyObject),
+});
+const data = await response.json();
+console.log(data)
+  }
 })
-//on change
+//on change 
  const stakeAmount = document.getElementById("stake-amount");
     const totalStake = document.getElementById("total-stake");
     stakeAmount.addEventListener("input",(e)=>{

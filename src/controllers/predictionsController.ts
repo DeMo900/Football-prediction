@@ -10,7 +10,7 @@ export async function placeBetController(req: Request, res: Response) {
       id: string;
       email: string;
     };
-
+console.log(id)
     if (req.body.amount <= 0) {
       return res.status(400).json({ msg: "Amount must be greater than zero" });
     }
@@ -26,8 +26,8 @@ export async function placeBetController(req: Request, res: Response) {
         return res.status(400).json({ msg: "Insufficient coins" });
       }
       await client.query(
-        "INSERT INTO bets (game_id, user_id, predicted_result, amount) VALUES ($1, $2, $3, $4)",
-        [req.body.gameId, id, req.body.predictedResult, req.body.amount],
+        "INSERT INTO bets (game_id, user_id, prediction, amount,odds) VALUES ($1, $2, $3, $4,$5)",
+        [req.body.gameId, id, req.body.predictedResult, req.body.amount,req.body.odds],
       );
       await client.query("COMMIT");
       return res.status(201).json({ message: "Bet placed successfully" });
