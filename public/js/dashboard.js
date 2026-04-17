@@ -229,19 +229,21 @@ function createMatchCard(data) {
   const leagueName = data.league.name || "LEAGUE";
   const gameId = data.gameId;
 matchCard.className =
-    "w-[90%] mx-auto rounded-xl p-6 h-80 bg-dbPrimary hover:opacity-80 cursor-pointer transition-all duration-150 live-card border border-white/5";
+    "w-[90%] mx-auto rounded-xl p-6 min-h-[360px] bg-dbPrimary shadow-lg border border-white/5 flex flex-col justify-between hover:border-font/30 transition-all duration-300 live-card";
 matchCard.setAttribute(`data-game-id`,`${gameId}`)
   matchCard.innerHTML = `
+    <!-- Top Match Details -->
     <div class="flex w-full justify-between items-center mt-[-15px] mb-6">
       <span class="text-dashboardfont text-xs font-bold tracking-wider uppercase">${leagueName}</span>
     </div>
 
+    <!-- Logos and Result -->
     <div class="flex w-full justify-between sm:justify-center items-center gap-2 sm:gap-16 px-2 sm:px-8">
       <div class="flex flex-col items-center gap-3">
         <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#060F06] flex justify-center items-center">
           <img src="${homeLogo}" alt="${homeTeam}" class="w-10 h-10 sm:w-12 sm:h-12 object-contain" />
         </div>
-        <span class="text-white font-bold tracking-wide text-xs sm:text-sm lg:text-base uppercase home-name">${homeTeam}</span>
+        <span class="text-white font-bold tracking-wide text-xs sm:text-sm lg:text-base home-name">${homeTeam}</span>
       </div>
 
       <div class="flex flex-col items-center">
@@ -253,12 +255,12 @@ matchCard.setAttribute(`data-game-id`,`${gameId}`)
         <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#060F06] flex justify-center items-center">
           <img src="${awayLogo}" alt="${awayTeam}" class="w-10 h-10 sm:w-12 sm:h-12 object-contain" />
         </div>
-        <span class="text-white font-bold tracking-wide text-xs sm:text-sm lg:text-base uppercase away-name">${awayTeam}</span>
+        <span class="text-white font-bold tracking-wide text-xs sm:text-sm lg:text-base away-name">${awayTeam}</span>
       </div>
     </div>
 
     <!-- Betting Odds Toggle -->
-    <div class="w-full mt-8 click-to-view-odds odds-toggle">
+    <div class="w-full mt-8 click-to-view-odds">
       <div class="flex items-center justify-center bg-[#060F06] border border-white/10 rounded-xl py-4 hover:border-font/50 cursor-pointer transition-all duration-300 group">
         <span class="text-dashboardfont text-sm font-bold group-hover:text-font transition-colors uppercase">CLICK TO VIEW ODDS</span>
       </div>
@@ -267,15 +269,15 @@ matchCard.setAttribute(`data-game-id`,`${gameId}`)
     <!-- Betting Profits (Hidden by default) -->
     <div class="hidden flex w-full justify-between gap-3 sm:gap-4 mt-8 odds" data-game-id="${gameId}">
       <div class="flex flex-1 flex-col items-center justify-center bg-[#060F06] rounded-xl py-3 hover:opacity-75 cursor-pointer transition-opacity duration-200">
-        <span class="text-dashboardfont text-[10px] sm:text-xs mb-1 uppercase">HOME</span>
+        <span class="text-dashboardfont text-[10px] sm:text-xs mb-1">HOME</span>
         <span class="text-font font-bold text-base sm:text-lg" data-odd="home">---</span>
       </div>
       <div class="flex flex-1 flex-col items-center justify-center bg-[#060F06] rounded-xl py-3 hover:opacity-75 cursor-pointer transition-opacity duration-200">
-        <span class="text-dashboardfont text-[10px] sm:text-xs mb-1 uppercase">DRAW</span>
+        <span class="text-dashboardfont text-[10px] sm:text-xs mb-1">DRAW</span>
         <span class="text-font font-bold text-base sm:text-lg" data-odd="draw">---</span>
       </div>
       <div class="flex flex-1 flex-col items-center justify-center bg-[#060F06] rounded-xl py-3 hover:opacity-75 cursor-pointer transition-opacity duration-200">
-        <span class="text-dashboardfont text-[10px] sm:text-xs mb-1 uppercase">AWAY</span>
+        <span class="text-dashboardfont text-[10px] sm:text-xs mb-1">AWAY</span>
         <span class="text-font font-bold text-base sm:text-lg" data-odd="away">---</span>
       </div>
     </div>
@@ -503,6 +505,8 @@ submitOdd.dataset.gameId = gameId;
     if (teamsSlip) {
         teamsSlip.textContent = "NO Game Was Selected";
     }
+    const submitOdd = document.getElementById("submit-bet");
+    if (submitOdd) delete submitOdd.dataset.gameId;
   }
 });
 //clicking on the odds
@@ -523,18 +527,37 @@ document.addEventListener("click",async (e)=>{
    clickedElement.classList.add("bg-font");
    clickedElement.classList.add("selected")
    clickedElement.classList.remove("bg-font/10");
-   slipOdds.textContent = `Odds: ${clickedElement.dataset.odds}`;
    const payout = document.getElementById("payout");
-   payout.textContent = `${(parseFloat(clickedElement.dataset.odds) * parseFloat(stakeAmount.value)).toFixed(2)} COINS`;
+   const amount = parseFloat(stakeAmount.value);
+   
+   if (!clickedElement.dataset.odds || clickedElement.dataset.odds === "") {
+     slipOdds.textContent = "Odds: ---";
+     payout.textContent = "";
+   } else {
+     slipOdds.textContent = `Odds: ${clickedElement.dataset.odds}`;
+     if (isNaN(amount)) {
+       payout.textContent = "";
+     } else {
+       payout.textContent = `${(parseFloat(clickedElement.dataset.odds) * amount).toFixed(2)} COINS`;
+     }
+   }
   }
   if(clickedElement.id === "submit-bet"){
+    if (!clickedElement.dataset.gameId) {
+      clickedElement.textContent = "no game was selected";
+      setTimeout(() => {
+        clickedElement.textContent = "CONFIRM WAGER";
+      }, 2000);
+      return;
+    }
+
     const selectedOdd = document.querySelector(".selected");
     if(!selectedOdd){
-  clickedElement.textContent = "no odd were selected";
-  setTimeout(() => {
-  clickedElement.textContent = "CONFIRM WAGER";
-  }, 2000);
-  return;
+      clickedElement.textContent = "no odd were selected";
+      setTimeout(() => {
+        clickedElement.textContent = "CONFIRM WAGER";
+      }, 2000);
+      return;
     } 
     //first requirement
     const gameId = clickedElement.dataset.gameId;
@@ -568,7 +591,20 @@ console.log(data)
  const stakeAmount = document.getElementById("stake-amount");
     const totalStake = document.getElementById("total-stake");
     stakeAmount.addEventListener("input",(e)=>{
-      totalStake.textContent = `${stakeAmount.value} COINS`;
+      const amount = parseFloat(stakeAmount.value);
+      if (isNaN(amount)) {
+        totalStake.textContent = "";
+      } else {
+        totalStake.textContent = `${stakeAmount.value} COINS`;
+      }
+      
+      const payout = document.getElementById("payout");
+      const selectedOdd = document.querySelector(".selected");
+      if (selectedOdd && !isNaN(amount) && selectedOdd.dataset.odds && selectedOdd.dataset.odds !== "") {
+        payout.textContent = `${(parseFloat(selectedOdd.dataset.odds) * amount).toFixed(2)} COINS`;
+      } else {
+        payout.textContent = "";
+      }
     })
 /* 
 <li class="text-dashboardfont font-sans text-sm h-12 w-full flex items-center gap-2 pl-4 cursor-pointer hover:bg-white/5 transition duration-200 hover:border-l-4 hover:border-font">
