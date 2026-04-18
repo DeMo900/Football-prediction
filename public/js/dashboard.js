@@ -584,7 +584,14 @@ const response = await fetch("/bet", {
   body: JSON.stringify(bodyObject),
 });
 const data = await response.json();
-console.log(data)
+if(response.ok){
+  clickedElement.textContent = data.message
+}else if(response.status === 400){
+  clickedElement.textContent = data.msg
+}
+setTimeout(() => {
+  clickedElement.textContent = "CONFIRM WAGER";
+}, 2000);
   }
 })
 //on change 
