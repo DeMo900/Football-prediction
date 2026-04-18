@@ -337,6 +337,7 @@ li.forEach((el) => {
     const leagueId = el.dataset.id;
     try {
       // Live Matches
+      liveMatchesContainer.innerHTML = "<p class='text-dashboardfont text-center'>please, wait for live matches.......</p>";
       const res = await fetch(`/fixtures/live?league=${leagueId}`, {
         method: "GET",
         headers: {
@@ -355,6 +356,7 @@ li.forEach((el) => {
           "<p class='text-dashboardfont text-center'>No live matches</p>";
       }
       // Upcoming Matches
+      upcomingMatchesContainer.innerHTML = "<p class='text-dashboardfont text-center'>please, wait for upcoming matches.......</p>";
       const upcomingRes = await fetch(`/fixtures/upcoming?league=${leagueId}`, {
         method: "GET",
         headers: {
@@ -369,6 +371,7 @@ li.forEach((el) => {
           upcomingMatchesContainer.appendChild(card);
         });
       } else {
+        console.log("no upcoming matches")
         upcomingMatchesContainer.innerHTML =
           "<p class='text-dashboardfont text-center'>No upcoming matches</p>";
       }
