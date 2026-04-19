@@ -43,10 +43,15 @@ const signupPost = async (req: Request, res: Response) => {
       [username, email, hashedPassword, ip],
     );
     return res.status(201).json({ message: "user created" });
-  } catch (error: any) {
-    if (error.code === "23505") {
+  } catch (error) {
+    type extendedError = Error & {
+      code: string;
+      constraint: string;
+    };
+    const err = error as extendedError;
+    if (err.code === "23505") {
       //extracting the field name from the constraint
-      const field = error.constraint?.includes("email") ? "email" : "username";
+      const field = err.constraint?.includes("email") ? "email" : "username";
       return res
         .status(409)
         .json({ msg: `user with same ${field} already exists` });

@@ -76,7 +76,7 @@ async function getUpcomingGames() {
 async function extractUpcomingGameData() {
   const games = await getUpcomingGames();
   if (!games) return null;
-  const extractedData: GameData[] = games.map((game: any) => {
+  const extractedData: GameData[] = games.map((game: any) => {// eslint-disable-line @typescript-eslint/no-explicit-any
     return {
       gameId: game.fixture.id,
       teams: {
@@ -103,7 +103,7 @@ async function extractUpcomingGameData() {
       startsAt: Math.floor(new Date(game.fixture.date).getTime() / 1000),
     };
   });
-  const nowSeconds = Math.floor(Date.now() / 1000);
+  const nowSeconds: number = Math.floor(Date.now() / 1000);
   const filteredData = extractedData.filter((game) => {
     return game.startsAt > nowSeconds && game.startsAt <= nowSeconds + 3600;
   });
@@ -114,7 +114,7 @@ async function extractUpcomingGameData() {
 async function extractGameData() {
   const games = await getLiveGames();
   if (!games) return null;
-  const extractedData: GameData[] = games.map((game: any) => {
+  const extractedData: GameData[] = games.map((game: any) => {// eslint-disable-line @typescript-eslint/no-explicit-any
     return {
       gameId: game.fixture.id,
       minutesElapsed: game.fixture.status.elapsed,

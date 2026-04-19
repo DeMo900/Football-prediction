@@ -17,7 +17,7 @@ export default async function isAllowed(
       id: string;
       email: string;
     };
-    (req as any).user = decode;
+    req.user = decode;
     next();
   } catch (err) {
     console.error(`jwt verification failed: ${err}`)

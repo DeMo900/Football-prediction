@@ -5,6 +5,11 @@ import jwt from "jsonwebtoken";
 import pool from "../lib/pg/db";
 import dotenv from "dotenv";
 dotenv.config();
+//interface
+interface User {
+    id: string;
+    email: string;
+}
 //code
 passport.use(
   new Strategy(
@@ -23,9 +28,11 @@ passport.use(
         if (user.rows.length > 0) {
           return done(null, user.rows[0]);
         }
+        const email = profile.emails?.[0]?.value;
+        if (!email) return done(new Error('No email from Google'));
         const newUser = await pool.query(
           "INSERT INTO users (google_id, username, email) VALUES ($1, $2, $3) RETURNING *",
-          [profile.id, profile.displayName, (profile.emails![0] as any).value],
+          [profile.id, profile.displayName, email],
         );
         return done(null, newUser.rows[0]);
       } catch (err) {
@@ -48,9 +55,10 @@ async function googleCallbackController(req: Request, res: Response) {
   if (!req.user) {
     return res.status(401).json({ message: "Authentication failed" });
   }
-
+  
+  const user: User = req.user as User;
   const token: string = jwt.sign(
-    { id: (req.user as any).id, email: (req.user as any).email },
+    { id: user.id, email: user.email },
     process.env.JWT_SECRET as string,
     { expiresIn: "1h" },
   );
