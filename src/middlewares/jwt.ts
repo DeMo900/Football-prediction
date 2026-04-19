@@ -20,7 +20,7 @@ export default async function isAllowed(
     req.user = decode;
     next();
   } catch (err) {
-    console.error(`jwt verification failed: ${err}`)
+    console.error(`jwt verification failed: ${err}`);
     return res.status(401).json({ message: "Unauthorized" });
   }
 }
