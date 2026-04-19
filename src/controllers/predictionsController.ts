@@ -1,9 +1,15 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import { validationResult } from "express-validator";
 import { redis } from "../lib/redis";
 import pool from "../lib/pg/db";
 export async function placeBetController(req: Request, res: Response) {
   try {
+    //validation
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ msg: errors.array()[0]});
+    }
     //getting the user from the cookies
     const user = req.cookies["jwt"];
     const { id } = jwt.verify(user, process.env.JWT_SECRET as string) as {
