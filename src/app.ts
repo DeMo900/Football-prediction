@@ -1,6 +1,5 @@
 //rImporting
 import express from "express";
-import mongoose from "mongoose";
 import path from "path";
 import currencyRouter from "./routes/currencyRoutes";
 import googleAuthRouter from "./routes/googleAuthRoutes";
@@ -16,16 +15,6 @@ import "./lib/pg/db";
 import dotenv from "dotenv";
 dotenv.config();
 const app = express();
-//database connection
-mongoose
-  .connect(process.env.MONGO_URL!, {})
-  .then(() => {
-    console.log("Connected to MongoDB");
-  })
-  .catch((err) => {
-    console.error("Error connecting to MongoDB:", err);
-  });
-
 //set
 app.set("trust proxy", true);
 //rMiddleware
