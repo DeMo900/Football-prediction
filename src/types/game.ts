@@ -24,3 +24,19 @@ export interface GameData {
   };
   startsAt: number;
 }
+export interface FetchedData {
+  fixture: {
+    status: {
+      short: string;
+    };
+  };
+  teams: {
+    home: { winner: boolean | null };
+    away: { winner: boolean | null };
+  };
+}
+export interface WinChances  {//needs to be moved to types
+  home: string;
+  away: string;
+  draw: string;
+};

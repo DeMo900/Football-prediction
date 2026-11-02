@@ -37,7 +37,7 @@ async function checkReward(req: Request, res: Response) {
 async function claimReward(req: Request, res: Response) {
   try {
     const { id } = jwt.verify(req.cookies.jwt, process.env.JWT_SECRET!) as {
-    id: string;
+      id: string;
     };
     const deletedCount = await redis.del(`rewardForUser:${id}`);
     if (deletedCount === 0)

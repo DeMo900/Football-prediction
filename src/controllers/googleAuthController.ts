@@ -7,8 +7,8 @@ import dotenv from "dotenv";
 dotenv.config();
 //interface
 interface User {
-    id: string;
-    email: string;
+  id: string;
+  email: string;
 }
 //code
 passport.use(
@@ -29,7 +29,7 @@ passport.use(
           return done(null, user.rows[0]);
         }
         const email = profile.emails?.[0]?.value;
-        if (!email) return done(new Error('No email from Google'));
+        if (!email) return done(new Error("No email from Google"));
         const newUser = await pool.query(
           "INSERT INTO users (google_id, username, email) VALUES ($1, $2, $3) RETURNING *",
           [profile.id, profile.displayName, email],
@@ -55,7 +55,7 @@ async function googleCallbackController(req: Request, res: Response) {
   if (!req.user) {
     return res.status(401).json({ message: "Authentication failed" });
   }
-  
+
   const user: User = req.user as User;
   const token: string = jwt.sign(
     { id: user.id, email: user.email },

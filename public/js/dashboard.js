@@ -228,9 +228,9 @@ function createMatchCard(data) {
   const awayGoals = data.goals.away;
   const leagueName = data.league.name || "LEAGUE";
   const gameId = data.gameId;
-matchCard.className =
+  matchCard.className =
     "w-[90%] mx-auto rounded-xl p-6 min-h-[360px] bg-dbPrimary shadow-lg border border-white/5 flex flex-col justify-between hover:border-font/30 transition-all duration-300 live-card";
-matchCard.setAttribute(`data-game-id`,`${gameId}`)
+  matchCard.setAttribute(`data-game-id`, `${gameId}`);
   matchCard.innerHTML = `
     <!-- Top Match Details -->
     <div class="flex w-full justify-between items-center mt-[-15px] mb-6">
@@ -337,7 +337,8 @@ li.forEach((el) => {
     const leagueId = el.dataset.id;
     try {
       // Live Matches
-      liveMatchesContainer.innerHTML = "<p class='text-dashboardfont text-center'>please, wait for live matches.......</p>";
+      liveMatchesContainer.innerHTML =
+        "<p class='text-dashboardfont text-center'>please, wait for live matches.......</p>";
       const res = await fetch(`/fixtures/live?league=${leagueId}`, {
         method: "GET",
         headers: {
@@ -356,7 +357,8 @@ li.forEach((el) => {
           "<p class='text-dashboardfont text-center'>No live matches</p>";
       }
       // Upcoming Matches
-      upcomingMatchesContainer.innerHTML = "<p class='text-dashboardfont text-center'>please, wait for upcoming matches.......</p>";
+      upcomingMatchesContainer.innerHTML =
+        "<p class='text-dashboardfont text-center'>please, wait for upcoming matches.......</p>";
       const upcomingRes = await fetch(`/fixtures/upcoming?league=${leagueId}`, {
         method: "GET",
         headers: {
@@ -371,7 +373,7 @@ li.forEach((el) => {
           upcomingMatchesContainer.appendChild(card);
         });
       } else {
-        console.log("no upcoming matches")
+        console.log("no upcoming matches");
         upcomingMatchesContainer.innerHTML =
           "<p class='text-dashboardfont text-center'>No upcoming matches</p>";
       }
@@ -424,32 +426,33 @@ const checkReward = async () => {
 };
 checkReward();
 
-async function fetchOddsasync (gameId,container){
-  try{
+async function fetchOddsasync(gameId, container) {
+  try {
     const response = await fetch(`/odds?gameId=${gameId}`);
     const data = await response.json();
- const oddsData = data.odds;
- const odds = {
-  home: oddsData.home,
-  draw: oddsData.draw,
-  away: oddsData.away,
- }
+    const oddsData = data.odds;
+    const odds = {
+      home: oddsData.home,
+      draw: oddsData.draw,
+      away: oddsData.away,
+    };
     if (response.ok) {
-      if (container){
-      const oddsHome = container.querySelector(`[data-odd="home"]`);
-      const oddsDraw = container.querySelector(`[data-odd="draw"]`);
-      const oddsAway = container.querySelector(`[data-odd="away"]`);
+      if (container) {
+        const oddsHome = container.querySelector(`[data-odd="home"]`);
+        const oddsDraw = container.querySelector(`[data-odd="draw"]`);
+        const oddsAway = container.querySelector(`[data-odd="away"]`);
 
-      if (oddsHome) oddsHome.textContent = oddsData.home;
-      if (oddsDraw) oddsDraw.textContent = oddsData.draw;
-      if (oddsAway) oddsAway.textContent = oddsData.away;
-    return odds;
-    } else {
-      return odds;
+        if (oddsHome) oddsHome.textContent = oddsData.home;
+        if (oddsDraw) oddsDraw.textContent = oddsData.draw;
+        if (oddsAway) oddsAway.textContent = oddsData.away;
+        return odds;
+      } else {
+        return odds;
+      }
     }
-  }} catch (err) {
+  } catch (err) {
     console.error(err);
-}
+  }
 }
 document.addEventListener("click", async (e) => {
   const card = e.target.closest(".live-card");
@@ -468,30 +471,33 @@ document.addEventListener("click", async (e) => {
     // Show Odds
     toggle?.classList.add("hidden");
     container.classList.remove("hidden");
-    
+
     const gameId = container.dataset.gameId;
     const odds = await fetchOddsasync(gameId, container);
-const submitOdd = document.getElementById("submit-bet");
-submitOdd.dataset.gameId = gameId;
+    const submitOdd = document.getElementById("submit-bet");
+    submitOdd.dataset.gameId = gameId;
     // Update Slip Title
     const homeTeam = card.querySelector(".home-name")?.textContent || "Home";
     const awayTeam = card.querySelector(".away-name")?.textContent || "Away";
     const teamsSlip = document.getElementById("teams");
     if (teamsSlip) {
-        teamsSlip.textContent = `${homeTeam} VS ${awayTeam}`;
+      teamsSlip.textContent = `${homeTeam} VS ${awayTeam}`;
     }
 
     // Highlight Card
     if (card.classList.contains("border-white/5")) {
-        card.classList.replace("border-white/5", "border-font");
-    } else if (card.classList.contains("border-l-2") && card.classList.contains("border-white/5")) {
-         card.classList.replace("border-white/5", "border-font");
+      card.classList.replace("border-white/5", "border-font");
+    } else if (
+      card.classList.contains("border-l-2") &&
+      card.classList.contains("border-white/5")
+    ) {
+      card.classList.replace("border-white/5", "border-font");
     }
     //update odds in slip
-    const oddsHome = document.getElementById("home odd")
+    const oddsHome = document.getElementById("home odd");
     const oddsDraw = document.getElementById("draw odd");
     const oddsAway = document.getElementById("away odd");
-    console.log(oddsAway)
+    console.log(oddsAway);
     if (oddsHome) oddsHome.dataset.odds = odds.home;
     if (oddsDraw) oddsDraw.dataset.odds = odds.draw;
     if (oddsAway) oddsAway.dataset.odds = odds.away;
@@ -502,50 +508,54 @@ submitOdd.dataset.gameId = gameId;
 
     // Reset Selection
     if (card.classList.contains("border-font")) {
-        card.classList.replace("border-font", "border-white/5");
+      card.classList.replace("border-font", "border-white/5");
     }
     const teamsSlip = document.getElementById("teams");
     if (teamsSlip) {
-        teamsSlip.textContent = "NO Game Was Selected";
+      teamsSlip.textContent = "NO Game Was Selected";
     }
     const submitOdd = document.getElementById("submit-bet");
     if (submitOdd) delete submitOdd.dataset.gameId;
   }
 });
 //clicking on the odds
-document.addEventListener("click",async (e)=>{
+document.addEventListener("click", async (e) => {
   const clickedElement = e.target;
-    const slipOdds = document.getElementById("slip-odds-value");
-   
-  if(clickedElement.id === "home odd" || clickedElement.id === "draw odd" || clickedElement.id === "away odd"){
-   const oddsArray = ["home odd", "draw odd", "away odd"];
-   oddsArray.forEach((odd) => {
-    const oddElement = document.getElementById(odd);
-    if (oddElement) {
-      oddElement.classList.remove("bg-font");
-      oddElement.classList.add("bg-font/10");
-      oddElement.classList.remove("selected")
+  const slipOdds = document.getElementById("slip-odds-value");
+
+  if (
+    clickedElement.id === "home odd" ||
+    clickedElement.id === "draw odd" ||
+    clickedElement.id === "away odd"
+  ) {
+    const oddsArray = ["home odd", "draw odd", "away odd"];
+    oddsArray.forEach((odd) => {
+      const oddElement = document.getElementById(odd);
+      if (oddElement) {
+        oddElement.classList.remove("bg-font");
+        oddElement.classList.add("bg-font/10");
+        oddElement.classList.remove("selected");
+      }
+    });
+    clickedElement.classList.add("bg-font");
+    clickedElement.classList.add("selected");
+    clickedElement.classList.remove("bg-font/10");
+    const payout = document.getElementById("payout");
+    const amount = parseFloat(stakeAmount.value);
+
+    if (!clickedElement.dataset.odds || clickedElement.dataset.odds === "") {
+      slipOdds.textContent = "Odds: ---";
+      payout.textContent = "";
+    } else {
+      slipOdds.textContent = `Odds: ${clickedElement.dataset.odds}`;
+      if (isNaN(amount)) {
+        payout.textContent = "";
+      } else {
+        payout.textContent = `${(parseFloat(clickedElement.dataset.odds) * amount).toFixed(2)} COINS`;
+      }
     }
-   });
-   clickedElement.classList.add("bg-font");
-   clickedElement.classList.add("selected")
-   clickedElement.classList.remove("bg-font/10");
-   const payout = document.getElementById("payout");
-   const amount = parseFloat(stakeAmount.value);
-   
-   if (!clickedElement.dataset.odds || clickedElement.dataset.odds === "") {
-     slipOdds.textContent = "Odds: ---";
-     payout.textContent = "";
-   } else {
-     slipOdds.textContent = `Odds: ${clickedElement.dataset.odds}`;
-     if (isNaN(amount)) {
-       payout.textContent = "";
-     } else {
-       payout.textContent = `${(parseFloat(clickedElement.dataset.odds) * amount).toFixed(2)} COINS`;
-     }
-   }
   }
-  if(clickedElement.id === "submit-bet"){
+  if (clickedElement.id === "submit-bet") {
     if (!clickedElement.dataset.gameId) {
       clickedElement.textContent = "no game was selected";
       setTimeout(() => {
@@ -555,67 +565,72 @@ document.addEventListener("click",async (e)=>{
     }
 
     const selectedOdd = document.querySelector(".selected");
-    if(!selectedOdd){
+    if (!selectedOdd) {
       clickedElement.textContent = "no odd were selected";
       setTimeout(() => {
         clickedElement.textContent = "CONFIRM WAGER";
       }, 2000);
       return;
-    } 
+    }
     //first requirement
     const gameId = clickedElement.dataset.gameId;
     const liveOdds = await fetchOddsasync(gameId);
     const team = selectedOdd.id;
     const pickedTeam = document.getElementById(team).textContent;
-    const slice = pickedTeam.slice(1,pickedTeam.length)
+    const slice = pickedTeam.slice(1, pickedTeam.length);
     //second requirement
-    const predictedResult = pickedTeam[0].toLowerCase() + slice
-    //third requirement 
-    const odds = liveOdds[predictedResult]
+    const predictedResult = pickedTeam[0].toLowerCase() + slice;
+    //third requirement
+    const odds = liveOdds[predictedResult];
     //fourth requirement
-      const amount = stakeAmount.value;
-const bodyObject = {
-  predictedResult,
-  odds,
-  gameId,
-  amount
-}
-//fetching bet
-const response = await fetch("/bet", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(bodyObject),
-});
-const data = await response.json();
-if(response.ok){
-  clickedElement.textContent = data.message
-}else if(response.status === 400){
-  clickedElement.textContent = data.msg
-}
-setTimeout(() => {
-  clickedElement.textContent = "CONFIRM WAGER";
-}, 2000);
+    const amount = stakeAmount.value;
+    const bodyObject = {
+      predictedResult,
+      odds,
+      gameId,
+      amount,
+    };
+    //fetching bet
+    const response = await fetch("/bet", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(bodyObject),
+    });
+    const data = await response.json();
+    if (response.ok) {
+      clickedElement.textContent = data.message;
+    } else if (response.status === 400) {
+      clickedElement.textContent = data.msg;
+    }
+    setTimeout(() => {
+      clickedElement.textContent = "CONFIRM WAGER";
+    }, 2000);
   }
-})
-//on change 
- const stakeAmount = document.getElementById("stake-amount");
-    const totalStake = document.getElementById("total-stake");
-    stakeAmount.addEventListener("input",(e)=>{
-      const amount = parseFloat(stakeAmount.value);
-      if (isNaN(amount)) {
-        totalStake.textContent = "";
-      } else {
-        totalStake.textContent = `${stakeAmount.value} COINS`;
-      }
-      
-      const payout = document.getElementById("payout");
-      const selectedOdd = document.querySelector(".selected");
-      if (selectedOdd && !isNaN(amount) && selectedOdd.dataset.odds && selectedOdd.dataset.odds !== "") {
-        payout.textContent = `${(parseFloat(selectedOdd.dataset.odds) * amount).toFixed(2)} COINS`;
-      } else {
-        payout.textContent = "";
-      }
-    })
+});
+//on change
+const stakeAmount = document.getElementById("stake-amount");
+const totalStake = document.getElementById("total-stake");
+stakeAmount.addEventListener("input", (e) => {
+  const amount = parseFloat(stakeAmount.value);
+  if (isNaN(amount)) {
+    totalStake.textContent = "";
+  } else {
+    totalStake.textContent = `${stakeAmount.value} COINS`;
+  }
+
+  const payout = document.getElementById("payout");
+  const selectedOdd = document.querySelector(".selected");
+  if (
+    selectedOdd &&
+    !isNaN(amount) &&
+    selectedOdd.dataset.odds &&
+    selectedOdd.dataset.odds !== ""
+  ) {
+    payout.textContent = `${(parseFloat(selectedOdd.dataset.odds) * amount).toFixed(2)} COINS`;
+  } else {
+    payout.textContent = "";
+  }
+});
 /* 
 <li class="text-dashboardfont font-sans text-sm h-12 w-full flex items-center gap-2 pl-4 cursor-pointer hover:bg-white/5 transition duration-200 hover:border-l-4 hover:border-font">
                         <img src="/icons/ball.svg" alt="ball">

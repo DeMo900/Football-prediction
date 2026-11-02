@@ -1,7 +1,5 @@
-
 import { Request, Response } from "express";
-import { GameData } from "../types/game";
-import { getLiveGames , getUpcomingGames} from "../services/football-api";
+import { getLiveGames, getUpcomingGames } from "../services/football-api";
 
 //live
 async function getLiveFixturesController(req: Request, res: Response) {

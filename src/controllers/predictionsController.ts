@@ -1,4 +1,6 @@
 import { Request, Response } from "express";
+import { WinChances } from "../types/game";
+import { fetchPredictionOdds } from "../services/football-api";
 import jwt from "jsonwebtoken";
 import { validationResult } from "express-validator";
 import { redis } from "../lib/redis";
@@ -8,7 +10,7 @@ export async function placeBetController(req: Request, res: Response) {
     //validation
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ msg: errors.array()[0]});
+      return res.status(400).json({ msg: errors.array()[0] });
     }
     //getting the user from the cookies
     const user = req.cookies["jwt"];
@@ -16,7 +18,7 @@ export async function placeBetController(req: Request, res: Response) {
       id: string;
       email: string;
     };
-console.log(id)
+    console.log(id);
     if (req.body.amount <= 0) {
       return res.status(400).json({ msg: "Amount must be greater than zero" });
     }
@@ -33,7 +35,13 @@ console.log(id)
       }
       await client.query(
         "INSERT INTO bets (game_id, user_id, prediction, amount,odds) VALUES ($1, $2, $3, $4,$5)",
-        [req.body.gameId, id, req.body.predictedResult, req.body.amount,req.body.odds],
+        [
+          req.body.gameId,
+          id,
+          req.body.predictedResult,
+          req.body.amount,
+          req.body.odds,
+        ],
       );
       await client.query("COMMIT");
       return res.status(201).json({ message: "Bet placed successfully" });
@@ -66,45 +74,6 @@ export async function leaderboardController(req: Request, res: Response) {
   }
 }
 //odds types
-type WinChances = {
-  home: string;
-  away: string;
-  draw: string;
-};
-//calculating odds
-async function fetchPredictionOdds(
-  gameId: string,
-): Promise<WinChances | { error: string }> {
-  //fetching
-  try {
-    if (!process.env.API_KEY) throw new Error("API_KEY is not set");
-    const response = await fetch(
-      `https://v3.football.api-sports.io/predictions?fixture=${gameId}`,
-      {
-        headers: {
-          "x-apisports-key": process.env.API_KEY,
-        },
-      },
-    );
-    const parsedData = await response.json();
-    if (!parsedData?.response?.[0]?.predictions?.percent) {
-      return { error: "invalid game id" };
-    }
-    const data: WinChances = parsedData.response[0].predictions.percent;
-    const home = parseFloat(data.home);
-    const away = parseFloat(data.away);
-    const draw = parseFloat(data.draw);
-    const odds: WinChances = {
-      home: home > 0 ? (1 / (home / 100)).toFixed(2) : "N/A",
-      away: away > 0 ? (1 / (away / 100)).toFixed(2) : "N/A",
-      draw: draw > 0 ? (1 / (draw / 100)).toFixed(2) : "N/A",
-    };
-    return odds;
-  } catch (err) {
-    console.error(`An error occurred while calculating odds: ${err}`);
-    return { error: "An error occurred while calculating odds" };
-  }
-}
 export async function getOddsController(req: Request, res: Response) {
   try {
     const gameId = req.query.gameId;
