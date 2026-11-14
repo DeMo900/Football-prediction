@@ -25,7 +25,7 @@ export async function placeBet(req: Request, res: Response) {
     if (req.body.amount <= 0) {
       return res.status(400).json({ msg: "Amount must be greater than zero" });
     }
-   let allOdds;
+   let allOdds:Odds;
 const cache = await redis.get(`odds for game ${gameId}`);
 if (cache) {
   allOdds = JSON.parse(cache);
@@ -36,6 +36,9 @@ if (cache) {
   await redis.set(`odds for game ${gameId}`, JSON.stringify(allOdds), { EX: 60 * 300 });
 }
 const odds = allOdds[predictedResult]
+if (typeof odds !== "number") {
+  return res.status(400).json({ msg: "Odds unavailable for this outcome" });
+}
     const client = await pool.connect();
     try {
       await client.query("BEGIN");
