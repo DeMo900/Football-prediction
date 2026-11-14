@@ -1,17 +1,13 @@
 //rImporting
 import express from "express";
 import path from "path";
-import currencyRouter from "./routes/currencyRoutes";
-import googleAuthRouter from "./routes/googleAuthRoutes";
-import fixtureRouter from "./routes/fixtureRoutes";
-import predictionRouter from "./routes/predictionRoutes";
-import dashboardRouter from "./routes/dashboard";
-import authRouter from "./routes/auth";
+import currencyRouter from "./routes/currency.routes";
+import googleAuthRouter from "./routes/google-auth.routes";
+import fixtureRouter from "./routes/fixtures.routes";
+import predictionRouter from "./routes/predictions.routes";
+import dashboardRouter from "./routes/dashboard.routes";
+import authRouter from "./routes/auth.routes";
 import cookieParser from "cookie-parser";
-import "./jobs/currencyDaily";
-import "./jobs/resolvingBet";
-import "./jobs/clearBets";
-import "./lib/pg/db";
 import dotenv from "dotenv";
 dotenv.config();
 const app = express();

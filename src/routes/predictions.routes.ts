@@ -1,6 +1,8 @@
 import express from "express";
 import { body } from "express-validator";
-import * as predictionController from "../controllers/predictionsController";
+import * as betsController from "../controllers/bets.controller";
+import * as leaderboard from "../controllers/leaderboard.controller";
+import * as oddsController from "../controllers/odds.controller";
 const predictionRouter = express.Router();
 //POST BET
 predictionRouter.post(
@@ -11,12 +13,12 @@ predictionRouter.post(
     .isIn(["home", "away", "draw"])
     .withMessage("predictedResult is required"),
   body("amount").notEmpty().isNumeric().withMessage("amount is required"),
-  predictionController.placeBetController,
+  betsController.placeBet,
 );
 //GET LEADERBOARD
 predictionRouter.get(
   "/leaderboard",
-  predictionController.leaderboardController,
+  leaderboard.getLeaderboard,
 );
-predictionRouter.get("/odds", predictionController.getOddsController);
+predictionRouter.get("/odds", oddsController.getOdds);
 export default predictionRouter;

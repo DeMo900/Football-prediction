@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { getLiveGames, getUpcomingGames } from "../services/football-api";
+import { getLiveGames, getUpcomingGames } from "../services/football-api.service";
 
 //live
-async function getLiveFixturesController(req: Request, res: Response) {
+async function getLiveFixtures(req: Request, res: Response) {
   let games = await getLiveGames();
   if (!games) return null;
 
@@ -15,7 +15,7 @@ async function getLiveFixturesController(req: Request, res: Response) {
   console.log(games);
 }
 //upcoming
-async function getUpcomingFixturesController(req: Request, res: Response) {
+async function getUpcomingFixtures(req: Request, res: Response) {
   let games = await getUpcomingGames();
   if (!games) return [];
   if (req.query.league) {
@@ -27,6 +27,6 @@ async function getUpcomingFixturesController(req: Request, res: Response) {
   res.send(games);
 }
 
-export { getLiveFixturesController, getUpcomingFixturesController };
+export { getLiveFixtures, getUpcomingFixtures };
 
 //GET https://v3.football.api-sports.io/predictions?fixture=FIXTURE_I
