@@ -1,4 +1,5 @@
-import { GameData, WinChances } from "../types/game";
+import { GameData , WinChances} from "../types/game";
+import { Odds } from "../types/odds";
 export async function getLiveGames() {
   try {
     const response = await fetch(
@@ -107,7 +108,7 @@ export async function getUpcomingGames() {
 }
 export async function fetchPredictionOdds(
   gameId: string,
-): Promise<WinChances | { error: string }> {
+): Promise<Odds | { error: string }> {
   //fetching
   try {
     if (!process.env.API_KEY) throw new Error("API_KEY is not set");
@@ -127,7 +128,7 @@ export async function fetchPredictionOdds(
     const home = parseFloat(data.home);
     const away = parseFloat(data.away);
     const draw = parseFloat(data.draw);
-    const odds: WinChances = {
+    const odds: Odds = {
       home: home > 0 ? (1 / (home / 100)).toFixed(2) : "N/A",
       away: away > 0 ? (1 / (away / 100)).toFixed(2) : "N/A",
       draw: draw > 0 ? (1 / (draw / 100)).toFixed(2) : "N/A",

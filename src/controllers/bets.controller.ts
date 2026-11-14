@@ -1,5 +1,8 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import {redis} from "../lib/redis";
+import { fetchPredictionOdds } from "../services/football-api.service";
+import { Odds } from "../types/odds";
 import { validationResult } from "express-validator";
 import pool from "../lib/pg/db";
 export async function placeBet(req: Request, res: Response) {
@@ -9,6 +12,9 @@ export async function placeBet(req: Request, res: Response) {
     if (!errors.isEmpty()) {
       return res.status(400).json({ msg: errors.array()[0] });
     }
+    const predictedResult : "home" | "away" | "draw" = req.body.predictedResult
+    const gameId = req.body.gameId
+
     //getting the user from the cookies
     const user = req.cookies["jwt"];
     const { id } = jwt.verify(user, process.env.JWT_SECRET as string) as {
@@ -19,6 +25,17 @@ export async function placeBet(req: Request, res: Response) {
     if (req.body.amount <= 0) {
       return res.status(400).json({ msg: "Amount must be greater than zero" });
     }
+   let allOdds;
+const cache = await redis.get(`odds for game ${gameId}`);
+if (cache) {
+  allOdds = JSON.parse(cache);
+} else {
+  const fetched = await fetchPredictionOdds(gameId);
+  if ("error" in fetched) return res.status(400).json({ msg: fetched.error });
+  allOdds = fetched;
+  await redis.set(`odds for game ${gameId}`, JSON.stringify(allOdds), { EX: 60 * 300 });
+}
+const odds = allOdds[predictedResult]
     const client = await pool.connect();
     try {
       await client.query("BEGIN");
@@ -35,7 +52,7 @@ export async function placeBet(req: Request, res: Response) {
         [
           req.body.gameId,
           id,
-          req.body.predictedResult,
+         odds,
           req.body.amount,
           req.body.odds,
         ],
