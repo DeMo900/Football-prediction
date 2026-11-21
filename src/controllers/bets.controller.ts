@@ -35,7 +35,7 @@ if (cache) {
   allOdds = fetched;
   await redis.set(`odds for game ${gameId}`, JSON.stringify(allOdds), { EX: 60 * 300 });
 }
-const odds = allOdds[predictedResult] === "N/A"?"N/A":parseFloat(allOdds[predictedResult]);
+const odds = parseFloat(allOdds[predictedResult]);
 if (Number.isNaN(odds)) {
   return res.status(400).json({ msg: "Odds unavailable for this outcome" });
 }
