@@ -27,7 +27,7 @@ export async function resolveBet(
       if (isWin) {
         console.log(`Bet ${bet.id} won. Updating balance.`);
         await client.query("BEGIN");
-        await client.query("UPDATE bets SET status = 'won' WHERE id = $1", [
+        await client.query("UPDATE bets SET status = 'won' WHERE id = $1 AND status = 'pending' ", [
           bet.id,
         ]);
         await client.query(
@@ -37,7 +37,7 @@ export async function resolveBet(
         await client.query("COMMIT");
       } else {
         console.log(`Bet ${bet.id} lost.`);
-        await client.query("UPDATE bets SET status = 'lost' WHERE id = $1", [
+        await client.query("UPDATE bets SET status = 'lost' WHERE id = $1 AND status = 'pending' ", [
           bet.id,
         ]);
       }
