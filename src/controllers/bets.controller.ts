@@ -35,10 +35,8 @@ if (cache) {
   allOdds = fetched;
   await redis.set(`odds for game ${gameId}`, JSON.stringify(allOdds), { EX: 60 * 300 });
 }
-const odds = allOdds[predictedResult]
-if (typeof odds !== "number") {
-  return res.status(400).json({ msg: "Odds unavailable for this outcome" });
-}
+const odds = allOdds[predictedResult] === "N/A"?"N/A":parseFloat(allOdds[predictedResult]);
+
     const client = await pool.connect();
     try {
       await client.query("BEGIN");
@@ -55,9 +53,9 @@ if (typeof odds !== "number") {
         [
           req.body.gameId,
           id,
-         odds,
+          predictedResult,
           req.body.amount,
-          req.body.odds,
+          odds,
         ],
       );
       await client.query("COMMIT");
