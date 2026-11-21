@@ -8,6 +8,8 @@ import predictionRouter from "./routes/predictions.routes";
 import dashboardRouter from "./routes/dashboard.routes";
 import authRouter from "./routes/auth.routes";
 import cookieParser from "cookie-parser";
+import "./jobs/resolving-bet.job";
+import "./jobs/clear-wins.job";
 import dotenv from "dotenv";
 dotenv.config();
 const app = express();
