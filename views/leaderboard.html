@@ -1,0 +1,210 @@
+<!DOCTYPE html><html lang="en" class="dark"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VOLT BET — Weekly Leaderboard</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config" data-stitch-original-src="fdd73431d4b0dec1===../../tailwind.config.js">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'primary': '#39FF14',
+        'on-primary': '#000000',
+        'secondary': '#00F0FF',
+        'on-secondary': '#000000',
+        'tertiary': '#FF2BD6',
+        'on-tertiary': '#000000',
+        'coin': '#FFD700',
+        'on-coin': '#000000',
+        'error': '#FF3355',
+        'on-error': '#000000',
+        'surface': '#070B07',
+        'surface-container-low': '#0B110B',
+        'surface-container': '#0E160E',
+        'surface-container-high': '#151E15',
+        'on-surface': '#D1D5DB',
+        'on-surface-variant': '#9CA3AF',
+        'outline': '#40493F',
+        'outline-variant': '#2A3329',
+      },
+      borderRadius: {
+        'none': '0px',
+        'sm': '2px',
+        'DEFAULT': '2px',
+        'md': '4px',
+        'lg': '4px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '48px',
+        'page-margin': '24px',
+      },
+      fontFamily: {
+        'display': ['"JetBrains Mono"', 'sans-serif'],
+        'headline': ['"JetBrains Mono"', 'sans-serif'],
+        'title': ['"JetBrains Mono"', 'sans-serif'],
+        'body': ['"JetBrains Mono"', 'sans-serif'],
+        'label': ['"JetBrains Mono"', 'sans-serif'],
+      },
+      fontSize: {
+        'display-lg': ['40px', { lineHeight: '48px', letterSpacing: '1.6px', fontWeight: '700' }],
+        'display-lg-mobile': ['28px', { lineHeight: '36px', letterSpacing: '1.2px', fontWeight: '700' }],
+        'headline-lg': ['32px', { lineHeight: '40px', letterSpacing: '1.2px', fontWeight: '700' }],
+        'headline-md': ['24px', { lineHeight: '32px', letterSpacing: '0.8px', fontWeight: '700' }],
+        'headline-sm': ['18px', { lineHeight: '26px', letterSpacing: '0.4px', fontWeight: '700' }],
+        'title-md': ['16px', { lineHeight: '24px', letterSpacing: '0.4px', fontWeight: '700' }],
+        'body-lg': ['16px', { lineHeight: '26px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-md': ['15px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '400' }],
+        'label-lg': ['14px', { lineHeight: '20px', letterSpacing: '0.7px', fontWeight: '700' }],
+        'label-sm': ['12px', { lineHeight: '16px', letterSpacing: '0.6px', fontWeight: '500' }],
+      },
+      transitionDuration: {
+        'state-change': '120ms',
+        'surface-enter': '200ms',
+        'surface-exit': '150ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'ease-out',
+        'surface-enter': 'cubic-bezier(0.2, 0, 0, 1)',
+        'surface-exit': 'cubic-bezier(0.3, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Fira+Code:wght@400;500;700&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>
+    :root { --bg: #070B07; --surface: #0E160E; --cp-green: #39FF14; --cp-cyan: #00F0FF; --cp-magenta: #FF2BD6; --cp-yellow: #FFD700; --cp-red: #FF3355; }
+    .material-symbols-outlined { display: inline-block; width: 1em; height: 1em; line-height: 1 !important; box-sizing: content-box; overflow: hidden; white-space: nowrap; direction: ltr; vertical-align: middle; }
+    .scanlines-bg { background-image: repeating-linear-gradient(0deg, rgba(57,255,20,0.03) 0px, rgba(57,255,20,0.03) 1px, transparent 1px, transparent 3px); }
+    .card { padding: 1.5rem; border: 1px solid rgba(57,255,20,.3); background: rgba(57,255,20,.05); }
+    .button { padding: 1rem 2rem; border: 1px solid var(--cp-green); background: var(--cp-green); color: #000; font-weight: 700; box-shadow: 0 0 20px rgba(57,255,20,.5); }
+    .button--ghost { background: transparent; color: var(--cp-green); box-shadow: none; }
+    .button--ghost:hover { background: rgba(57,255,20,.1); }
+    .button:focus-visible, button:focus-visible, a:focus-visible { outline: 2px solid var(--cp-cyan); outline-offset: 3px; }
+    .neon-heading { text-shadow: 0 0 12px rgba(57,255,20,0.45); }
+    @keyframes glitch { 0% { text-shadow: 2px 0 var(--cp-magenta), -2px 0 var(--cp-cyan); } 50% { text-shadow: -2px 0 var(--cp-magenta), 2px 0 var(--cp-cyan); } 100% { text-shadow: 2px 0 var(--cp-magenta), -2px 0 var(--cp-cyan); } }
+    .glitch:hover { animation: glitch .3s steps(2) infinite; }
+    @media (prefers-reduced-motion: reduce) { .glitch:hover { animation: none !important; } }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body min-h-[1024px] scanlines-bg" data-stitch-vh="min-h-[1024px]===min-h-screen">
+  <div class="min-h-[1024px] flex flex-col" data-stitch-vh="min-h-[1024px]===min-h-screen">
+
+    <!-- Sticky Header (Shell Parity) -->
+    <header class="sticky top-0 z-40 border-b border-primary/30 bg-surface-container px-gutter-lg h-16 flex items-center justify-between gap-gutter-md">
+      <div class="flex items-center gap-gutter-lg">
+        <a href="#" class="glitch inline-flex items-center gap-gutter-sm text-primary font-headline text-headline-sm uppercase tracking-wider neon-heading">
+          <span class="material-symbols-outlined text-headline-md" aria-hidden="true">bolt</span>
+          <span data-design-text-token="headline-sm">VOLT BET</span>
+        </a>
+        <nav aria-label="Main navigation" class="hidden sm:flex items-center gap-gutter-md">
+          <a href="#" class="px-gutter-sm py-1.5 text-label-lg text-on-surface-variant hover:text-secondary uppercase">Matches</a>
+          <a href="#" class="px-gutter-sm py-1.5 text-label-lg text-on-surface-variant hover:text-secondary uppercase">Results</a>
+          <a href="#" aria-current="page" class="px-gutter-sm py-1.5 text-label-lg text-primary border-b-2 border-primary uppercase">Leaderboard</a>
+        </nav>
+      </div>
+      <div class="flex items-center gap-gutter-md">
+        <div class="min-h-[44px] px-gutter-md py-1.5 rounded-full border border-coin/60 bg-surface-container-high inline-flex items-center gap-gutter-sm">
+          <span class="material-symbols-outlined text-coin text-title-md" aria-hidden="true">monetization_on</span>
+          <span data-design-text-token="label-lg" class="text-label-lg text-coin font-bold tabular-nums">1,000.00</span>
+        </div>
+        <button type="button" aria-label="Open user profile" class="w-11 h-11 rounded-full border border-primary/50 overflow-hidden bg-surface-container-high cursor-pointer">
+          <img src="https://lh3.googleusercontent.com/aida/ALJJyrA0-Hhhvm9Gko8mobONQroe6LILu5NSqN0RnoI9bMw50MqPdSEyZ03lTGx3dl6bT7BkBtUqmr9QBYXF2VKmOOk4JcqQJBpfQH6SKc2GxX8Bv6jGjkdeBrj5c6q0JrDDzmiXpp-4ORzh8L9y4PlZG1FR0x49UwYa_LuNLu6LLnekmy0c1oiDd7atoZeC2BKnx06gH-q5w-wAv7TvCR8rKn9cbOkoWr-tUIgwtfYPFn5wwdA8C7Y" alt="V_MERCER avatar" class="w-full h-full object-cover" data-stitch-original-src="803fd2610654da84===../../images/user_avatar.jpg">
+        </button>
+      </div>
+    </header>
+
+    <main class="max-w-5xl w-full mx-auto p-gutter-lg flex flex-col gap-gutter-xl">
+      <!-- Title + Reset Chip -->
+      <div class="flex flex-wrap items-center justify-between gap-gutter-md">
+        <h1 data-design-text-token="headline-lg" class="glitch font-headline text-headline-lg text-primary uppercase neon-heading">WEEKLY LEADERBOARD</h1>
+        <span class="inline-flex items-center gap-2 px-gutter-md py-1.5 rounded-sm border border-secondary/50 bg-secondary/10 text-secondary">
+          <span class="material-symbols-outlined text-title-md" aria-hidden="true">schedule</span>
+          <span data-design-text-token="label-sm" class="text-label-sm font-bold uppercase">WINS RESET EVERY SUNDAY 00:00</span>
+        </span>
+      </div>
+
+      <!-- Top 3 Podium (Yellow, Cyan, Magenta accents) -->
+      <section aria-label="Top 3 ranked players" class="grid grid-cols-1 md:grid-cols-3 gap-gutter-lg items-end">
+        <!-- 2nd Place (Cyan) -->
+        <article class="card rounded-md border-secondary/60 flex flex-col items-center text-center gap-gutter-sm order-2 md:order-1">
+          <span data-design-text-token="label-sm" class="px-2.5 py-0.5 rounded-sm bg-secondary text-on-secondary text-label-sm font-bold uppercase">#2 // CYBER</span>
+          <h2 data-design-text-token="headline-sm" class="text-headline-sm text-secondary font-bold">ZERO_COOL</h2>
+          <p data-design-text-token="body-md" class="text-body-md text-on-surface tabular-nums">28 Wins</p>
+          <p data-design-text-token="headline-sm" class="text-headline-sm text-coin font-bold tabular-nums">9,450.00</p>
+        </article>
+
+        <!-- 1st Place (Yellow) -->
+        <article class="card rounded-md border-coin flex flex-col items-center text-center gap-gutter-sm order-1 md:order-2 md:py-gutter-xl">
+          <span class="material-symbols-outlined text-coin text-headline-lg" aria-hidden="true">workspace_premium</span>
+          <span data-design-text-token="label-sm" class="px-2.5 py-0.5 rounded-sm bg-coin text-on-coin text-label-sm font-bold uppercase">#1 // APEX</span>
+          <h2 data-design-text-token="headline-md" class="text-headline-md text-coin font-bold">LUCY_K</h2>
+          <p data-design-text-token="body-md" class="text-body-md text-on-surface tabular-nums">34 Wins</p>
+          <p data-design-text-token="headline-md" class="text-headline-md text-coin font-bold tabular-nums">12,840.00</p>
+        </article>
+
+        <!-- 3rd Place (Magenta) -->
+        <article class="card rounded-md border-tertiary/60 flex flex-col items-center text-center gap-gutter-sm order-3">
+          <span data-design-text-token="label-sm" class="px-2.5 py-0.5 rounded-sm bg-tertiary text-on-tertiary text-label-sm font-bold uppercase">#3 // NEON</span>
+          <h2 data-design-text-token="headline-sm" class="text-headline-sm text-tertiary font-bold">TAKEMURA_9</h2>
+          <p data-design-text-token="body-md" class="text-body-md text-on-surface tabular-nums">24 Wins</p>
+          <p data-design-text-token="headline-sm" class="text-headline-sm text-coin font-bold tabular-nums">7,190.00</p>
+        </article>
+      </section>
+
+      <!-- Ranked List (10 Rows) -->
+      <div data-component-id="table-standard" data-component-type="table" data-component-variant="standard" class="w-full overflow-x-auto rounded-md border border-primary/30 bg-surface-container">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="border-b border-primary/30 bg-surface-container-high">
+              <th scope="col" class="px-gutter-md py-3 text-on-surface uppercase text-label-sm">RANK</th>
+              <th scope="col" class="px-gutter-md py-3 text-on-surface uppercase text-label-sm">USERNAME</th>
+              <th scope="col" class="px-gutter-md py-3 text-on-surface uppercase text-label-sm text-right">WINS</th>
+              <th scope="col" class="px-gutter-md py-3 text-on-surface uppercase text-label-sm text-right">COINS</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-primary/15">
+            <tr><td class="px-gutter-md py-3.5 tabular-nums text-coin font-bold">#01</td><td class="px-gutter-md py-3.5 font-bold">LUCY_K</td><td class="px-gutter-md py-3.5 tabular-nums text-right text-secondary">34</td><td class="px-gutter-md py-3.5 tabular-nums text-right text-coin font-bold">12,840.00</td></tr>
+            <tr><td class="px-gutter-md py-3.5 tabular-nums text-secondary font-bold">#02</td><td class="px-gutter-md py-3.5 font-bold">ZERO_COOL</td><td class="px-gutter-md py-3.5 tabular-nums text-right text-secondary">28</td><td class="px-gutter-md py-3.5 tabular-nums text-right text-coin font-bold">9,450.00</td></tr>
+            <tr><td class="px-gutter-md py-3.5 tabular-nums text-tertiary font-bold">#03</td><td class="px-gutter-md py-3.5 font-bold">TAKEMURA_9</td><td class="px-gutter-md py-3.5 tabular-nums text-right text-secondary">24</td><td class="px-gutter-md py-3.5 tabular-nums text-right text-coin font-bold">7,190.00</td></tr>
+            <tr><td class="px-gutter-md py-3.5 tabular-nums text-on-surface-variant">#04</td><td class="px-gutter-md py-3.5">KIRA_V</td><td class="px-gutter-md py-3.5 tabular-nums text-right text-secondary">19</td><td class="px-gutter-md py-3.5 tabular-nums text-right text-coin font-bold">4,820.00</td></tr>
+            <tr><td class="px-gutter-md py-3.5 tabular-nums text-on-surface-variant">#05</td><td class="px-gutter-md py-3.5">ROGUE_NC</td><td class="px-gutter-md py-3.5 tabular-nums text-right text-secondary">17</td><td class="px-gutter-md py-3.5 tabular-nums text-right text-coin font-bold">3,910.00</td></tr>
+            <tr><td class="px-gutter-md py-3.5 tabular-nums text-on-surface-variant">#06</td><td class="px-gutter-md py-3.5">ALT_CUNNING</td><td class="px-gutter-md py-3.5 tabular-nums text-right text-secondary">16</td><td class="px-gutter-md py-3.5 tabular-nums text-right text-coin font-bold">2,740.00</td></tr>
+            <tr class="bg-primary/15 border-l-2 border-primary">
+              <td class="px-gutter-md py-3.5 tabular-nums text-primary font-bold">#07</td>
+              <td class="px-gutter-md py-3.5 text-primary font-bold">V_MERCER (YOU)</td>
+              <td class="px-gutter-md py-3.5 tabular-nums text-right text-primary font-bold">14</td>
+              <td class="px-gutter-md py-3.5 tabular-nums text-right text-coin font-bold">1,000.00</td>
+            </tr>
+            <tr><td class="px-gutter-md py-3.5 tabular-nums text-on-surface-variant">#08</td><td class="px-gutter-md py-3.5">PANAM_P</td><td class="px-gutter-md py-3.5 tabular-nums text-right text-secondary">12</td><td class="px-gutter-md py-3.5 tabular-nums text-right text-coin font-bold">940.00</td></tr>
+            <tr><td class="px-gutter-md py-3.5 tabular-nums text-on-surface-variant">#09</td><td class="px-gutter-md py-3.5">JUDY_ALV</td><td class="px-gutter-md py-3.5 tabular-nums text-right text-secondary">11</td><td class="px-gutter-md py-3.5 tabular-nums text-right text-coin font-bold">810.00</td></tr>
+            <tr><td class="px-gutter-md py-3.5 tabular-nums text-on-surface-variant">#10</td><td class="px-gutter-md py-3.5">RIVER_W</td><td class="px-gutter-md py-3.5 tabular-nums text-right text-secondary">9</td><td class="px-gutter-md py-3.5 tabular-nums text-right text-coin font-bold">620.00</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="flex justify-center">
+        <button type="button" class="button button--ghost rounded-sm font-label uppercase cursor-pointer">
+          <span data-design-text-token="label-lg" class="text-label-lg">LOAD MORE</span>
+        </button>
+      </div>
+    </main>
+  </div>
+
+
+</body></html>
