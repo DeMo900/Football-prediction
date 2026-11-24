@@ -1,129 +1,175 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login</title>
-    <link rel="stylesheet" href="/css/output.css" />
-  </head>
-  <body class="bg-primary">
-    <nav
-      class="w-full flex items-center justify-between border border-b-border/50 border-0.5 mb-4"
-    >
-      <div class="flex w-fit items-center sm:ml-32">
-        <img src="/icons/logo.png" alt="volt bet" class="w-32 -mr-8" />
-        <p class="text-white text-xl font-bold">BetVolt</p>
+<!DOCTYPE html><html lang="en" class="dark"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VOLT BET — Terminal Login</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config" data-stitch-original-src="fdd73431d4b0dec1===../../tailwind.config.js">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'primary': '#39FF14',
+        'on-primary': '#000000',
+        'secondary': '#00F0FF',
+        'on-secondary': '#000000',
+        'tertiary': '#FF2BD6',
+        'on-tertiary': '#000000',
+        'coin': '#FFD700',
+        'on-coin': '#000000',
+        'error': '#FF3355',
+        'on-error': '#000000',
+        'surface': '#070B07',
+        'surface-container-low': '#0B110B',
+        'surface-container': '#0E160E',
+        'surface-container-high': '#151E15',
+        'on-surface': '#D1D5DB',
+        'on-surface-variant': '#9CA3AF',
+        'outline': '#40493F',
+        'outline-variant': '#2A3329',
+      },
+      borderRadius: {
+        'none': '0px',
+        'sm': '2px',
+        'DEFAULT': '2px',
+        'md': '4px',
+        'lg': '4px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '48px',
+        'page-margin': '24px',
+      },
+      fontFamily: {
+        'display': ['"JetBrains Mono"', 'sans-serif'],
+        'headline': ['"JetBrains Mono"', 'sans-serif'],
+        'title': ['"JetBrains Mono"', 'sans-serif'],
+        'body': ['"JetBrains Mono"', 'sans-serif'],
+        'label': ['"JetBrains Mono"', 'sans-serif'],
+      },
+      fontSize: {
+        'display-lg': ['40px', { lineHeight: '48px', letterSpacing: '1.6px', fontWeight: '700' }],
+        'display-lg-mobile': ['28px', { lineHeight: '36px', letterSpacing: '1.2px', fontWeight: '700' }],
+        'headline-lg': ['32px', { lineHeight: '40px', letterSpacing: '1.2px', fontWeight: '700' }],
+        'headline-md': ['24px', { lineHeight: '32px', letterSpacing: '0.8px', fontWeight: '700' }],
+        'headline-sm': ['18px', { lineHeight: '26px', letterSpacing: '0.4px', fontWeight: '700' }],
+        'title-md': ['16px', { lineHeight: '24px', letterSpacing: '0.4px', fontWeight: '700' }],
+        'body-lg': ['16px', { lineHeight: '26px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-md': ['15px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '400' }],
+        'label-lg': ['14px', { lineHeight: '20px', letterSpacing: '0.7px', fontWeight: '700' }],
+        'label-sm': ['12px', { lineHeight: '16px', letterSpacing: '0.6px', fontWeight: '500' }],
+      },
+      transitionDuration: {
+        'state-change': '120ms',
+        'surface-enter': '200ms',
+        'surface-exit': '150ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'ease-out',
+        'surface-enter': 'cubic-bezier(0.2, 0, 0, 1)',
+        'surface-exit': 'cubic-bezier(0.3, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Fira+Code:wght@400;500;700&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>
+    :root { --bg: #070B07; --surface: #0E160E; --cp-green: #39FF14; --cp-cyan: #00F0FF; --cp-magenta: #FF2BD6; --cp-yellow: #FFD700; --cp-red: #FF3355; }
+    .material-symbols-outlined { display: inline-block; width: 1em; height: 1em; line-height: 1 !important; box-sizing: content-box; overflow: hidden; white-space: nowrap; direction: ltr; vertical-align: middle; }
+    .scanlines-bg { background-image: repeating-linear-gradient(0deg, rgba(57,255,20,0.03) 0px, rgba(57,255,20,0.03) 1px, transparent 1px, transparent 3px); }
+    .card { padding: 1.5rem; border: 1px solid rgba(57,255,20,.3); background: rgba(57,255,20,.05); }
+    .button { padding: 1rem 2rem; border: 1px solid var(--cp-green); background: var(--cp-green); color: #000; font-weight: 700; box-shadow: 0 0 20px rgba(57,255,20,.5); }
+    .button--ghost { background: transparent; color: var(--cp-green); box-shadow: none; }
+    .button--ghost:hover { background: rgba(57,255,20,.1); }
+    .button:focus-visible, button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid var(--cp-cyan); outline-offset: 3px; }
+    .neon-heading { text-shadow: 0 0 12px rgba(57,255,20,0.45); }
+    @keyframes glitch { 0% { text-shadow: 2px 0 var(--cp-magenta), -2px 0 var(--cp-cyan); } 50% { text-shadow: -2px 0 var(--cp-magenta), 2px 0 var(--cp-cyan); } 100% { text-shadow: 2px 0 var(--cp-magenta), -2px 0 var(--cp-cyan); } }
+    .glitch:hover { animation: glitch .3s steps(2) infinite; }
+    @media (prefers-reduced-motion: reduce) { .glitch:hover { animation: none !important; } }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body min-h-[1024px] scanlines-bg" data-stitch-vh="min-h-[1024px]===min-h-screen">
+  <div class="min-h-[1024px] grid grid-cols-1 md:grid-cols-2" data-stitch-vh="min-h-[1024px]===min-h-screen">
+
+    <!-- Left Brand / HUD Art Panel (Hidden on Mobile) -->
+    <aside class="hidden md:flex relative flex-col justify-between p-gutter-xl border-r border-primary/30 bg-surface-container overflow-hidden">
+      <img src="https://lh3.googleusercontent.com/aida/ALJJyrBDckc9HMFUzh_y9ud92vkTFkTtgiCREzqvPhMvcTv16cN6KGu21rKTPbGHLcv4Rkh0f2PaHzyIxq7jJthoQfeEoMGCDp-qNhwEauMv8ejC1tUZLjMKU0rKLdpZ4xE2sofDinTlujTqEddwoQX1k3JHkJ5jCY1UfQuybqoi0WZqVQT3b2QBPo_pwaMMxSaAykKbWZO2vvuXEnnhzM-th9izZNoxdrceFBYcSu85zRht5KGJVElKeHJ6" alt="Cyberpunk football stadium HUD" class="absolute inset-0 w-full h-full object-cover opacity-50" data-stitch-original-src="a70c50c4105b0efb===../../images/auth_hud_panel.jpg">
+      <div class="absolute inset-0 bg-surface/65"></div>
+
+      <div class="relative z-10 flex items-center gap-gutter-sm text-primary">
+        <span class="material-symbols-outlined text-headline-lg" aria-hidden="true">bolt</span>
+        <span data-design-text-token="headline-md" class="glitch font-headline text-headline-md uppercase neon-heading">VOLT BET</span>
       </div>
-      <div
-        class="w-full max-w-[84px] h-[40px] bg-bg sm:w-84 sm:mr-18 cursor-pointer flex items-center justify-center text-white rounded-lg border border-border border-1.5 hover:bg-bg/30 transition duration-250"
-      >
-        <h3 class="text-font font-bold text-sm">Help</h3>
-      </div>
-    </nav>
-    <div class="flex w-full justify-center">
-      <div class="w-full sm:w-fit">
-        <div class="w-full mx-auto sm:m-0 sm:max-w-[480px] relative">
-          <img
-            src="/icons/earth.jpg"
-            alt="earth"
-            class="relative opacity-50 w-[90%] mx-auto sm:w-[480px] sm:max-w-[480px] h-[192px] rounded-2xl"
-          />
-          <div
-            class="absolute bottom-0 left-0 w-full h-full bg-gradient-to-t from-primary to-transparent"
-          >
-            <p
-              class="text-white font-black text-[25px] sm:text-[35px] absolute bottom-14 left-8 sm:left-4"
-            >
-              Welcome Back
-            </p>
-            <p
-              class="text-font font-bold text-sm absolute bottom-10 left-8 sm:left-4"
-            >
-              Access your betting dashboard
-            </p>
-          </div>
-        </div>
-        <a href="/auth/google">
-          <button
-            type="button"
-            class="flex justify-center gap-2 items-center w-[90%] mx-auto sm:w-[480px] block mb-2 sm:mb-4 h-14 bg-white/0% text-lg text-white border border-[0.5px] border-border cursor-pointer hover:bg-bg transition duration-200 font-bold mt-4 rounded-xl"
-          >
-            <img class="w-5" src="/icons/google.png" alt="" />
-            <p>Continue With Google</p>
-          </button>
-        </a>
-        <p
-          class="flex items-center w-[90%] sm:w-full mb-4 mx-auto sm:mx-0 justify-center gap-2 text-border mt-4 sm:mt-8 before:content-[''] before:block before:h-0.5 before:w-[50%] before:bg-border after:content-[''] after:block after:h-0.5 after:w-[50%] after:bg-border"
-        >
-          OR
+
+      <div class="relative z-10 flex flex-col gap-gutter-md max-w-md">
+        <h1 data-design-text-token="display-lg" class="font-headline text-display-lg text-primary uppercase neon-heading">PREDICT. WAGER. CLIMB.</h1>
+        <p data-design-text-token="body-lg" class="text-body-lg text-on-surface">
+          Real-time match telemetry, virtual coin drops every 24 hours, and weekly Night-City leaderboard resets.
         </p>
-        <div class="w-[90%] sm:w-full mx-auto sm:mx-0">
-          <form class="w-full" action="/login">
-            <label for="email" class="text-white text-xs font-bold block"
-              >Email/username</label
-            >
-            <div class="relative mb-6 mt-2 mx-auto h-14">
-              <input
-                type="email"
-                id="email"
-                name="email"
-                class="pl-10 placeholder-border bg-input w-full sm:w-[480px] h-14 rounded-xl border border-border border-1"
-                placeholder="email@example.com"
-              />
-              <img
-                src="/icons/mail.png"
-                class="w-5 top-1/2 left-2 -translate-y-1/2 absolute"
-                alt=""
-              />
-            </div>
-            <div class="flex justify-between items-center mt-6">
-              <label for="password" class="text-white text-xs font-bold block"
-                >Password</label
-              >
-              <a href="/enteremail">
-                <p class="text-font text-xs cursor-pointer">Forgot password?</p>
-              </a>
-            </div>
-            <div class="relative mt-2">
-              <input
-                type="password"
-                id="password"
-                name="password"
-                class="pl-8 placeholder-border bg-input w-full h-14 rounded-xl border border-border border-1"
-                placeholder="••••••••"
-              />
-              <img
-                src="/icons/unlock.png"
-                class="w-5 top-1/2 left-2 -translate-y-1/2 absolute"
-                alt=""
-              />
-              <img
-                src="/icons/hide.svg"
-                id="eyeimg"
-                class="w-5 top-1/2 right-4 -translate-y-1/2 absolute"
-                alt=""
-              />
-            </div>
-            <div class="flex gap-2 mt-3 ml-1">
-              <input type="checkbox" name="rememberme" id="" />
-              <p class="text-font text-xs">Remember me for 30 days</p>
-            </div>
-            <button
-              type="submit"
-              id="loginBtn"
-              class="w-full sm:w-[480px] h-14 bg-button text-lg font-bold mt-3 sm:mt-8 rounded-xl cursor-pointer hover:bg-button/90 hover:shadow-lg hover:shadow-button/30 transition duration-200"
-            >
-              ENTER NOW
-            </button>
-            <p id="error" class="text-red-500 text-sm text-center my-4"></p>
-          </form>
-        </div>
-        <div class="flex justify-center w-full">
-          <img src="/icons/logo.png" class="w-33" alt="" />
-        </div>
       </div>
-    </div>
-    <script src="/js/eyetoggle.js"></script>
-    <script src="/js/login.js"></script>
-  </body>
-</html>
+    </aside>
+
+    <!-- Right Form Panel -->
+    <main class="flex items-center justify-center p-gutter-lg">
+      <div class="card rounded-md w-full max-w-md flex flex-col gap-gutter-lg">
+        <header class="flex flex-col gap-gutter-xs">
+          <h2 data-design-text-token="headline-md" class="glitch font-headline text-headline-md text-primary uppercase neon-heading">ACCESS TERMINAL</h2>
+          <p data-design-text-token="body-md" class="text-body-md text-on-surface-variant">Authenticate to resume match predictions.</p>
+        </header>
+
+        <form class="flex flex-col gap-gutter-md" novalidate>
+          <label class="flex flex-col gap-gutter-sm">
+            <span data-design-text-token="label-sm" class="text-label-sm text-on-surface uppercase">Username or Email</span>
+            <input type="text" placeholder="v_mercer or user@voltbet.gg" class="min-h-[44px] w-full rounded-sm border border-primary/30 bg-surface-container px-gutter-md py-2.5 text-body-md text-on-surface placeholder:text-on-surface-variant focus:border-secondary focus:ring-0">
+            <span data-design-text-token="label-sm" class="text-label-sm text-on-surface-variant">Required to locate your terminal profile.</span>
+          </label>
+
+          <div class="flex flex-col gap-gutter-sm">
+            <div class="flex items-center justify-between">
+              <label for="login-password" data-design-text-token="label-sm" class="text-label-sm text-on-surface uppercase">Password</label>
+              <a href="#" data-design-text-token="label-sm" class="text-label-sm text-secondary hover:underline">Forgot password?</a>
+            </div>
+            <div class="relative flex items-center">
+              <input id="login-password" type="password" placeholder="••••••••" class="min-h-[44px] w-full rounded-sm border border-primary/30 bg-surface-container pl-gutter-md pr-12 py-2.5 text-body-md text-on-surface placeholder:text-on-surface-variant focus:border-secondary focus:ring-0">
+              <button type="button" onclick="const i=document.getElementById(&#39;login-password&#39;); i.type=i.type===&#39;password&#39;?&#39;text&#39;:&#39;password&#39;;" aria-label="Toggle password visibility" class="absolute right-0 top-0 h-full w-11 inline-flex items-center justify-center text-on-surface-variant hover:text-secondary cursor-pointer">
+                <span class="material-symbols-outlined text-title-md" aria-hidden="true">visibility</span>
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" class="button w-full min-h-[44px] rounded-sm font-label uppercase tracking-wider cursor-pointer mt-2">
+            <span data-design-text-token="label-lg" class="text-label-lg">SIGN IN</span>
+          </button>
+
+          <button type="button" class="button button--ghost w-full min-h-[44px] rounded-sm font-label uppercase tracking-wider inline-flex items-center justify-center gap-gutter-sm cursor-pointer">
+            <span class="material-symbols-outlined text-title-md" aria-hidden="true">bolt</span>
+            <span data-design-text-token="label-lg" class="text-label-lg">Continue with Google</span>
+          </button>
+        </form>
+
+        <footer class="text-center border-t border-primary/20 pt-gutter-md">
+          <p data-design-text-token="body-md" class="text-body-md text-on-surface-variant">
+            New operator? <a href="#" class="text-secondary font-bold hover:underline">Create account</a>
+          </p>
+        </footer>
+      </div>
+    </main>
+
+  </div>
+
+
+</body></html>
