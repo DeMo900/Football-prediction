@@ -1,488 +1,549 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DashBoard</title>
-    <link rel="stylesheet" href="/css/output.css" />
-  </head>
+<!DOCTYPE html><html lang="en" class="dark"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VOLT BET — Live Match Terminal</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config" data-stitch-original-src="fdd73431d4b0dec1===../../tailwind.config.js">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'primary': '#39FF14',
+        'on-primary': '#000000',
+        'secondary': '#00F0FF',
+        'on-secondary': '#000000',
+        'tertiary': '#FF2BD6',
+        'on-tertiary': '#000000',
+        'coin': '#FFD700',
+        'on-coin': '#000000',
+        'error': '#FF3355',
+        'on-error': '#000000',
+        'surface': '#070B07',
+        'surface-container-low': '#0B110B',
+        'surface-container': '#0E160E',
+        'surface-container-high': '#151E15',
+        'on-surface': '#D1D5DB',
+        'on-surface-variant': '#9CA3AF',
+        'outline': '#40493F',
+        'outline-variant': '#2A3329',
+      },
+      borderRadius: {
+        'none': '0px',
+        'sm': '2px',
+        'DEFAULT': '2px',
+        'md': '4px',
+        'lg': '4px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '48px',
+        'page-margin': '24px',
+      },
+      fontFamily: {
+        'display': ['"JetBrains Mono"', 'sans-serif'],
+        'headline': ['"JetBrains Mono"', 'sans-serif'],
+        'title': ['"JetBrains Mono"', 'sans-serif'],
+        'body': ['"JetBrains Mono"', 'sans-serif'],
+        'label': ['"JetBrains Mono"', 'sans-serif'],
+      },
+      fontSize: {
+        'display-lg': ['40px', { lineHeight: '48px', letterSpacing: '1.6px', fontWeight: '700' }],
+        'display-lg-mobile': ['28px', { lineHeight: '36px', letterSpacing: '1.2px', fontWeight: '700' }],
+        'headline-lg': ['32px', { lineHeight: '40px', letterSpacing: '1.2px', fontWeight: '700' }],
+        'headline-md': ['24px', { lineHeight: '32px', letterSpacing: '0.8px', fontWeight: '700' }],
+        'headline-sm': ['18px', { lineHeight: '26px', letterSpacing: '0.4px', fontWeight: '700' }],
+        'title-md': ['16px', { lineHeight: '24px', letterSpacing: '0.4px', fontWeight: '700' }],
+        'body-lg': ['16px', { lineHeight: '26px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-md': ['15px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '400' }],
+        'label-lg': ['14px', { lineHeight: '20px', letterSpacing: '0.7px', fontWeight: '700' }],
+        'label-sm': ['12px', { lineHeight: '16px', letterSpacing: '0.6px', fontWeight: '500' }],
+      },
+      transitionDuration: {
+        'state-change': '120ms',
+        'surface-enter': '200ms',
+        'surface-exit': '150ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'ease-out',
+        'surface-enter': 'cubic-bezier(0.2, 0, 0, 1)',
+        'surface-exit': 'cubic-bezier(0.3, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Fira+Code:wght@400;500;700&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #070B07;
+      --surface: #0E160E;
+      --cp-green: #39FF14;
+      --cp-cyan: #00F0FF;
+      --cp-magenta: #FF2BD6;
+      --cp-yellow: #FFD700;
+      --cp-red: #FF3355;
+    }
+    .material-symbols-outlined { display: inline-block; width: 1em; height: 1em; line-height: 1 !important; box-sizing: content-box; overflow: hidden; white-space: nowrap; direction: ltr; vertical-align: middle; }
+    .scanlines-bg {
+      background-image: repeating-linear-gradient(0deg, rgba(57,255,20,0.03) 0px, rgba(57,255,20,0.03) 1px, transparent 1px, transparent 3px);
+    }
+    .card { padding: 1.5rem; border: 1px solid rgba(57,255,20,.3); background: rgba(57,255,20,.05); }
+    .button { padding: 1rem 2rem; border: 1px solid var(--cp-green); background: var(--cp-green); color: #000; font-weight: 700; box-shadow: 0 0 20px rgba(57,255,20,.5); }
+    .button--ghost { background: transparent; color: var(--cp-green); box-shadow: none; }
+    .button--ghost:hover { background: rgba(57,255,20,.1); }
+    .button:focus-visible, button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid var(--cp-cyan); outline-offset: 3px; }
+    .neon-heading { text-shadow: 0 0 12px rgba(57,255,20,0.45); }
+    .neon-score { text-shadow: 0 0 16px rgba(57,255,20,0.65); }
+    .odd-selected { border-color: var(--cp-magenta) !important; box-shadow: 0 0 14px rgba(255,43,214,0.4); background: rgba(255,43,214,0.12) !important; }
+    @keyframes glitch {
+      0% { text-shadow: 2px 0 var(--cp-magenta), -2px 0 var(--cp-cyan); }
+      50% { text-shadow: -2px 0 var(--cp-magenta), 2px 0 var(--cp-cyan); }
+      100% { text-shadow: 2px 0 var(--cp-magenta), -2px 0 var(--cp-cyan); }
+    }
+    .glitch:hover { animation: glitch .3s steps(2) infinite; }
+    @keyframes pulse-live { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+    .pulse-live { animation: pulse-live 1.4s ease-in-out infinite; }
+    @keyframes shimmer-scan {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+    .shimmer-scan {
+      background: linear-gradient(90deg, rgba(57,255,20,0.03) 25%, rgba(57,255,20,0.12) 50%, rgba(57,255,20,0.03) 75%);
+      background-size: 200% 100%;
+      animation: shimmer-scan 2s linear infinite;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .glitch:hover, .pulse-live, .shimmer-scan { animation: none !important; }
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body min-h-[1024px] scanlines-bg" data-stitch-vh="min-h-[1024px]===min-h-screen">
+  <div class="min-h-[1024px] flex flex-col" data-stitch-vh="min-h-[1024px]===min-h-screen">
 
-  <body class="bg-[#060F06]">
-    <nav
-      class="w-full flex items-center bg-[#060E06] h-20 justify-between border-b border-white/5 fixed top-0 z-50 px-6 sm:px-10"
-    >
-      <div class="flex items-center gap-10">
-        <img src="/icons/logo.png" alt="volt bet" class="w-26" />
-        <ul class="flex gap-8">
-          <li
-            class="text-dashboardfont font-sans text-sm hover:text-white cursor-pointer transition duration-200"
-          >
-            Results
-          </li>
-          <li
-            class="text-dashboardfont font-sans text-sm hover:text-white cursor-pointer transition duration-200"
-          >
-            Leaderboard
-          </li>
-        </ul>
+    <!-- Sticky Header -->
+    <header class="sticky top-0 z-40 border-b border-primary/30 bg-surface-container px-gutter-lg h-16 flex items-center justify-between gap-gutter-md">
+      <div class="flex items-center gap-gutter-lg">
+        <!-- Mobile/Tablet Hamburger -->
+        <button id="menu-toggle" type="button" aria-label="Open league navigation" class="lg:hidden inline-flex items-center justify-center w-11 h-11 rounded-sm border border-primary/30 text-primary hover:bg-primary/10 cursor-pointer">
+          <span class="material-symbols-outlined text-headline-sm" aria-hidden="true">menu</span>
+        </button>
+
+        <!-- Logo -->
+        <a href="#" class="glitch inline-flex items-center gap-gutter-sm text-primary font-headline text-headline-sm uppercase tracking-wider neon-heading">
+          <span class="material-symbols-outlined text-headline-md" aria-hidden="true">bolt</span>
+          <span data-design-text-token="headline-sm">VOLT BET</span>
+        </a>
+
+        <!-- Primary Nav -->
+        <nav aria-label="Main navigation" class="hidden sm:flex items-center gap-gutter-md">
+          <a href="#" aria-current="page" class="px-gutter-sm py-1.5 text-label-lg text-primary border-b-2 border-primary uppercase">
+            <span data-design-text-token="label-lg">Matches</span>
+          </a>
+          <a href="#" class="px-gutter-sm py-1.5 text-label-lg text-on-surface-variant hover:text-secondary uppercase transition-colors duration-state-change">
+            <span data-design-text-token="label-lg">Results</span>
+          </a>
+          <a href="#" class="px-gutter-sm py-1.5 text-label-lg text-on-surface-variant hover:text-secondary uppercase transition-colors duration-state-change">
+            <span data-design-text-token="label-lg">Leaderboard</span>
+          </a>
+        </nav>
       </div>
 
-      <div class="flex items-center gap-4 sm:gap-6">
-        <div
-          class="flex items-center bg-[#192219] border border-font/20 rounded-2xl px-6 py-2 shadow-[0_0_15px_rgba(54,247,29,0.05)] hover:border-font/40 transition-all duration-300 cursor-default"
-          id="user-coins"
-        >
-          <h4 class="text-font text-sm font-black tracking-wide">0.00</h4>
+      <!-- Right Controls: Reward Pill, Coin Balance, Avatar -->
+      <div class="flex items-center gap-gutter-sm sm:gap-gutter-md">
+        <button id="claim-reward-btn" type="button" class="pulse-live min-h-[44px] px-gutter-md py-1.5 rounded-full border border-coin bg-coin/15 text-coin hover:bg-coin hover:text-on-coin transition-colors duration-state-change inline-flex items-center gap-1.5 cursor-pointer">
+          <span class="material-symbols-outlined text-title-md" aria-hidden="true">redeem</span>
+          <span data-design-text-token="label-sm" class="text-label-sm font-bold uppercase tabular-nums">CLAIM REWARD +10</span>
+        </button>
+
+        <div class="min-h-[44px] px-gutter-md py-1.5 rounded-full border border-coin/60 bg-surface-container-high inline-flex items-center gap-gutter-sm" aria-label="Coin balance">
+          <span class="material-symbols-outlined text-coin text-title-md" aria-hidden="true">monetization_on</span>
+          <span id="coin-balance" data-design-text-token="label-lg" class="text-label-lg text-coin font-bold tabular-nums">1,000.00</span>
         </div>
 
-        <div
-          class="flex items-center gap-2 bg-font/10 border border-font/30 rounded-2xl px-4 py-1.5 cursor-pointer hover:bg-font/20 transition-all duration-300 hidden"
-          id="claim-reward"
-        >
-          <span class="relative flex h-2 w-2">
-            <span
-              class="animate-ping absolute inline-flex h-full w-full rounded-full bg-font opacity-75"
-            ></span>
-            <span
-              class="relative inline-flex rounded-full h-2 w-2 bg-font"
-            ></span>
-          </span>
-          <h4 class="text-font text-xs font-bold uppercase tracking-wider">
-            Claim Reward
-          </h4>
-        </div>
-
-        <div
-          class="w-10 h-10 rounded-full border-2 border-white/10 p-1 hover:border-font/50 transition-all duration-300 cursor-pointer overflow-hidden bg-[#192219]"
-        >
-          <img
-            src="/icons/profile.svg"
-            alt="profile"
-            class="w-full h-full object-cover"
-          />
-        </div>
+        <button type="button" aria-label="Open user profile" class="w-11 h-11 rounded-full border border-primary/50 overflow-hidden bg-surface-container-high cursor-pointer shrink-0">
+          <img src="https://lh3.googleusercontent.com/aida/ALJJyrA0-Hhhvm9Gko8mobONQroe6LILu5NSqN0RnoI9bMw50MqPdSEyZ03lTGx3dl6bT7BkBtUqmr9QBYXF2VKmOOk4JcqQJBpfQH6SKc2GxX8Bv6jGjkdeBrj5c6q0JrDDzmiXpp-4ORzh8L9y4PlZG1FR0x49UwYa_LuNLu6LLnekmy0c1oiDd7atoZeC2BKnx06gH-q5w-wAv7TvCR8rKn9cbOkoWr-tUIgwtfYPFn5wwdA8C7Y" alt="V_MERCER avatar" class="w-full h-full object-cover" data-stitch-original-src="803fd2610654da84===../../images/user_avatar.jpg">
+        </button>
       </div>
-    </nav>
+    </header>
 
-    <div
-      class="w-full h-screen grid grid-cols-[1fr_3fr_1fr] mt-20 overflow-hidden"
-    >
-      <div class="bg-dbPrimary opacity-99 pt-10 overflow-y-auto">
-        <p class="text-dashboardfont font-thin text-sm pl-8">Leagues</p>
-        <div class="w-full">
-          <ul class="w-full" id="leagues"></ul>
+    <!-- Main 3-Column Shell -->
+    <div class="flex-1 flex items-start">
+
+      <!-- Fixed Left Sidebar (Leagues) -->
+      <aside id="league-sidebar" aria-label="Football leagues" class="hidden lg:flex flex-col w-64 shrink-0 border-r border-primary/30 bg-surface-container-low min-h-[1024px] p-gutter-md gap-gutter-sm sticky top-16" data-stitch-vh="min-h-[1024px]===min-h-screen">
+        <p data-design-text-token="label-sm" class="text-label-sm text-on-surface-variant uppercase px-gutter-sm py-1">LEAGUE CHANNELS</p>
+
+        <button type="button" class="w-full min-h-[44px] px-gutter-md py-2.5 rounded-sm border-l-2 border-primary bg-primary/10 text-primary flex items-center gap-gutter-sm text-left cursor-pointer">
+          <span class="material-symbols-outlined text-title-md" aria-hidden="true">public</span>
+          <span data-design-text-token="label-lg" class="text-label-lg uppercase">All Leagues</span>
+        </button>
+
+        <button type="button" class="w-full min-h-[44px] px-gutter-md py-2.5 rounded-sm border-l-2 border-transparent text-on-surface-variant hover:text-on-surface hover:bg-primary/5 flex items-center gap-gutter-sm text-left cursor-pointer">
+          <span class="material-symbols-outlined text-title-md text-secondary" aria-hidden="true">sports_soccer</span>
+          <span data-design-text-token="body-md" class="text-body-md">Neo Premier League</span>
+        </button>
+
+        <button type="button" class="w-full min-h-[44px] px-gutter-md py-2.5 rounded-sm border-l-2 border-transparent text-on-surface-variant hover:text-on-surface hover:bg-primary/5 flex items-center gap-gutter-sm text-left cursor-pointer">
+          <span class="material-symbols-outlined text-title-md text-secondary" aria-hidden="true">trophy</span>
+          <span data-design-text-token="body-md" class="text-body-md">Cyber Champions</span>
+        </button>
+
+        <button type="button" class="w-full min-h-[44px] px-gutter-md py-2.5 rounded-sm border-l-2 border-transparent text-on-surface-variant hover:text-on-surface hover:bg-primary/5 flex items-center gap-gutter-sm text-left cursor-pointer">
+          <span class="material-symbols-outlined text-title-md text-secondary" aria-hidden="true">shield</span>
+          <span data-design-text-token="body-md" class="text-body-md">Night City Liga</span>
+        </button>
+
+        <button type="button" class="w-full min-h-[44px] px-gutter-md py-2.5 rounded-sm border-l-2 border-transparent text-on-surface-variant hover:text-on-surface hover:bg-primary/5 flex items-center gap-gutter-sm text-left cursor-pointer">
+          <span class="material-symbols-outlined text-title-md text-secondary" aria-hidden="true">bolt</span>
+          <span data-design-text-token="body-md" class="text-body-md">Kanto Division</span>
+        </button>
+
+        <button type="button" class="w-full min-h-[44px] px-gutter-md py-2.5 rounded-sm border-l-2 border-transparent text-on-surface-variant hover:text-on-surface hover:bg-primary/5 flex items-center gap-gutter-sm text-left cursor-pointer">
+          <span class="material-symbols-outlined text-title-md text-secondary" aria-hidden="true">stadium</span>
+          <span data-design-text-token="body-md" class="text-body-md">Orbital Cup</span>
+        </button>
+      </aside>
+
+      <!-- Center Match Grid -->
+      <main class="flex-1 min-w-0 p-gutter-lg flex flex-col gap-gutter-lg">
+        <div class="flex flex-wrap items-center justify-between gap-gutter-md">
+          <h1 data-design-text-token="headline-lg" class="glitch font-headline text-headline-lg text-primary uppercase neon-heading">MATCH TERMINAL</h1>
+          <span data-design-text-token="label-sm" class="text-label-sm text-secondary uppercase">FEED: SYNCED // 4 LIVE</span>
         </div>
-      </div>
 
-      <div
-        class="bg-[#060F06] pt-16 h-full overflow-y-auto pb-20 custom-scrollbar"
-      >
-        <h1
-          class="text-dashboardfont ml-10 -mt-10 mb-8 text-2xl font-bold flex items-center gap-2"
-        >
-          <div
-            class="w-3 h-3 bg-font rounded-full shadow-[0_0_8px_#36f71d] animate-pulse"
-          ></div>
-          LIVE MATCHES
-        </h1>
+        <!-- Tabs -->
+        <div data-component-id="tabs-horizontal" data-component-type="tabs" data-component-variant="horizontal">
+          <div role="tablist" aria-label="Match schedule filter" class="flex items-center gap-gutter-sm border-b border-primary/30">
+            <button role="tab" id="tab-live" aria-selected="true" aria-controls="panel-live" tabindex="0" class="min-h-[44px] px-gutter-md py-2.5 border-b-2 border-primary text-primary bg-primary/5 inline-flex items-center gap-2 cursor-pointer">
+              <span class="w-2 h-2 rounded-full bg-error pulse-live" aria-hidden="true"></span>
+              <span data-design-text-token="label-lg" class="text-label-lg uppercase">LIVE NOW</span>
+            </button>
+            <button role="tab" id="tab-soon" aria-selected="false" aria-controls="panel-soon" tabindex="-1" class="min-h-[44px] px-gutter-md py-2.5 border-b-2 border-transparent text-on-surface-variant hover:text-on-surface inline-flex items-center gap-2 cursor-pointer">
+              <span data-design-text-token="label-lg" class="text-label-lg uppercase">STARTING SOON (within 1 hour)</span>
+            </button>
+          </div>
 
-        <div class="w-full flex flex-col gap-12 pb-20" id="live-matches">
-          <!-- Card 1 -->
-          <div
-            class="w-[90%] mx-auto rounded-xl p-6 min-h-[360px] bg-dbPrimary shadow-lg border border-white/5 flex flex-col justify-between hover:border-font/30 transition-all duration-300 live-card"
-            data-game-id="1431836"
-          >
-            <!-- Top Match Details -->
-            <div
-              class="flex w-full justify-between items-center mt-[-15px] mb-6"
-            >
-              <span
-                class="text-dashboardfont text-xs font-bold tracking-wider uppercase"
-                >CHAMPIONS LEAGUE</span
-              >
-            </div>
+          <!-- LIVE NOW Panel -->
+          <div role="tabpanel" id="panel-live" aria-labelledby="tab-live" tabindex="0" class="pt-gutter-lg grid grid-cols-1 2xl:grid-cols-2 gap-gutter-lg items-stretch">
 
-            <!-- Logos and Result -->
-            <div
-              class="flex w-full justify-between sm:justify-center items-center gap-2 sm:gap-16 px-2 sm:px-8"
-            >
-              <div class="flex flex-col items-center gap-3">
-                <div
-                  class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#060F06] flex justify-center items-center"
-                >
-                  <img
-                    src="/icons/madrid.png"
-                    alt="Real Madrid"
-                    class="w-10 h-10 sm:w-12 sm:h-12 object-contain"
-                  />
+            <!-- Match Card 1 (With Selected Odd) -->
+            <article data-component-id="card-action" data-component-type="card" data-component-variant="action" class="card rounded-md flex flex-col justify-between gap-gutter-md h-full">
+              <header class="flex items-center justify-between gap-gutter-sm">
+                <div class="flex items-center gap-gutter-sm">
+                  <span class="material-symbols-outlined text-primary text-title-md" aria-hidden="true">sports_soccer</span>
+                  <span data-design-text-token="label-sm" class="text-label-sm text-on-surface-variant uppercase">NEO PREMIER LEAGUE</span>
                 </div>
-                <span
-                  class="text-white font-bold tracking-wide text-xs sm:text-sm lg:text-base home-name"
-                  >REAL MADRID</span
-                >
-              </div>
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-sm border border-error/50 bg-error/10 text-error">
+                  <span class="w-2 h-2 rounded-full bg-error pulse-live" aria-hidden="true"></span>
+                  <span data-design-text-token="label-sm" class="text-label-sm uppercase font-bold tabular-nums">LIVE 67&#39;</span>
+                </span>
+              </header>
 
-              <div class="flex flex-col items-center">
-                <span
-                  class="text-4xl sm:text-5xl font-black text-white tracking-widest whitespace-nowrap"
-                  >5 - 1</span
-                >
-                <span
-                  class="text-font text-[10px] sm:text-xs font-bold mt-2 tracking-widest whitespace-nowrap"
-                  >VIRTUAL HUB</span
-                >
-              </div>
-
-              <div class="flex flex-col items-center gap-3">
-                <div
-                  class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#060F06] flex justify-center items-center"
-                >
-                  <img
-                    src="/icons/city.png"
-                    alt="Man City"
-                    class="w-18 h-18 sm:w-20 sm:h-20 object-contain"
-                  />
+              <div class="grid grid-cols-3 items-center gap-gutter-sm py-gutter-sm">
+                <div class="flex flex-col items-start gap-1">
+                  <span class="material-symbols-outlined text-secondary text-headline-md" aria-hidden="true">shield</span>
+                  <span data-design-text-token="title-md" class="text-title-md text-on-surface font-bold">NEO TOKYO FC</span>
                 </div>
-                <span
-                  class="text-white font-bold tracking-wide text-xs sm:text-sm lg:text-base away-name"
-                  >MAN CITY</span
-                >
-              </div>
-            </div>
-
-            <!-- Betting Odds Toggle -->
-            <div class="w-full mt-8 click-to-view-odds">
-              <div
-                class="flex items-center justify-center bg-[#060F06] border border-white/10 rounded-xl py-4 hover:border-font/50 cursor-pointer transition-all duration-300 group"
-              >
-                <span
-                  class="text-dashboardfont text-sm font-bold group-hover:text-font transition-colors uppercase"
-                  >CLICK TO VIEW ODDS</span
-                >
-              </div>
-            </div>
-
-            <!-- Betting Profits (Hidden by default) -->
-            <div
-              class="hidden flex w-full justify-between gap-3 sm:gap-4 mt-8 odds"
-              data-game-id="1388233"
-            >
-              <div
-                class="flex flex-1 flex-col items-center justify-center bg-[#060F06] rounded-xl py-3 hover:opacity-75 cursor-pointer transition-opacity duration-200"
-              >
-                <span class="text-dashboardfont text-[10px] sm:text-xs mb-1"
-                  >HOME</span
-                >
-                <span
-                  class="text-font font-bold text-base sm:text-lg"
-                  data-odd="home"
-                  >1.85</span
-                >
-              </div>
-              <div
-                class="flex flex-1 flex-col items-center justify-center bg-[#060F06] rounded-xl py-3 hover:opacity-75 cursor-pointer transition-opacity duration-200"
-              >
-                <span class="text-dashboardfont text-[10px] sm:text-xs mb-1"
-                  >DRAW</span
-                >
-                <span
-                  class="text-font font-bold text-base sm:text-lg"
-                  data-odd="draw"
-                  >3.40</span
-                >
-              </div>
-              <div
-                class="flex flex-1 flex-col items-center justify-center bg-[#060F06] rounded-xl py-3 hover:opacity-75 cursor-pointer transition-opacity duration-200"
-              >
-                <span class="text-dashboardfont text-[10px] sm:text-xs mb-1"
-                  >AWAY</span
-                >
-                <span
-                  class="text-font font-bold text-base sm:text-lg"
-                  data-odd="away"
-                  >4.20</span
-                >
-              </div>
-            </div>
-          </div>
-
-          <!-- Card 2 (Duplicate for demo) -->
-          <div
-            class="w-[90%] mx-auto rounded-xl p-6 min-h-[360px] bg-dbPrimary shadow-lg border border-white/5 flex flex-col justify-between hover:border-font/30 transition-all duration-300 live-card"
-          >
-            <!-- Top Match Details -->
-            <div
-              class="flex w-full justify-between items-center mt-[-15px] mb-6"
-            >
-              <span
-                class="text-dashboardfont text-xs font-bold tracking-wider uppercase"
-                >PREMIER LEAGUE</span
-              >
-            </div>
-
-            <!-- Logos and Result -->
-            <div
-              class="flex w-full justify-between sm:justify-center items-center gap-2 sm:gap-16 px-2 sm:px-8 teams"
-            >
-              <div class="flex flex-col items-center gap-3">
-                <div
-                  class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#060F06] flex justify-center items-center"
-                >
-                  <img
-                    src="/icons/city.png"
-                    alt="Man City"
-                    class="w-18 h-18 sm:w-20 sm:h-20 object-contain"
-                  />
+                <div class="text-center">
+                  <span data-design-text-token="headline-lg" class="font-headline text-headline-lg text-primary neon-score tabular-nums">2 - 1</span>
                 </div>
-                <span
-                  class="text-white font-bold tracking-wide text-xs sm:text-sm lg:text-base home-name"
-                  >MAN CITY</span
-                >
-              </div>
-
-              <div class="flex flex-col items-center">
-                <span
-                  class="text-4xl sm:text-5xl font-black text-white tracking-widest whitespace-nowrap"
-                  >2 - 2</span
-                >
-                <span
-                  class="text-font text-[10px] sm:text-xs font-bold mt-2 tracking-widest whitespace-nowrap"
-                  >LIVE</span
-                >
-              </div>
-
-              <div class="flex flex-col items-center gap-3">
-                <div
-                  class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#060F06] flex justify-center items-center"
-                >
-                  <img
-                    src="/icons/madrid.png"
-                    alt="Real Madrid"
-                    class="w-10 h-10 sm:w-12 sm:h-12 object-contain"
-                  />
+                <div class="flex flex-col items-end gap-1">
+                  <span class="material-symbols-outlined text-tertiary text-headline-md" aria-hidden="true">security</span>
+                  <span data-design-text-token="title-md" class="text-title-md text-on-surface font-bold text-right">ARASAKA UTD</span>
                 </div>
-                <span
-                  class="text-white font-bold tracking-wide text-xs sm:text-sm lg:text-base away-name"
-                  >REAL MADRID</span
-                >
               </div>
-            </div>
 
-            <!-- Betting Odds Toggle -->
-            <div class="w-full mt-8 click-to-view-odds">
-              <div
-                class="flex items-center justify-center bg-[#060F06] border border-white/10 rounded-xl py-4 hover:border-font/50 cursor-pointer transition-all duration-300 group"
-              >
-                <span
-                  class="text-dashboardfont text-sm font-bold group-hover:text-font transition-colors uppercase"
-                  >CLICK TO VIEW ODDS</span
-                >
-              </div>
-            </div>
+              <footer class="grid grid-cols-3 gap-gutter-sm">
+                <button type="button" data-match="NEO TOKYO FC vs ARASAKA UTD" data-pick="HOME" data-odds="2.15" class="odd-btn odd-selected min-h-[44px] px-2 py-2 rounded-sm border border-tertiary text-on-surface flex flex-col items-center justify-center cursor-pointer">
+                  <span class="inline-flex items-center gap-1 text-label-sm text-tertiary font-bold uppercase">
+                    <span class="material-symbols-outlined text-label-lg" aria-hidden="true">check_circle</span>
+                    <span data-design-text-token="label-sm">HOME</span>
+                  </span>
+                  <span data-design-text-token="label-lg" class="text-label-lg text-tertiary font-bold tabular-nums">2.15</span>
+                </button>
+                <button type="button" data-match="NEO TOKYO FC vs ARASAKA UTD" data-pick="DRAW" data-odds="3.40" class="odd-btn min-h-[44px] px-2 py-2 rounded-sm border border-primary/30 bg-surface-container text-on-surface hover:border-primary flex flex-col items-center justify-center cursor-pointer">
+                  <span data-design-text-token="label-sm" class="text-label-sm text-on-surface-variant uppercase">DRAW</span>
+                  <span data-design-text-token="label-lg" class="text-label-lg text-primary font-bold tabular-nums">3.40</span>
+                </button>
+                <button type="button" data-match="NEO TOKYO FC vs ARASAKA UTD" data-pick="AWAY" data-odds="3.10" class="odd-btn min-h-[44px] px-2 py-2 rounded-sm border border-primary/30 bg-surface-container text-on-surface hover:border-primary flex flex-col items-center justify-center cursor-pointer">
+                  <span data-design-text-token="label-sm" class="text-label-sm text-on-surface-variant uppercase">AWAY</span>
+                  <span data-design-text-token="label-lg" class="text-label-lg text-primary font-bold tabular-nums">3.10</span>
+                </button>
+              </footer>
+            </article>
 
-            <!-- Betting Profits (Hidden by default) -->
-            <div
-              class="hidden flex w-full justify-between gap-3 sm:gap-4 mt-8 odds"
-              data-game-id="1388234"
-            >
-              <div
-                class="flex flex-1 flex-col items-center justify-center bg-[#060F06] rounded-xl py-3 hover:opacity-75 cursor-pointer transition-opacity duration-200"
-              >
-                <span class="text-dashboardfont text-[10px] sm:text-xs mb-1"
-                  >HOME</span
-                >
-                <span class="text-font font-bold text-base sm:text-lg" id="home"
-                  >2.10</span
-                >
+            <!-- Match Card 2 -->
+            <article data-component-id="card-action" data-component-type="card" data-component-variant="action" class="card rounded-md flex flex-col justify-between gap-gutter-md h-full">
+              <header class="flex items-center justify-between gap-gutter-sm">
+                <div class="flex items-center gap-gutter-sm">
+                  <span class="material-symbols-outlined text-primary text-title-md" aria-hidden="true">trophy</span>
+                  <span data-design-text-token="label-sm" class="text-label-sm text-on-surface-variant uppercase">CYBER CHAMPIONS</span>
+                </div>
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-sm border border-error/50 bg-error/10 text-error">
+                  <span class="w-2 h-2 rounded-full bg-error pulse-live" aria-hidden="true"></span>
+                  <span data-design-text-token="label-sm" class="text-label-sm uppercase font-bold tabular-nums">LIVE 41&#39;</span>
+                </span>
+              </header>
+
+              <div class="grid grid-cols-3 items-center gap-gutter-sm py-gutter-sm">
+                <div class="flex flex-col items-start gap-1">
+                  <span class="material-symbols-outlined text-primary text-headline-md" aria-hidden="true">hexagon</span>
+                  <span data-design-text-token="title-md" class="text-title-md text-on-surface font-bold">CHROME ATHLETIC</span>
+                </div>
+                <div class="text-center">
+                  <span data-design-text-token="headline-lg" class="font-headline text-headline-lg text-primary neon-score tabular-nums">0 - 0</span>
+                </div>
+                <div class="flex flex-col items-end gap-1">
+                  <span class="material-symbols-outlined text-coin text-headline-md" aria-hidden="true">token</span>
+                  <span data-design-text-token="title-md" class="text-title-md text-on-surface font-bold text-right">APEX ROVERS</span>
+                </div>
               </div>
-              <div
-                class="flex flex-1 flex-col items-center justify-center bg-[#060F06] rounded-xl py-3 hover:opacity-75 cursor-pointer transition-opacity duration-200"
-              >
-                <span class="text-dashboardfont text-[10px] sm:text-xs mb-1"
-                  >DRAW</span
-                >
-                <span class="text-font font-bold text-base sm:text-lg" id="draw"
-                  >3.10</span
-                >
+
+              <footer class="grid grid-cols-3 gap-gutter-sm">
+                <button type="button" data-match="CHROME ATHLETIC vs APEX ROVERS" data-pick="HOME" data-odds="1.85" class="odd-btn min-h-[44px] px-2 py-2 rounded-sm border border-primary/30 bg-surface-container text-on-surface hover:border-primary flex flex-col items-center justify-center cursor-pointer">
+                  <span data-design-text-token="label-sm" class="text-label-sm text-on-surface-variant uppercase">HOME</span>
+                  <span data-design-text-token="label-lg" class="text-label-lg text-primary font-bold tabular-nums">1.85</span>
+                </button>
+                <button type="button" data-match="CHROME ATHLETIC vs APEX ROVERS" data-pick="DRAW" data-odds="2.95" class="odd-btn min-h-[44px] px-2 py-2 rounded-sm border border-primary/30 bg-surface-container text-on-surface hover:border-primary flex flex-col items-center justify-center cursor-pointer">
+                  <span data-design-text-token="label-sm" class="text-label-sm text-on-surface-variant uppercase">DRAW</span>
+                  <span data-design-text-token="label-lg" class="text-label-lg text-primary font-bold tabular-nums">2.95</span>
+                </button>
+                <button type="button" data-match="CHROME ATHLETIC vs APEX ROVERS" data-pick="AWAY" data-odds="4.20" class="odd-btn min-h-[44px] px-2 py-2 rounded-sm border border-primary/30 bg-surface-container text-on-surface hover:border-primary flex flex-col items-center justify-center cursor-pointer">
+                  <span data-design-text-token="label-sm" class="text-label-sm text-on-surface-variant uppercase">AWAY</span>
+                  <span data-design-text-token="label-lg" class="text-label-lg text-primary font-bold tabular-nums">4.20</span>
+                </button>
+              </footer>
+            </article>
+
+            <!-- Match Card 3 (With N/A disabled odd) -->
+            <article data-component-id="card-action" data-component-type="card" data-component-variant="action" class="card rounded-md flex flex-col justify-between gap-gutter-md h-full">
+              <header class="flex items-center justify-between gap-gutter-sm">
+                <div class="flex items-center gap-gutter-sm">
+                  <span class="material-symbols-outlined text-primary text-title-md" aria-hidden="true">shield</span>
+                  <span data-design-text-token="label-sm" class="text-label-sm text-on-surface-variant uppercase">NIGHT CITY LIGA</span>
+                </div>
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-sm border border-error/50 bg-error/10 text-error">
+                  <span class="w-2 h-2 rounded-full bg-error pulse-live" aria-hidden="true"></span>
+                  <span data-design-text-token="label-sm" class="text-label-sm uppercase font-bold tabular-nums">LIVE 84&#39;</span>
+                </span>
+              </header>
+
+              <div class="grid grid-cols-3 items-center gap-gutter-sm py-gutter-sm">
+                <div class="flex flex-col items-start gap-1">
+                  <span class="material-symbols-outlined text-secondary text-headline-md" aria-hidden="true">flare</span>
+                  <span data-design-text-token="title-md" class="text-title-md text-on-surface font-bold">WATSON WRAITHS</span>
+                </div>
+                <div class="text-center">
+                  <span data-design-text-token="headline-lg" class="font-headline text-headline-lg text-primary neon-score tabular-nums">3 - 0</span>
+                </div>
+                <div class="flex flex-col items-end gap-1">
+                  <span class="material-symbols-outlined text-on-surface-variant text-headline-md" aria-hidden="true">deployed_code</span>
+                  <span data-design-text-token="title-md" class="text-title-md text-on-surface font-bold text-right">PACIFICA FC</span>
+                </div>
               </div>
-              <div
-                class="flex flex-1 flex-col items-center justify-center bg-[#060F06] rounded-xl py-3 hover:opacity-75 cursor-pointer transition-opacity duration-200"
-              >
-                <span class="text-dashboardfont text-[10px] sm:text-xs mb-1"
-                  >AWAY</span
-                >
-                <span class="text-font font-bold text-base sm:text-lg" id="away"
-                  >3.80</span
-                >
+
+              <footer class="grid grid-cols-3 gap-gutter-sm">
+                <button type="button" data-match="WATSON WRAITHS vs PACIFICA FC" data-pick="HOME" data-odds="1.05" class="odd-btn min-h-[44px] px-2 py-2 rounded-sm border border-primary/30 bg-surface-container text-on-surface hover:border-primary flex flex-col items-center justify-center cursor-pointer">
+                  <span data-design-text-token="label-sm" class="text-label-sm text-on-surface-variant uppercase">HOME</span>
+                  <span data-design-text-token="label-lg" class="text-label-lg text-primary font-bold tabular-nums">1.05</span>
+                </button>
+                <button type="button" disabled class="min-h-[44px] px-2 py-2 rounded-sm border border-outline-variant bg-surface-container-low text-on-surface-variant cursor-not-allowed flex flex-col items-center justify-center">
+                  <span data-design-text-token="label-sm" class="text-label-sm uppercase">DRAW</span>
+                  <span data-design-text-token="label-lg" class="text-label-lg uppercase">N/A</span>
+                </button>
+                <button type="button" disabled class="min-h-[44px] px-2 py-2 rounded-sm border border-outline-variant bg-surface-container-low text-on-surface-variant cursor-not-allowed flex flex-col items-center justify-center">
+                  <span data-design-text-token="label-sm" class="text-label-sm uppercase">AWAY</span>
+                  <span data-design-text-token="label-lg" class="text-label-lg uppercase">N/A</span>
+                </button>
+              </footer>
+            </article>
+
+            <!-- Loading Skeleton Card (Scanline Shimmer) -->
+            <article aria-label="Loading upcoming match telemetry" class="card rounded-md flex flex-col justify-between gap-gutter-md h-full shimmer-scan">
+              <div class="flex items-center justify-between">
+                <div class="h-4 w-32 bg-primary/15 rounded-sm"></div>
+                <div class="h-6 w-20 bg-primary/15 rounded-sm"></div>
               </div>
-            </div>
+              <div class="flex items-center justify-between py-gutter-sm">
+                <div class="h-8 w-28 bg-primary/15 rounded-sm"></div>
+                <div class="h-8 w-16 bg-primary/20 rounded-sm"></div>
+                <div class="h-8 w-28 bg-primary/15 rounded-sm"></div>
+              </div>
+              <div class="grid grid-cols-3 gap-gutter-sm">
+                <div class="h-11 bg-primary/10 rounded-sm border border-primary/20"></div>
+                <div class="h-11 bg-primary/10 rounded-sm border border-primary/20"></div>
+                <div class="h-11 bg-primary/10 rounded-sm border border-primary/20"></div>
+              </div>
+            </article>
+          </div>
+
+          <!-- STARTING SOON Panel -->
+          <div role="tabpanel" id="panel-soon" aria-labelledby="tab-soon" tabindex="0" hidden class="pt-gutter-lg grid grid-cols-1 2xl:grid-cols-2 gap-gutter-lg items-stretch">
+            <article data-component-id="card-action" data-component-type="card" data-component-variant="action" class="card rounded-md flex flex-col justify-between gap-gutter-md h-full">
+              <header class="flex items-center justify-between gap-gutter-sm">
+                <div class="flex items-center gap-gutter-sm">
+                  <span class="material-symbols-outlined text-primary text-title-md" aria-hidden="true">bolt</span>
+                  <span data-design-text-token="label-sm" class="text-label-sm text-on-surface-variant uppercase">KANTO DIVISION</span>
+                </div>
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-sm border border-secondary/50 bg-secondary/10 text-secondary">
+                  <span data-design-text-token="label-sm" class="text-label-sm uppercase font-bold tabular-nums">STARTS 18:30</span>
+                </span>
+              </header>
+              <div class="grid grid-cols-3 items-center gap-gutter-sm py-gutter-sm">
+                <span data-design-text-token="title-md" class="text-title-md text-on-surface font-bold">SHIBUYA SYNAPSE</span>
+                <span data-design-text-token="headline-md" class="font-headline text-headline-md text-secondary text-center">VS</span>
+                <span data-design-text-token="title-md" class="text-title-md text-on-surface font-bold text-right">AKIBA SPARK</span>
+              </div>
+              <footer class="grid grid-cols-3 gap-gutter-sm">
+                <button type="button" data-match="SHIBUYA SYNAPSE vs AKIBA SPARK" data-pick="HOME" data-odds="2.40" class="odd-btn min-h-[44px] px-2 py-2 rounded-sm border border-primary/30 bg-surface-container text-on-surface hover:border-primary flex flex-col items-center justify-center cursor-pointer">
+                  <span data-design-text-token="label-sm" class="text-label-sm text-on-surface-variant uppercase">HOME</span>
+                  <span data-design-text-token="label-lg" class="text-label-lg text-primary font-bold tabular-nums">2.40</span>
+                </button>
+                <button type="button" data-match="SHIBUYA SYNAPSE vs AKIBA SPARK" data-pick="DRAW" data-odds="3.25" class="odd-btn min-h-[44px] px-2 py-2 rounded-sm border border-primary/30 bg-surface-container text-on-surface hover:border-primary flex flex-col items-center justify-center cursor-pointer">
+                  <span data-design-text-token="label-sm" class="text-label-sm text-on-surface-variant uppercase">DRAW</span>
+                  <span data-design-text-token="label-lg" class="text-label-lg text-primary font-bold tabular-nums">3.25</span>
+                </button>
+                <button type="button" data-match="SHIBUYA SYNAPSE vs AKIBA SPARK" data-pick="AWAY" data-odds="2.80" class="odd-btn min-h-[44px] px-2 py-2 rounded-sm border border-primary/30 bg-surface-container text-on-surface hover:border-primary flex flex-col items-center justify-center cursor-pointer">
+                  <span data-design-text-token="label-sm" class="text-label-sm text-on-surface-variant uppercase">AWAY</span>
+                  <span data-design-text-token="label-lg" class="text-label-lg text-primary font-bold tabular-nums">2.80</span>
+                </button>
+              </footer>
+            </article>
           </div>
         </div>
-        <h1
-          class="text-dashboardfont ml-10 mt-16 mb-8 text-2xl font-bold flex items-center gap-2"
-        >
-          <div
-            class="w-3 h-3 bg-grey-500 rounded-full shadow-[0_0_8px_#36f71d] animate-pulse"
-          ></div>
-          UPCOMING MATCHES
-        </h1>
+      </main>
 
-        <div class="pb-4 space-y-4" id="upcoming-matches">
-          <div
-            class="flex items-center p-6 justify-between w-[90%] h-10 rounded-lg border-l-2 border-white/5 bg-dbPrimary mx-auto hover:opacity-80 cursor-pointer transition-all duration-200 live-card"
-          >
-            <div>
-              <p class="text-sm text-slate-50">23:02</p>
-            </div>
-            <div>
-              <p class="text-lg text-slate-50">
-                <span class="home-name">Real madrid</span> vs
-                <span class="away-name">Man city</span>
-              </p>
-            </div>
-            <div class="click-to-view-odds">
-              <div
-                class="flex items-center justify-center bg-[#060F06] border border-white/10 rounded-xl p-2 hover:border-font/50 cursor-pointer transition-all duration-300 group"
-              >
-                <span
-                  class="text-dashboardfont text-sm font-bold group-hover:text-font transition-colors uppercase"
-                  >CLICK TO VIEW ODDS</span
-                >
-              </div>
-            </div>
-            <div class="flex gap-2 hidden odds" data-game-id="1388235">
-              <div class="bg-primary w-12 h-10 text-center p-2 rounded-lg">
-                <p class="text-[10px] text-font font-bold uppercase">H</p>
-                <p class="text-xs text-slate-50" data-odd="home">---</p>
-              </div>
-              <div class="bg-primary w-12 h-10 text-center p-2 rounded-lg">
-                <p class="text-[10px] text-font font-bold uppercase">D</p>
-                <p class="text-xs text-slate-50" data-odd="draw">---</p>
-              </div>
-              <div class="bg-primary w-12 h-10 text-center p-2 rounded-lg">
-                <p class="text-[10px] text-font font-bold uppercase">A</p>
-                <p class="text-xs text-slate-50" data-odd="away">---</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="bg-dbPrimary pt-10 flex flex-col px-6 pb-6 h-full relative">
-        <!-- flex div for top details -->
-        <div class="flex justify-between items-center mb-8">
-          <h2 class="text-font text-2xl font-black italic tracking-wider">
-            BET SLIP
-          </h2>
-          <div
-            class="bg-font text-[#060E06] text-sm font-black w-7 h-7 flex items-center justify-center rounded-md"
-          >
-            2
-          </div>
+      <!-- Right Sticky Bet Slip Panel -->
+      <aside aria-label="Bet slip" class="hidden md:flex flex-col w-80 xl:w-96 shrink-0 border-l border-primary/30 bg-surface-container-low min-h-[1024px] p-gutter-lg gap-gutter-lg sticky top-16" data-stitch-vh="min-h-[1024px]===min-h-screen">
+        <div class="flex items-center justify-between border-b border-primary/30 pb-gutter-md">
+          <h2 data-design-text-token="headline-sm" class="font-headline text-headline-sm text-primary uppercase neon-heading">BET SLIP</h2>
+          <span data-design-text-token="label-sm" class="px-2 py-0.5 rounded-sm bg-tertiary/20 border border-tertiary text-tertiary text-label-sm font-bold tabular-nums">1 PICK</span>
         </div>
 
-        <!-- block div for cards -->
-        <div class="block w-full flex-1 overflow-y-auto space-y-4">
-          <!-- one card -->
-          <div class="bg-[#0f190f] rounded-xl p-4 relative overflow-hidden">
-            <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-font"></div>
-            <div class="flex justify-between items-center mb-2 pl-2">
-              <span
-                class="text-font text-[10px] font-bold uppercase tracking-wider"
-                id="teams"
-                >NO Game Was Selected
-              </span>
-              <button
-                class="text-dashboardfont hover:text-white transition-colors"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-3.5 w-3.5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-            </div>
-            <div class="flex gap-4 justify-center" id="slip-pick">
-              <div
-                class="text-white bg-font/10 rounded-xl p-2 cursor-pointer hover:bg-primary transition duration-300 winTeam"
-                data-odds=""
-                id="home odd"
-              >
-                Home
-              </div>
-              <div
-                class="text-white bg-font/10 rounded-xl p-2 cursor-pointer hover:bg-primary transition duration-300 winTeam"
-                data-odds=""
-                id="draw odd"
-              >
-                Draw
-              </div>
-              <div
-                class="text-white bg-font/10 rounded-xl p-2 cursor-pointer hover:bg-primary transition duration-300 winTeam"
-                data-odds=""
-                id="away odd"
-              >
-                Away
-              </div>
-            </div>
-            <div class="flex justify-between items-center text-xs pl-2 mt-2">
-              <span class="text-dashboardfont" id="slip-odds-value"
-                >Odds: 1.85</span
-              >
-              <div class="flex items-center">
-                <input
-                  type="number"
-                  placeholder="Amount"
-                  class="w-20 bg-transparent border-b border-white/20 text-white font-bold text-right outline-none focus:border-font transition-colors pb-1 mr-2 placeholder:text-dashboardfont/50 placeholder:font-normal"
-                  id="stake-amount"
-                />
-                <span class="text-font font-bold uppercase tracking-wider"
-                  >TOKENS</span
-                >
-              </div>
-            </div>
+        <!-- Selected Pick Card -->
+        <div class="card rounded-md flex flex-col gap-gutter-sm">
+          <div class="flex items-center justify-between gap-2">
+            <span id="slip-pick" data-design-text-token="label-lg" class="text-label-lg text-tertiary font-bold uppercase">HOME // NEO TOKYO FC</span>
+            <span id="slip-odds" data-design-text-token="label-lg" class="text-label-lg text-tertiary font-bold tabular-nums">@ 2.15</span>
           </div>
+          <p id="slip-match" data-design-text-token="label-sm" class="text-label-sm text-on-surface-variant">NEO TOKYO FC vs ARASAKA UTD</p>
         </div>
 
-        <!-- button and text for the bottompart -->
-        <div class="mt-8 pt-6 border-t border-white/10">
-          <div class="flex justify-between items-center mb-4">
-            <span
-              class="text-dashboardfont text-xs font-bold tracking-widest uppercase"
-              >TOTAL STAKE</span
-            >
-            <span class="text-white font-bold text-lg" id="total-stake"></span>
+        <!-- Stake Input -->
+        <form id="bet-slip-form" class="flex flex-col gap-gutter-md">
+          <label for="stake-input" class="flex flex-col gap-gutter-sm">
+            <span data-design-text-token="label-sm" class="text-label-sm text-on-surface uppercase">STAKE (COINS)</span>
+            <input id="stake-input" type="number" min="1" step="10" value="100" class="min-h-[44px] w-full rounded-sm border border-primary/30 bg-surface-container px-gutter-md py-2.5 text-body-md text-coin font-bold tabular-nums focus:border-secondary focus:ring-0">
+          </label>
+
+          <!-- Summary -->
+          <div class="border-t border-b border-primary/20 py-gutter-md flex flex-col gap-gutter-sm">
+            <div class="flex items-center justify-between">
+              <span data-design-text-token="body-md" class="text-body-md text-on-surface-variant">Total Stake</span>
+              <span id="total-stake" data-design-text-token="label-lg" class="text-label-lg text-on-surface tabular-nums">100.00</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span data-design-text-token="body-md" class="text-body-md text-on-surface-variant">Potential Payout</span>
+              <span id="potential-payout" data-design-text-token="headline-sm" class="text-headline-sm text-coin font-bold tabular-nums">215.00</span>
+            </div>
           </div>
-          <div class="flex justify-between items-center mb-6">
-            <span
-              class="text-dashboardfont text-xs font-bold tracking-widest uppercase"
-              >EST. PAYOUT</span
-            >
-            <span class="text-font font-black text-xl" id="payout"></span>
-          </div>
-          <button
-            class="w-full bg-font text-[#060E06] font-black text-lg py-4 rounded-xl hover:bg-opacity-90 shadow-[0_0_15px_rgba(54,247,29,0.15)] transition-all duration-200"
-            id="submit-bet"
-          >
-            CONFIRM WAGER
+
+          <div id="slip-feedback" role="status" class="hidden text-label-sm"></div>
+
+          <button data-component-id="button-primary" data-component-type="button" data-component-variant="primary" type="submit" class="button w-full rounded-sm font-label uppercase tracking-wider cursor-pointer">
+            <span data-design-text-token="label-lg" class="text-label-lg">CONFIRM WAGER</span>
           </button>
-          <p
-            class="text-dashboardfont text-[9px] font-bold text-center mt-5 tracking-widest uppercase mb-2"
-          >
-            VIRTUAL TOKENS ONLY • NO REAL VALUE
-          </p>
-        </div>
-      </div>
+        </form>
+      </aside>
     </div>
-    <script src="/js/dashboard.js"></script>
-  </body>
-</html>
+  </div>
+
+  <script>
+    // Tabs
+    const tabs = document.querySelectorAll('[role="tab"]');
+    const panels = document.querySelectorAll('[role="tabpanel"]');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => {
+          t.setAttribute('aria-selected', 'false');
+          t.setAttribute('tabindex', '-1');
+          t.classList.remove('border-primary', 'text-primary', 'bg-primary/5');
+          t.classList.add('border-transparent', 'text-on-surface-variant');
+        });
+        panels.forEach(p => p.setAttribute('hidden', ''));
+        tab.setAttribute('aria-selected', 'true');
+        tab.setAttribute('tabindex', '0');
+        tab.classList.add('border-primary', 'text-primary', 'bg-primary/5');
+        tab.classList.remove('border-transparent', 'text-on-surface-variant');
+        document.getElementById(tab.getAttribute('aria-controls')).removeAttribute('hidden');
+      });
+    });
+
+    // Odds selection & payout math
+    let currentOdds = 2.15;
+    let balance = 1000.00;
+    const stakeInput = document.getElementById('stake-input');
+    const totalStakeEl = document.getElementById('total-stake');
+    const payoutEl = document.getElementById('potential-payout');
+    const feedbackEl = document.getElementById('slip-feedback');
+
+    function updatePayout() {
+      const stake = parseFloat(stakeInput.value) || 0;
+      totalStakeEl.textContent = stake.toFixed(2);
+      payoutEl.textContent = (stake * currentOdds).toFixed(2);
+    }
+    stakeInput.addEventListener('input', updatePayout);
+
+    document.querySelectorAll('.odd-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.odd-btn').forEach(b => b.classList.remove('odd-selected'));
+        btn.classList.add('odd-selected');
+        currentOdds = parseFloat(btn.dataset.odds);
+        document.getElementById('slip-pick').textContent = btn.dataset.pick + ' // ' + btn.dataset.match.split(' vs ')[0];
+        document.getElementById('slip-odds').textContent = '@ ' + currentOdds.toFixed(2);
+        document.getElementById('slip-match').textContent = btn.dataset.match;
+        updatePayout();
+      });
+    });
+
+    document.getElementById('bet-slip-form').addEventListener('submit', e => {
+      e.preventDefault();
+      const stake = parseFloat(stakeInput.value) || 0;
+      feedbackEl.classList.remove('hidden', 'text-primary', 'text-error');
+      if (stake <= 0) {
+        feedbackEl.classList.add('text-error');
+        feedbackEl.textContent = 'Amount must be greater than zero';
+      } else if (stake > balance) {
+        feedbackEl.classList.add('text-error');
+        feedbackEl.textContent = 'Insufficient coins';
+      } else {
+        balance -= stake;
+        document.getElementById('coin-balance').textContent = balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        feedbackEl.classList.add('text-primary');
+        feedbackEl.textContent = 'WAGER CONFIRMED // LOCKED IN';
+      }
+    });
+
+    document.getElementById('claim-reward-btn').addEventListener('click', function() {
+      balance += 10;
+      document.getElementById('coin-balance').textContent = balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      this.classList.add('hidden');
+    });
+  </script>
+
+
+</body></html>
